@@ -1,6 +1,8 @@
 package com.platform.marketplace.Marketplace.Platform.model;
 
+import com.platform.marketplace.Marketplace.Platform.consts.EventTypes;
 import jakarta.persistence.*;
+import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -9,11 +11,14 @@ import java.util.List;
 
 @Entity
 @Table(name = "events")
+@Data
 public class Event {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    private List<EventTypes> eventTypes;
 
     private String name;
 
@@ -35,4 +40,16 @@ public class Event {
     @ManyToOne
     @JoinColumn(name = "organisation_id")
     private Organisation organisation;
+
+    public Event(Long id,List<EventTypes> eventTypes ,String name, String description, String linkToApplicationForm, List<Location> locations, LocalDateTime startsAt, LocalDateTime endsAt, Organisation organisation) {
+        this.id = id;
+        this.eventTypes = eventTypes;
+        this.name = name;
+        this.description = description;
+        this.linkToApplicationForm = linkToApplicationForm;
+        this.locations = locations;
+        this.startsAt = startsAt;
+        this.endsAt = endsAt;
+        this.organisation = organisation;
+    }
 }

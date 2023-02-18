@@ -44,6 +44,6 @@ public class AuthenticationController {
             return new ModelAndView("registration")
                     .addObject("errorMessage",e.getMessage());
         }
-        return new ModelAndView("redirect:/main");
+        return new ModelAndView("mainPage");
     }
 }
