@@ -16,8 +16,6 @@ public class Location {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String country;
-
     @Enumerated(EnumType.STRING)
     private Cities city;
 

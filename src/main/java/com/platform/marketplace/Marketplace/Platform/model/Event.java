@@ -1,11 +1,9 @@
 package com.platform.marketplace.Marketplace.Platform.model;
 
-import com.platform.marketplace.Marketplace.Platform.consts.Cities;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
