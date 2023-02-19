@@ -16,7 +16,7 @@ public class EventDTOToEvent implements Function<EventDTO, Event> {
     @Override
     public Event apply(EventDTO eventDTO) {
         Organisation org = organisationRepository.findById(eventDTO.getOrganisationId()).orElseThrow(() -> new IllegalArgumentException(""));
-        return new Event(eventDTO.getId(),eventDTO.getEventTypes() ,eventDTO.getName(), eventDTO.getDescription(), eventDTO.getLinkToApplicationForm(), eventDTO.getLocations(), eventDTO.getStartsAt(),
+        return new Event(eventDTO.getEventTypes() ,eventDTO.getName(),eventDTO.getEntranceType() ,eventDTO.getDescription(), eventDTO.getLinkToApplicationForm(), eventDTO.getLocations(), eventDTO.getStartsAt(),
                 eventDTO.getEndsAt(), org);
     }
 }

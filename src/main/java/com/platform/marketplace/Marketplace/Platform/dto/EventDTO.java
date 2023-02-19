@@ -1,5 +1,6 @@
 package com.platform.marketplace.Marketplace.Platform.dto;
 
+import com.platform.marketplace.Marketplace.Platform.consts.EntranceType;
 import com.platform.marketplace.Marketplace.Platform.consts.EventTypes;
 import com.platform.marketplace.Marketplace.Platform.model.Location;
 import lombok.AllArgsConstructor;
@@ -17,6 +18,8 @@ public class EventDTO  {
     private List<EventTypes> eventTypes;
 
     private String name;
+
+    private EntranceType entranceType;
 
     private String description;
 

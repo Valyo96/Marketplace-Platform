@@ -1,10 +1,9 @@
 package com.platform.marketplace.Marketplace.Platform.service;
 
 import com.platform.marketplace.Marketplace.Platform.dto.EventDTO;
-import com.platform.marketplace.Marketplace.Platform.dto.EventToEventDTO;
+import com.platform.marketplace.Marketplace.Platform.mapper.EventToEventDTO;
 import com.platform.marketplace.Marketplace.Platform.mapper.EventDTOToEvent;
 import com.platform.marketplace.Marketplace.Platform.model.Event;
-import com.platform.marketplace.Marketplace.Platform.model.User;
 import com.platform.marketplace.Marketplace.Platform.repository.EventRepository;
 import com.platform.marketplace.Marketplace.Platform.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -45,7 +44,7 @@ public class EventService {
         List<Event> events = eventRepository.findEventsByDescriptionKeyword(keyword);
         return events.stream()
                 .map(mapperTODto)
-                .collect(Collectors.toList());
+                .toList();
 
     }
 

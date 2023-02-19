@@ -1,7 +1,9 @@
 package com.platform.marketplace.Marketplace.Platform.model;
 
+import com.platform.marketplace.Marketplace.Platform.consts.EntranceType;
 import com.platform.marketplace.Marketplace.Platform.consts.EventTypes;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -22,6 +24,9 @@ public class Event {
 
     private String name;
 
+    @Enumerated(EnumType.STRING)
+    private EntranceType entranceType;
+    @Column(columnDefinition = "TEXT")
     private String description;
 
     private String linkToApplicationForm;
@@ -37,14 +42,16 @@ public class Event {
 
     private LocalDateTime endsAt;
 
+    private int duration;
+
     @ManyToOne
     @JoinColumn(name = "organisation_id")
     private Organisation organisation;
 
-    public Event(Long id,List<EventTypes> eventTypes ,String name, String description, String linkToApplicationForm, List<Location> locations, LocalDateTime startsAt, LocalDateTime endsAt, Organisation organisation) {
-        this.id = id;
+    public Event(List<EventTypes> eventTypes ,String name,EntranceType entranceType ,String description, String linkToApplicationForm, List<Location> locations, LocalDateTime startsAt, LocalDateTime endsAt, Organisation organisation) {
         this.eventTypes = eventTypes;
         this.name = name;
+        this.entranceType = entranceType;
         this.description = description;
         this.linkToApplicationForm = linkToApplicationForm;
         this.locations = locations;

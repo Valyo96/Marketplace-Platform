@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.awt.*;
 import java.time.LocalDate;
@@ -24,7 +25,7 @@ public class Organisation {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
     private LocalDate dateOfFoundation;
     @ManyToMany
     @JoinTable(name = "location")

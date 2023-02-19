@@ -20,6 +20,6 @@ public interface EventRepository extends JpaRepository<Event , Long> {
     @Query("SELECT e FROM Event e WHERE e.endsAt < :now")
     List<Event> findByEndsAtBefore(@Param("now") LocalDateTime now);
 
-    @Query("SELECT e FROM Event e WHERE e.description LIKE' :keyword'")
+    @Query("SELECT e FROM Event e WHERE e.description LIKE' :%keyword%'")
     List<Event>findEventsByDescriptionKeyword(@Param("keyword") String keyword);
 }
