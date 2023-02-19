@@ -10,4 +10,8 @@ public class MenuController {
     public String main(){
         return "mainPage";
     }
+
+    public String index(){
+        return "index";
+    }
 }

@@ -3,6 +3,7 @@ package com.platform.marketplace.Marketplace.Platform.dto;
 import com.platform.marketplace.Marketplace.Platform.consts.EntranceType;
 import com.platform.marketplace.Marketplace.Platform.consts.EventTypes;
 import com.platform.marketplace.Marketplace.Platform.model.Location;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,7 +17,7 @@ public class EventDTO  {
     private Long id;
 
     private List<EventTypes> eventTypes;
-
+    @NotBlank(message = "Полето не може да е празно")
     private String name;
 
     private EntranceType entranceType;
