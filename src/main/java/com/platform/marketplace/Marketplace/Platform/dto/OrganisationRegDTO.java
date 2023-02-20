@@ -12,6 +12,6 @@ public class OrganisationRegDTO {
     private String confirmPassword;
 
 
-    private List<Location> locations;
+    private List<String> locations;
 
 }

@@ -155,7 +155,7 @@
 
 
                     <select class="form-control" id="locations" name="locations" multiple>
-                        <option th:each="location : ${cities}" th:value="${city}"
+                        <option th:each="location : ${cities}" th:value="${location.city}"
                                 th:text="${location.city.cityRegion}"></option>
                     </select>
                 </div>

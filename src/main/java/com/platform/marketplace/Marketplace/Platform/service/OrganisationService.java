@@ -32,7 +32,7 @@ public class OrganisationService {
 
     BCryptPasswordEncoder passwordEncoder =new BCryptPasswordEncoder();
 
-    private OrganisationRegDTOToOrganisation mapper =new OrganisationRegDTOToOrganisation();
+    private final OrganisationRegDTOToOrganisation mapper;
 
 
     public List<Organisation> getAllOrgs() {
