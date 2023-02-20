@@ -1,7 +1,6 @@
 package com.platform.marketplace.Marketplace.Platform.consts;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @AllArgsConstructor

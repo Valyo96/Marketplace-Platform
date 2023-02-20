@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 import java.util.Collections;
 import java.util.List;
 
-import static com.platform.marketplace.Marketplace.Platform.consts.ExceptionMessages.emailAlreadyTaken;
+import static com.platform.marketplace.Marketplace.Platform.consts.ConstantMessages.emailAlreadyTaken;
 
 @Service
 @RequiredArgsConstructor

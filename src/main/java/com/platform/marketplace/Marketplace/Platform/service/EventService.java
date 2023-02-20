@@ -12,9 +12,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
-import static com.platform.marketplace.Marketplace.Platform.consts.ExceptionMessages.eventByNameNotFound;
+import static com.platform.marketplace.Marketplace.Platform.consts.ConstantMessages.eventByNameNotFound;
 
 @Service
 @RequiredArgsConstructor

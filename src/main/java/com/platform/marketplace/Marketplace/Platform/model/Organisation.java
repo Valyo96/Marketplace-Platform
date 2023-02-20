@@ -25,16 +25,14 @@ public class Organisation {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-    @DateTimeFormat(pattern = "dd-MM-yyyy")
-    private LocalDate dateOfFoundation;
+
     @ManyToMany
-    @JoinTable(name = "location")
+    @JoinTable(name = "organisation_locations")
     private List<Location> locations;
 
-    public Organisation(String organisationName, User user, LocalDate dateOfFoundation, List<Location> locations) {
+    public Organisation(String organisationName, User user,  List<Location> locations) {
         this.organisationName = organisationName;
         this.user = user;
-        this.dateOfFoundation = dateOfFoundation;
         this.locations = locations;
     }
 }

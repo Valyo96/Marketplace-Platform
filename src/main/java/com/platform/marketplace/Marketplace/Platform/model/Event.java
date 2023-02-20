@@ -3,13 +3,15 @@ package com.platform.marketplace.Marketplace.Platform.model;
 import com.platform.marketplace.Marketplace.Platform.consts.EntranceType;
 import com.platform.marketplace.Marketplace.Platform.consts.EventTypes;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Size;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 import java.util.List;
+
+import static com.platform.marketplace.Marketplace.Platform.consts.ConstantMessages.dateTimeFormat;
 
 @Entity
 @Table(name = "events")
@@ -37,9 +39,9 @@ public class Event {
     private LocalDateTime createdAt;
     @UpdateTimestamp
     private LocalDateTime updatedAt;
-
+    @DateTimeFormat(pattern = dateTimeFormat)
     private LocalDateTime startsAt;
-
+    @DateTimeFormat(pattern = dateTimeFormat)
     private LocalDateTime endsAt;
 
     private int duration;
