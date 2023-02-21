@@ -1,12 +1,9 @@
 package com.platform.marketplace.Marketplace.Platform.model;
 
-import com.platform.marketplace.Marketplace.Platform.consts.Cities;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
 
 @AllArgsConstructor
 @Data
@@ -18,10 +15,15 @@ public class Location {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Enumerated(EnumType.STRING)
-    private Cities city;
+    private String city;
 
-    public Location(Cities city) {
+    public Location(String city) {
         this.city = city;
+    }
+
+    @Override
+    public String toString() {
+        return city;
+
     }
 }

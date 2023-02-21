@@ -33,4 +33,15 @@ public class EventDTO  {
     private LocalDateTime endsAt;
 
     private Long organisationId;
+
+    public EventDTO(List<EventTypes> eventTypes, String name, EntranceType entranceType, String description, String linkToApplicationForm, List<Location> locations, LocalDateTime startsAt, LocalDateTime endsAt) {
+        this.eventTypes = eventTypes;
+        this.name = name;
+        this.entranceType = entranceType;
+        this.description = description;
+        this.linkToApplicationForm = linkToApplicationForm;
+        this.locations = locations;
+        this.startsAt = startsAt;
+        this.endsAt = endsAt;
+    }
 }

@@ -11,12 +11,11 @@ import java.util.function.Function;
 
 public class EventDTOToEvent implements Function<EventDTO, Event> {
     @Autowired
-    OrganisationRepository organisationRepository;
 
     @Override
     public Event apply(EventDTO eventDTO) {
-        Organisation org = organisationRepository.findById(eventDTO.getOrganisationId()).orElseThrow(() -> new IllegalArgumentException(""));
-        return new Event(eventDTO.getEventTypes() ,eventDTO.getName(),eventDTO.getEntranceType() ,eventDTO.getDescription(), eventDTO.getLinkToApplicationForm(), eventDTO.getLocations(), eventDTO.getStartsAt(),
-                eventDTO.getEndsAt(), org);
+        return null;
+//        return new Event(eventDTO.getEventTypes() ,eventDTO.getName(),eventDTO.getEntranceType() ,eventDTO.getDescription(), eventDTO.getLinkToApplicationForm(), eventDTO.getLocations(), eventDTO.getStartsAt(),
+//                eventDTO.getEndsAt());
     }
 }

@@ -1,8 +1,6 @@
 package com.platform.marketplace.Marketplace.Platform.controller;
 
-import com.platform.marketplace.Marketplace.Platform.consts.Cities;
 import com.platform.marketplace.Marketplace.Platform.dto.OrganisationRegDTO;
-import com.platform.marketplace.Marketplace.Platform.model.Location;
 import com.platform.marketplace.Marketplace.Platform.service.LocationService;
 import com.platform.marketplace.Marketplace.Platform.service.OrganisationService;
 import jakarta.validation.Valid;
@@ -13,9 +11,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
-
-import java.util.Arrays;
-import java.util.List;
 
 
 @Controller
@@ -32,23 +27,24 @@ public class AuthenticationController {
         return "login";
     }
 
-    @GetMapping("/registration")
+    @GetMapping("/register")
     public String orgRegister(Model model){
-        model.addAttribute("registration" , new OrganisationRegDTO());
+        model.addAttribute("org" , new OrganisationRegDTO());
         model.addAttribute("cities" , locationService.getAllLocations());
         return "registration";
     }
 
     @PostMapping("submit")
-    public ModelAndView reg(@Valid OrganisationRegDTO organisationRegDTO , BindingResult bindingResult){
+    public ModelAndView reg(@Valid OrganisationRegDTO org , BindingResult bindingResult){
         if (bindingResult.hasErrors()) {
-            return new ModelAndView("redirect:/registration");
+            return new ModelAndView("registration");
         }
         try{
-            organisationService.registration(organisationRegDTO);
+            organisationService.registration(org);
         } catch (Exception e) {
-            return new ModelAndView("redirect:/registration")
-                    .addObject("errorMessage",e.getMessage());
+            return new ModelAndView("registration")
+                    .addObject("errorMessage" , e.getMessage());
+
         }
         return new ModelAndView("mainPage");
     }
