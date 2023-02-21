@@ -1,9 +1,11 @@
 package com.platform.marketplace.Marketplace.Platform.service;
 
 import com.platform.marketplace.Marketplace.Platform.dto.EventDTO;
+import com.platform.marketplace.Marketplace.Platform.exceptions.NotFoundException;
 import com.platform.marketplace.Marketplace.Platform.mapper.EventToEventDTO;
 import com.platform.marketplace.Marketplace.Platform.mapper.EventDTOToEvent;
 import com.platform.marketplace.Marketplace.Platform.model.Event;
+import com.platform.marketplace.Marketplace.Platform.model.Organisation;
 import com.platform.marketplace.Marketplace.Platform.repository.EventRepository;
 import com.platform.marketplace.Marketplace.Platform.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 import static com.platform.marketplace.Marketplace.Platform.consts.ConstantMessages.eventByNameNotFound;
+import static com.platform.marketplace.Marketplace.Platform.consts.ConstantMessages.eventNotFoundByOrgIdMessage;
 
 @Service
 @RequiredArgsConstructor
@@ -47,8 +50,11 @@ public class EventService {
 
     }
 
-   public void createEvent(EventDTO eventDTO){
+
+
+   public void createEvent(EventDTO eventDTO, Organisation org){
         Event event = mapperToEntity.apply(eventDTO);
+        event.setOrganisation(org);
         eventRepository.save(event);
    }
 
@@ -57,6 +63,10 @@ public class EventService {
             eventRepository.deleteById(id);
         }
         //TODO : само логната дадена организация да може да трие собствените си събития.
+   }
+
+   public List<Event> findEventsByOrgId(Long id){
+        return eventRepository.findEventsByOrganisationId(id).orElseThrow(() -> new NotFoundException(eventNotFoundByOrgIdMessage));
    }
 
 

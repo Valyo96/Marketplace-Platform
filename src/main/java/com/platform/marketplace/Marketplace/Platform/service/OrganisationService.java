@@ -2,6 +2,7 @@ package com.platform.marketplace.Marketplace.Platform.service;
 
 import com.platform.marketplace.Marketplace.Platform.dto.OrganisationRegDTO;
 import com.platform.marketplace.Marketplace.Platform.exceptions.AlreadyExistException;
+import com.platform.marketplace.Marketplace.Platform.exceptions.NotFoundException;
 import com.platform.marketplace.Marketplace.Platform.mapper.OrganisationRegDTOToOrganisation;
 import com.platform.marketplace.Marketplace.Platform.model.Event;
 import com.platform.marketplace.Marketplace.Platform.model.Organisation;
@@ -18,7 +19,7 @@ import org.springframework.stereotype.Service;
 import java.util.Collections;
 import java.util.List;
 
-import static com.platform.marketplace.Marketplace.Platform.consts.ConstantMessages.emailAlreadyTaken;
+import static com.platform.marketplace.Marketplace.Platform.consts.ConstantMessages.*;
 
 @Service
 @RequiredArgsConstructor
@@ -26,7 +27,7 @@ public class OrganisationService {
 
     private final OrganisationRepository organisationRepository;
 
-    private final UserRepository userRepository;
+    private final UserService userService;
 
     private final EventRepository eventRepository;
 
@@ -34,37 +35,40 @@ public class OrganisationService {
 
     private final OrganisationRegDTOToOrganisation mapper;
 
-
-    public List<Organisation> getAllOrgs() {
-         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (!auth.isAuthenticated()) {
-            return Collections.emptyList();
-        }
-
-        User user = userRepository.getUserByEmail(auth.getName());
-
-        return auth.getAuthorities().stream()
-                .filter(authority -> "ADMIN".equals(authority.getAuthority()))
-                .map(authority -> organisationRepository.findAll())
-                .findFirst()
-                .orElseGet(() -> organisationRepository.findOrganisationsByUserId(user.getId()));
+    public List<Organisation>getAllOrganisations(){
+        return organisationRepository.findAll();
     }
 
-    public List<Event> getEventsOfLoggedOrganisationById() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (!auth.isAuthenticated()) {
-            return Collections.emptyList();
-        }
 
-        User user = userRepository.getUserByEmail(auth.getName());
-        List<Event> eventList = null;
+//    public List<Organisation> getAllOrgs() {
+//         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//        if (!auth.isAuthenticated()) {
+//            return Collections.emptyList();
+//        }
+//
+//        User user = userRepository.getUserByEmail(auth.getName());
+//
+//        return auth.getAuthorities().stream()
+//                .filter(authority -> "ADMIN".equals(authority.getAuthority()))
+//                .map(authority -> organisationRepository.findAll())
+//                .findFirst()
+//                .orElseGet(() -> organisationRepository.findOrganisationsByUserId(user.getId()));
+//    }
 
-        if (auth.getAuthorities().stream().anyMatch(autha -> "ORGANISATION".equals(autha.getAuthority()))) {
-            Organisation org = organisationRepository.findOrganisationByUserId(user.getId());
-            eventList = eventRepository.findEventsByOrganisationId(org.getId());
-        }
+    public Organisation findOrganisationByUserId(Long id){
+        return organisationRepository.findOrganisationByUserId(id).orElseThrow(()-> new NotFoundException(userNotFound));
+    }
 
-        return eventList != null ? eventList : Collections.emptyList();
+    public List<Organisation>findOrganisationsRegistrationDateByDescOrder(){
+        return organisationRepository.findOrganisationsByRegistrationDateDesc();
+    }
+
+    public List<Organisation>findOrganisationsRegistrationDateByAscOrder(){
+        return organisationRepository.findOrganisationsByRegistrationDateASC();
+    }
+
+    public Organisation findOrganisationById(Long id){
+        return organisationRepository.findById(id).orElseThrow(() -> new NotFoundException(organisationNotFound));
     }
 
 
@@ -74,10 +78,24 @@ public class OrganisationService {
        if(organisationRepository.findAll().stream().noneMatch(o-> o.getUser().getUsername().equals(orgDto.getEmail()))){
            String encodedPassword =passwordEncoder.encode(org.getUser().getPassword());
            org.getUser().setPassword(encodedPassword);
-           userRepository.save(org.getUser());
+           userService.saveUser(org.getUser());
            organisationRepository.save(org);
        } else {
            throw new AlreadyExistException(emailAlreadyTaken);
        }
+    }
+
+    public void deleteOrganisationAccount(Organisation org){
+        organisationRepository.delete(org);
+        userService.deleteUser(org.getUser());
+    }
+
+    public void deleteOrganisationAccountById(Long id){
+        Organisation org = findOrganisationById(id);
+        organisationRepository.delete(org);
+    }
+
+    public void deleteAllAccounts(){
+        organisationRepository.deleteAll();
     }
 }

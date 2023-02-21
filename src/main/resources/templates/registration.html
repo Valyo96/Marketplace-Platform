@@ -133,7 +133,7 @@
     <div class="row mt-5">
         <div class="col-md-6 mx-auto bg-light rounded p-3">
             <h1 class="text-center mb-3">Organization Registration</h1>
-            <form th:action="@{submit}" th:object="${registration}" method="post">
+            <form th:action="@{submit}" th:object="${org}" method="post">
                 <div class="form-group">
                     <label for="name">Name*</label>
                     <input type="text" class="form-control" id="name" name="name" required>
@@ -152,11 +152,8 @@
                 </div>
                 <div>
                     <label for="locations">Locations:</label>
-
-
-                    <select class="form-control" id="locations" name="locations" multiple>
-                        <option th:each="location : ${cities}" th:value="${location.city}"
-                                th:text="${location.city.cityRegion}"></option>
+                    <select class="form-control" id="locations" name="locations" multiple required>
+                        <option th:each="location : ${cities}" th:value="${location.city}" th:text="${location}"></option>
                     </select>
                 </div>
                 <div class="form-group">

@@ -4,10 +4,10 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
-import java.awt.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -25,6 +25,10 @@ public class Organisation {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+    @CreationTimestamp
+    private LocalDateTime registeredAt;
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
 
     @ManyToMany
     @JoinTable(name = "organisation_locations")
