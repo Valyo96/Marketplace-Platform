@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<tr th:each="organisation : ${orgs}">
+  <td class="bubble">
+    <span id="o" th:text="${organisation}" class="bubble-text"></span>
+  </td>
+  <form th:action="@{/delete/{id}(id=${organisation.id})}" method="post">
+    <input type="submit" name="delete" value="Delete">
+  </form>
+</body>
+</html>

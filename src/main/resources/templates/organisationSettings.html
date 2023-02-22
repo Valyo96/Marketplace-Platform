@@ -1,10 +1,85 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Organization Settings</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
 
-</body>
-</html>
+<div class="container mt-4">
+    <h1>Organization Settings</h1>
+
+    <!-- Update Account Form -->
+    <div class="card mt-4">
+        <div class="card-header">
+            Update Account
+        </div>
+        <div class="card-body">
+            <form id="updateAccountForm" th:action="@{/organisation/update}" method="post">
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input type="text" class="form-control" id="name" name="name" th:value="${organisation.name}">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" class="form-control" id="email" name="email" th:value="${organisation.email}">
+                </div>
+                <button type="submit" class="btn btn-primary">Update Account</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Create Event Form -->
+    <div class="card mt-4">
+        <div class="card-header">
+            Create Event
+        </div>
+        <div class="card-body">
+            <form id="createEventForm" th:action="@{/event/create}" method="post">
+                <div class="form-group">
+                    <label for="eventName">Event Name:</label>
+                    <input type="text" class="form-control" id="eventName" name="eventName">
+                </div>
+                <div class="form-group">
+                    <label for="eventDate">Event Date:</label>
+                    <input type="date" class="form-control" id="eventDate" name="eventDate">
+                </div>
+                <button type="submit" class="btn btn-primary">Create Event</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Delete Account Form -->
+    <div class="card mt-4">
+        <div class="card-header">
+            Delete Account
+        </div>
+        <div class="card-body">
+            <form id="deleteAccountForm" th:action="@{/account/delete}" method="post">
+                <div class="form-group">
+                    <label for="confirmDelete">Confirm Account Deletion:</label>
+                    <input type="checkbox" class="form-control" id="confirmDelete" name="confirmDelete">
+                </div>
+                <button type="submit" class="btn btn-danger">Delete Account</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- Bootstrap JS -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+        $(function() {
+            // Submit update account form using AJAX
+            $('#updateAccountForm').submit(function(event) {
+                event.preventDefault();
+                $.ajax({
+                    type: 'POST',
+                    url: $(this).attr('action'),
+                    data

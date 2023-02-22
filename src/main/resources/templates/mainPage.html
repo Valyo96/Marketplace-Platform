@@ -15,6 +15,9 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ml-auto">
+            <li class="nav-item" th:if="${#authentication.isAuthenticated()} && ${#authentication.getPrincipal().getRoles().contains('ORGANISATION')}">
+                <a class="nav-link" th:href="@{/organisation/settings}">Organization Settings</a>
+            </li>
             <li class="nav-item">
                 <a class="nav-link" th:href="@{/events}">Events</a>
             </li>
@@ -41,10 +44,7 @@
             <p>This is a web application that allows you to create, manage, and view events.</p>
         </div>
     </div>
-    <tr th:each="organisation : ${orgs}">
-        <td class="bubble">
-            <span id="o" th:text="${organisation}" class="bubble-text"></span>
-        </td>
+
 </div>
 <div></div>
 

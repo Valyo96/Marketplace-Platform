@@ -1,6 +1,6 @@
 package com.platform.marketplace.Marketplace.Platform.controller;
 
-import com.platform.marketplace.Marketplace.Platform.dto.OrganisationRegDTO;
+import com.platform.marketplace.Marketplace.Platform.dto.OrganisationDTO;
 import com.platform.marketplace.Marketplace.Platform.service.LocationService;
 import com.platform.marketplace.Marketplace.Platform.service.OrganisationService;
 import jakarta.validation.Valid;
@@ -11,7 +11,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -26,28 +25,28 @@ public class AuthenticationController {
     private final LocationService locationService;
 
     @GetMapping("/login")
-    public String orgLogin(){
+    public String orgLogin() {
         return "login";
     }
 
     @GetMapping("/register")
-    public String orgRegister(Model model,@ModelAttribute("errorMessage") String errorMessage ,
-                              @ModelAttribute("nameError")String nameError,
-                              @ModelAttribute("emailError")String emailError,
-                              @ModelAttribute("passwordError")String passwordError){
-        model.addAttribute("org" , new OrganisationRegDTO());
-        model.addAttribute("cities" , locationService.getAllLocations());
-        if(errorMessage != null && !errorMessage.isEmpty()) {
+    public String orgRegister(Model model, @ModelAttribute("errorMessage") String errorMessage,
+                              @ModelAttribute("nameError") String nameError,
+                              @ModelAttribute("emailError") String emailError,
+                              @ModelAttribute("passwordError") String passwordError) {
+        model.addAttribute("org", new OrganisationDTO());
+        model.addAttribute("cities", locationService.getAllLocations());
+        if (errorMessage != null && !errorMessage.isEmpty()) {
             model.addAttribute("errorMessage", errorMessage);
         }
-        if(nameError != null && !nameError.isEmpty()){
-            model.addAttribute("nameError" , nameError);
+        if (nameError != null && !nameError.isEmpty()) {
+            model.addAttribute("nameError", nameError);
         }
-        if(emailError !=null && !emailError.isEmpty()){
-            model.addAttribute("emailError" , emailError);
+        if (emailError != null && !emailError.isEmpty()) {
+            model.addAttribute("emailError", emailError);
         }
-        if(passwordError !=null && !passwordError.isEmpty()){
-            model.addAttribute("passwordError" , passwordError);
+        if (passwordError != null && !passwordError.isEmpty()) {
+            model.addAttribute("passwordError", passwordError);
         }
 
 
@@ -55,40 +54,42 @@ public class AuthenticationController {
     }
 
     @PostMapping("submit")
-    public ModelAndView orgRegister(@Valid OrganisationRegDTO org , BindingResult bindingResult , RedirectAttributes redirectAttributes){
-        String name=null;
-        String email = null;
-        String password = null;
+    public ModelAndView orgRegister(@Valid OrganisationDTO org,
+                                    BindingResult bindingResult,
+                                    RedirectAttributes redirectAttributes) {
+        String name = "";
+        String email = "";
+        String password = "";
 
-        if(bindingResult.hasErrors()) {
-            if(bindingResult.getFieldError("name").getDefaultMessage()!=null){
-                name= bindingResult.getFieldError("name").getDefaultMessage();
+        if (bindingResult.hasErrors()) {
+            if (bindingResult.hasFieldErrors("name")) {
+                name = bindingResult.getFieldError("name").getDefaultMessage();
             }
-            if(bindingResult.getFieldError("email").getDefaultMessage() != null){
+            if (bindingResult.hasFieldErrors("email")) {
                 email = bindingResult.getFieldError("email").getDefaultMessage();
             }
-            if(bindingResult.getFieldError("password").getDefaultMessage() != null){
+            if (bindingResult.hasFieldErrors("password")) {
                 password = bindingResult.getFieldError("password").getDefaultMessage();
             }
-           redirectAttributes.addFlashAttribute("org" , org);
+            redirectAttributes.addFlashAttribute("org", org);
             return new ModelAndView("redirect:/register")
-                    .addObject("nameError" ,name)
-                    .addObject("emailError",email)
-                    .addObject("passwordError",password);
+                    .addObject("nameError", name)
+                    .addObject("emailError", email)
+                    .addObject("passwordError", password);
         }
-        try{
+        try {
             organisationService.registration(org);
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("org" , org);
+            redirectAttributes.addFlashAttribute("org", org);
             return new ModelAndView("redirect:/register")
-                    .addObject("errorMessage" , e.getMessage());
+                    .addObject("errorMessage", e.getMessage());
 
         }
         return new ModelAndView("mainPage");
     }
 
     @GetMapping("/logout")
-    public String logout(){
+    public String logout() {
         return "mainPage";
     }
 }

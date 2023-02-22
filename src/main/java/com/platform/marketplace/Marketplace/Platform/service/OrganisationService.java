@@ -1,26 +1,18 @@
 package com.platform.marketplace.Marketplace.Platform.service;
 
-import com.platform.marketplace.Marketplace.Platform.dto.OrganisationRegDTO;
-import com.platform.marketplace.Marketplace.Platform.dto.OrganisationResponse;
+import com.platform.marketplace.Marketplace.Platform.dto.OrganisationDTO;
 import com.platform.marketplace.Marketplace.Platform.exceptions.AlreadyExistException;
 import com.platform.marketplace.Marketplace.Platform.exceptions.NotFoundException;
 import com.platform.marketplace.Marketplace.Platform.mapper.OrganisationRegDTOToOrganisation;
-import com.platform.marketplace.Marketplace.Platform.mapper.OrganisationToOrganisationResponse;
-import com.platform.marketplace.Marketplace.Platform.model.Event;
 import com.platform.marketplace.Marketplace.Platform.model.Organisation;
 import com.platform.marketplace.Marketplace.Platform.model.User;
 import com.platform.marketplace.Marketplace.Platform.repository.EventRepository;
 import com.platform.marketplace.Marketplace.Platform.repository.OrganisationRepository;
-import com.platform.marketplace.Marketplace.Platform.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.platform.marketplace.Marketplace.Platform.consts.ConstantMessages.*;
 
@@ -34,14 +26,13 @@ public class OrganisationService {
 
     private final EventRepository eventRepository;
 
-    private final OrganisationToOrganisationResponse convertToResponse = new OrganisationToOrganisationResponse() ;
 
     BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     private final OrganisationRegDTOToOrganisation mapper;
 
-    public List<OrganisationResponse> getAllOrganisations() {
-        return organisationRepository.findAll().stream().map(convertToResponse).collect(Collectors.toList());
+    public List<Organisation> getAllOrganisations() {
+        return organisationRepository.findAll();
     }
 
 
@@ -64,13 +55,13 @@ public class OrganisationService {
         return organisationRepository.findOrganisationByUserId(id).orElseThrow(() -> new NotFoundException(userNotFound));
     }
 
-    public List<OrganisationResponse> findOrganisationsRegistrationDateByDescOrder() {
+    public List<Organisation> findOrganisationsRegistrationDateByDescOrder() {
 
-        return organisationRepository.findOrganisationsByRegistrationDateDesc().stream().map(convertToResponse).collect(Collectors.toList());
+        return organisationRepository.findOrganisationsByRegistrationDateDesc();
     }
 
-    public List<OrganisationResponse> findOrganisationsRegistrationDateByAscOrder() {
-        return organisationRepository.findOrganisationsByRegistrationDateASC().stream().map(convertToResponse).collect(Collectors.toList());
+    public List<Organisation> findOrganisationsRegistrationDateByAscOrder() {
+        return organisationRepository.findOrganisationsByRegistrationDateASC();
     }
 
     public Organisation findOrganisationById(Long id) {
@@ -78,7 +69,7 @@ public class OrganisationService {
     }
 
 
-    public void registration(OrganisationRegDTO orgDto) {
+    public void registration(OrganisationDTO orgDto) {
         Organisation org = mapper.apply(orgDto);
         if (organisationRepository.findAll().stream().noneMatch(o -> o.getUser().getUsername().equals(orgDto.getEmail()))) {
             String encodedPassword = passwordEncoder.encode(org.getUser().getPassword());
@@ -90,6 +81,20 @@ public class OrganisationService {
         }
     }
 
+//    public void updateCurrentLoggedOrganisation(OrganisationDTO organisationDTO){
+//        User user =userService.getUserByEmail(organisationDTO.getEmail());
+//        if(user != null){
+//            throw new AlreadyExistException(emailAlreadyTaken);
+//        } else {
+//            Organisation org = mapper.apply(organisationDTO);
+//            String encodedPassword = passwordEncoder.encode(org.getUser().getPassword());
+//            org.getUser().setPassword(encodedPassword);
+//            userService.saveUser(org.getUser());
+//            organisationRepository
+//
+//        }
+//    }
+
     public void deleteOrganisationAccount(Organisation org) {
         organisationRepository.delete(org);
         userService.deleteUser(org.getUser());
@@ -98,6 +103,7 @@ public class OrganisationService {
     public void deleteOrganisationAccountById(Long id) {
         Organisation org = findOrganisationById(id);
         organisationRepository.delete(org);
+        userService.deleteUser(org.getUser());
     }
 
     public void deleteAllAccounts() {
