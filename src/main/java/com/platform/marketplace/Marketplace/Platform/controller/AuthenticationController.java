@@ -85,11 +85,11 @@ public class AuthenticationController {
                     .addObject("errorMessage", e.getMessage());
 
         }
-        return new ModelAndView("mainPage");
+        return new ModelAndView("menu");
     }
 
-    @GetMapping("/logout")
+    @PostMapping("/logout")
     public String logout() {
-        return "mainPage";
+        return "menu";
     }
 }

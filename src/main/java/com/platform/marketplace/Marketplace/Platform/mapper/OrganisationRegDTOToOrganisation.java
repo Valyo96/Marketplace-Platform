@@ -7,6 +7,7 @@ import com.platform.marketplace.Marketplace.Platform.model.User;
 import com.platform.marketplace.Marketplace.Platform.repository.LocationRepository;
 import com.platform.marketplace.Marketplace.Platform.utility.Utility;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -28,7 +29,7 @@ public class OrganisationRegDTOToOrganisation implements Function<OrganisationDT
 
             return new Organisation( organisationDTO.getName(), user,  cities);
         } else {
-            throw new RuntimeException("Паролата за потвърждение не отговаря на горе подадената.");
+            throw new BadCredentialsException("Паролите не съвпадат");
         }
     }
 }

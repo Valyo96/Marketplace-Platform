@@ -1,6 +1,7 @@
 package com.platform.marketplace.Marketplace.Platform.service;
 
 import com.platform.marketplace.Marketplace.Platform.dto.EventDTO;
+import com.platform.marketplace.Marketplace.Platform.dto.OrganisationDTO;
 import com.platform.marketplace.Marketplace.Platform.exceptions.NotAuthorizeException;
 import com.platform.marketplace.Marketplace.Platform.exceptions.WrongPasswordException;
 import com.platform.marketplace.Marketplace.Platform.model.Event;
@@ -44,6 +45,10 @@ public class LoggedOrgsService {
         }
 
         return eventList != null ? eventList : Collections.emptyList();
+    }
+
+    public void updateOrganisation(OrganisationDTO organisationDTO){
+        organisationService.updateCurrentLoggedOrganisation(organisationDTO);
     }
 
     public void createEventByLoggedOrganisation(EventDTO eventDTO) {

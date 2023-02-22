@@ -17,7 +17,7 @@ public class OrganisationController {
 
     private final OrganisationService organisationService;
 
-    @GetMapping("/organisations")
+    @GetMapping
     public String showOrganisations(Model model){
         model.addAttribute("orgs" , organisationService.getAllOrganisations());
         return "admin";

@@ -15,10 +15,13 @@ public class LocationSeeder implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        for (String city : ListOfCities.cities) {
-            Location location = new Location();
-            location.setCity(city);
-            locationRepository.save(location);
+        if(locationRepository.findAll().size() == 0 &&locationRepository.findAll().size() <28) {
+            for (String city : ListOfCities.cities) {
+                Location location = new Location();
+                location.setCity(city);
+                locationRepository.save(location);
+
+            }
         }
     }
 }

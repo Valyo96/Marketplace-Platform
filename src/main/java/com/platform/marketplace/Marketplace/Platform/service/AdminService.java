@@ -25,7 +25,7 @@ public class AdminService {
 
     private final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-    private List<Organisation> getAllOrganisations(){
+    public List<Organisation> getAllOrganisations(){
         return organisationService.getAllOrganisations();
     }
 
@@ -37,6 +37,10 @@ public class AdminService {
        } else {
            return getAllOrganisations();
        }
+    }
+
+    public void updateOrganisationStatus(Organisation org , boolean status){
+        organisationService.updateOrganisationStatus(org, status);
     }
 
     public void deleteOrganisationAccountById(Long id){

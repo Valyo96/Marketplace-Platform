@@ -2,15 +2,80 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Organisations List</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+          crossorigin="anonymous">
 </head>
 <body>
-<tr th:each="organisation : ${orgs}">
-  <td class="bubble">
-    <span id="o" th:text="${organisation}" class="bubble-text"></span>
-  </td>
-  <form th:action="@{/delete/{id}(id=${organisation.id})}" method="post">
-    <input type="submit" name="delete" value="Delete">
-  </form>
+<div class="container">
+    <h1>Organisations List</h1>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Registration Date</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="organisation : ${orgs}">
+            <td th:text="${organisation.organisationName}"></td>
+            <td th:text="${#dates.format(organisation.registeredAt, 'yyyy-MM-dd HH:mm:ss')}"></td>
+            <td>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" th:checked="${organisation.user.isEnabled}"
+                           id="status-[[${organisation.id}]]">
+                    <label class="form-check-label" for="status-[[${organisation.id}]]">Active</label>
+                </div>
+            </td>
+            <td>
+                <div class="btn-group">
+                    <a class="btn btn-primary" th:href="@{/admin/edit-organisation-status/{id}(id=${organisation.id})}">
+                        Edit
+                    </a>
+                    <form th:action="@{/admin/delete/{id}(id=${organisation.id})}" method="post">
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    $(document).ready(function () {
+        $('input[type=checkbox]').change(function () {
+            var orgId = $(this).attr('id').split('-')[1];
+            var status = $(this).is(':checked');
+            $.ajax({
+                type: 'POST',
+                url: '/admin/update-organisation-status',
+                data: {id: orgId, status: status},
+                success: function (data) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success!',
+                        text: 'Organisation status updated successfully.'
+                    });
+                },
+                error: function (data) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Something went wrong! Please try again later.'
+                    });
+                }
+            });
+        });
+    });
+    /*]]>*/
+</script>
 </body>
 </html>
