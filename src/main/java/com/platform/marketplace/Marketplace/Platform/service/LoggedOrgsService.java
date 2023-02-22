@@ -1,6 +1,7 @@
 package com.platform.marketplace.Marketplace.Platform.service;
 
 import com.platform.marketplace.Marketplace.Platform.dto.EventDTO;
+import com.platform.marketplace.Marketplace.Platform.dto.OrganisationResponse;
 import com.platform.marketplace.Marketplace.Platform.exceptions.NotAuthorizeException;
 import com.platform.marketplace.Marketplace.Platform.exceptions.WrongPasswordException;
 import com.platform.marketplace.Marketplace.Platform.mapper.EventDTOToEvent;

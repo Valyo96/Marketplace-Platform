@@ -111,7 +111,9 @@
 <!--</html>-->
 
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+
 <head>
     <meta charset="UTF-8">
     <title>Organization Registration</title>
@@ -126,6 +128,7 @@
         }
 
 
+
     </style>
 </head>
 <body>
@@ -136,29 +139,49 @@
             <form th:action="@{submit}" th:object="${org}" method="post">
                 <div class="form-group">
                     <label for="name">Name*</label>
-                    <input type="text" class="form-control" id="name" name="name" required>
+                    <input type="text" id="name" name="name" class="form-control" required/>
+                    <div class="form-group">
+                        <div th:if="${nameError}" class="alert alert-danger">
+                            <p th:text="${nameError}" style="color: red;"></p>
+                        </div>
+
                 </div>
                 <div class="form-group">
                     <label for="email">Email*</label>
                     <input type="email" class="form-control" id="email" name="email" required>
-                </div>
+                    <div class="form-group">
+                        <div th:if="${emailError}" class="alert alert-danger">
+                            <p th:text="${emailError}" style="color: red;"></p>
+                        </div>
+
+                    </div>
+
+
+                    </div>
                 <div class="form-group">
                     <label for="password">Password*</label>
                     <input type="password" class="form-control" id="password" name="password" required>
-                </div>
+                    <div class="form-group">
+                        <div th:if="${passwordError}" class="alert alert-danger">
+                            <p th:text="${passwordError}" style="color: red;"></p>
+                        </div>
+
+                    </div>
                 <div class="form-group">
                     <label for="confirmPassword">Confirm Password*</label>
                     <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
                 </div>
                 <div>
                     <label for="locations">Locations:</label>
-                    <select class="form-control" id="locations" name="locations" multiple required>
-                        <option th:each="location : ${cities}" th:value="${location.city}" th:text="${location}"></option>
+                    <select class="form-control" id="locations" name="locations" multiple>
+                        <option th:each="location : ${cities}" th:value="${location.city}"
+                                th:text="${location}"></option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <p th:if="${errorMessage}">
-                    <p th:text="${errorMessage}" style="color: red;"></p>
+                    <div th:if="${errorMessage}" class="alert alert-danger">
+                        <p th:text="${errorMessage}" style="color: red;"></p>
+                    </div>
                     <button type="submit" class="btn btn-primary">Submit</button>
                     <a href="/mainPage" class="btn btn-secondary ml-3" role="button">Cancel</a>
                     <a href="/login" class="btn btn-link mt-3" role="button">Already registered? Log in here.</a>
@@ -174,4 +197,35 @@
 </html>
 
 
+<!--<!DOCTYPE html>-->
+<!--<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">-->
+<!--<head>-->
+<!--    <script src=https://code.jquery.com/jquery-3.6.0.min.js></script>-->
+<!--    <link href="https://cdn.misdeliver.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"-->
+<!--          rel="stylesheet"-->
+<!--          integrity="sha384-EVSTATI3/aprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"-->
+<!--          crossorigin="anonymous">-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>Add new resort</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--<h1>Add new resort</h1>-->
+<!--<form action="#" th:action="@{submit}" method="post" th:object="${org}">-->
+<!--    <p>name: <input type="text" th:field="*{name}"></p>-->
+<!--    <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</p>-->
+<!--    <p>country: <input type="email" th:field="*{email}"></p>-->
+<!--    <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email Error</p>-->
+<!--    <p>country: <input type="password" th:field="*{password}"></p>-->
+<!--    <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</p>-->
+<!--    <p>country: <input type="password" th:field="*{confirmPassword}"></p>-->
+<!--    <select class="form-control" id="locations" name="locations" multiple required>-->
+<!--        <option th:each="location : ${cities}" th:value="${location.city}" th:text="${location}"></option>-->
+<!--    </select>-->
+<!--    <div th:if="${errorMessage}">-->
+<!--        <p th:text="${errorMessage}" style="color: red;"></p>-->
+<!--    </div>-->
+<!--    <p><input type="submit" name="save" value="Save"></p>-->
+<!--</form>-->
+<!--</body>-->
+<!--</html>-->
 

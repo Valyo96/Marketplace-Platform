@@ -4,6 +4,7 @@ import com.platform.marketplace.Marketplace.Platform.annotations.EmailExtended;
 import com.platform.marketplace.Marketplace.Platform.annotations.OrganisationName;
 import com.platform.marketplace.Marketplace.Platform.annotations.Password;
 import com.platform.marketplace.Marketplace.Platform.model.Location;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -18,6 +19,7 @@ import java.util.List;
 @NoArgsConstructor
 public class OrganisationRegDTO {
     @OrganisationName
+    @NotBlank
     private String name;
     @EmailExtended
     private String email;

@@ -1,5 +1,6 @@
 package com.platform.marketplace.Marketplace.Platform.service;
 
+import com.platform.marketplace.Marketplace.Platform.dto.OrganisationResponse;
 import com.platform.marketplace.Marketplace.Platform.exceptions.NotAuthorizeException;
 import com.platform.marketplace.Marketplace.Platform.exceptions.WrongPasswordException;
 import com.platform.marketplace.Marketplace.Platform.model.Organisation;
@@ -25,11 +26,11 @@ public class AdminService {
 
     private final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-    private List<Organisation> getAllOrganisations(){
+    private List<OrganisationResponse> getAllOrganisations(){
         return organisationService.getAllOrganisations();
     }
 
-    public List<Organisation>listAllOrganisationsByRegistrationDateOrder(String order){
+    public List<OrganisationResponse>listAllOrganisationsByRegistrationDateOrder(String order){
        if(order.equals("Подреди по низходящ ред")){
            return organisationService.findOrganisationsRegistrationDateByDescOrder();
        } else if (order.equals("Подреди по възходящ ред")){

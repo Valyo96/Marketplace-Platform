@@ -1,10 +1,54 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <title>Event Manager</title>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="/">Event Manager</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/events}">Events</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/create}">Create Event</a>
+            </li>
+            <li class="nav-item" th:if="${#authentication.isAuthenticated()}">
+                <a class="nav-link" th:href="@{/logout}">Logout</a>
+            </li>
+            <li class="nav-item" th:unless="${#authentication.isAuthenticated()}">
+                <a class="nav-link" th:href="@{/login}">Login</a>
+            </li>
+            <li class="nav-item" th:unless="${#authentication.isAuthenticated()}">
+                <a class="nav-link" th:href="@{/register}">Register</a>
+            </li>
+        </ul>
+    </div>
+</nav>
 
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <h1>Welcome to Event Manager</h1>
+            <p>This is a web application that allows you to create, manage, and view events.</p>
+        </div>
+    </div>
+    <tr th:each="organisation : ${orgs}">
+        <td class="bubble">
+            <span id="o" th:text="${organisation}" class="bubble-text"></span>
+        </td>
+</div>
+<div></div>
+
+<script th:src="@{/js/jquery.min.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
 </body>
 </html>

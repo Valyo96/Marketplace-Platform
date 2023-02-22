@@ -14,7 +14,7 @@ public class EventDTOToEvent implements Function<EventDTO, Event> {
 
     @Override
     public Event apply(EventDTO eventDTO) {
-        return null;
+     return null;
 //        return new Event(eventDTO.getEventTypes() ,eventDTO.getName(),eventDTO.getEntranceType() ,eventDTO.getDescription(), eventDTO.getLinkToApplicationForm(), eventDTO.getLocations(), eventDTO.getStartsAt(),
 //                eventDTO.getEndsAt());
     }

@@ -39,4 +39,9 @@ public class Organisation {
         this.user = user;
         this.locations = locations;
     }
+
+    public Organisation(String organisationName, List<Location> locations) {
+        this.organisationName = organisationName;
+        this.locations = locations;
+    }
 }
