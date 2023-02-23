@@ -20,6 +20,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.platform.marketplace.Marketplace.Platform.consts.ConstantMessages.*;
@@ -35,6 +36,8 @@ public class OrganisationService {
     private final EventRepository eventRepository;
 
     private final LocationRepository locationRepository;
+
+    private final Utility utility;
 
 
     BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -71,7 +74,7 @@ public class OrganisationService {
     }
 
     public List<Organisation> findOrganisationsRegistrationDateByAscOrder() {
-        return organisationRepository.findOrganisationsByRegistrationDateASC();
+        return organisationRepository.findOrganisationsByRegistrationDateAsc();
     }
 
     public Organisation findOrganisationById(Long id) {
@@ -97,7 +100,7 @@ public class OrganisationService {
             User loggedUser = userService.getUserByEmail(auth.getName());
             Organisation organisation = findOrganisationByUserId(loggedUser.getId());
             if (userService.getUserByEmail(organisationDTO.getEmail()) == null) {
-                if(Utility.passwordConfirmation(organisationDTO.getPassword() , organisationDTO.getConfirmPassword())) {
+                if (utility.passwordConfirmation(organisationDTO.getPassword(), organisationDTO.getConfirmPassword())) {
                     List<Location> cities = locationRepository.findLocationsByValue(organisationDTO.getLocations());
                     loggedUser.setUsername(organisationDTO.getEmail());
                     String encodedPassword = passwordEncoder.encode(organisationDTO.getPassword());
@@ -120,8 +123,9 @@ public class OrganisationService {
 
     }
 
-    public void updateOrganisationStatus(Organisation organisation , boolean status){
+    public void updateOrganisationStatus(Organisation organisation, boolean status) {
         organisation.getUser().setEnabled(status);
+        userService.saveUser(organisation.getUser());
         organisationRepository.save(organisation);
     }
 
@@ -136,7 +140,12 @@ public class OrganisationService {
         userService.deleteUser(org.getUser());
     }
 
-    public void deleteAllAccounts() {
+    public void deleteAllOrganisationsAndUsers() {
+        List<Organisation> orgs = getAllOrganisations();
         organisationRepository.deleteAll();
+        orgs.stream().forEach(org -> {
+            userService.deleteUserByOrganizationId(org.getId());
+        });
     }
+
 }

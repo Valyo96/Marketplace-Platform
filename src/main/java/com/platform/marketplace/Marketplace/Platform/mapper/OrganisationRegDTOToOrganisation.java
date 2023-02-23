@@ -20,10 +20,12 @@ public class OrganisationRegDTOToOrganisation implements Function<OrganisationDT
 
     private final LocationRepository locationRepository;
 
+    private final Utility utility;
+
 
     @Override
     public Organisation apply(OrganisationDTO organisationDTO) {
-        if(Utility.passwordConfirmation(organisationDTO.getPassword() , organisationDTO.getConfirmPassword())) {
+        if(utility.passwordConfirmation(organisationDTO.getPassword() , organisationDTO.getConfirmPassword())) {
             User user = userConverter.apply(organisationDTO);
             List<Location> cities = locationRepository.findLocationsByValue(organisationDTO.getLocations());
 

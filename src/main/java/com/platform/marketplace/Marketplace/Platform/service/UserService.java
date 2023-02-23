@@ -6,6 +6,8 @@ import com.platform.marketplace.Marketplace.Platform.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 import static com.platform.marketplace.Marketplace.Platform.consts.ConstantMessages.userNotFound;
 
 @Service
@@ -13,6 +15,10 @@ import static com.platform.marketplace.Marketplace.Platform.consts.ConstantMessa
 public class UserService {
 
     private final UserRepository userRepository;
+
+    public List<User> getAllUsers(){
+        return userRepository.findAll();
+    }
 
     public User findUserById(Long id){
         return userRepository.findById(id).orElseThrow(() -> new NotFoundException(userNotFound));
@@ -28,5 +34,9 @@ public class UserService {
 
     public void saveUser(User user) {
         userRepository.save(user);
+    }
+
+    public void deleteUserByOrganizationId(Long id) {
+        userRepository.deleteById(id);
     }
 }

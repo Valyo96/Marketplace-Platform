@@ -29,6 +29,8 @@ public class LoggedOrgsService {
 
     private final EventService eventService;
 
+    private final Utility utility;
+
     private final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
     public List<Event> getEventsOfLoggedOrganisationById() {
@@ -70,7 +72,7 @@ public class LoggedOrgsService {
         User user = userService.getUserByEmail(auth.getName());
         Organisation org = organisationService.findOrganisationByUserId(user.getId());
         if(confirmation){
-            if(Utility.verifyPassword(password , user.getPassword())){
+            if(utility.verifyPassword(password , user.getPassword())){
                 organisationService.deleteOrganisationAccount(org);
             } else {
                 throw new WrongPasswordException(wrongPassword);
