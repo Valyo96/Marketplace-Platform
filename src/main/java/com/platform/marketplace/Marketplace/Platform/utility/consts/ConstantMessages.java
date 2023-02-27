@@ -27,4 +27,6 @@ public class ConstantMessages {
 
      public static final String INVALID_URL_MESSAGE = "Невалиден линк. Моля опитайте с друг";
 
+     public static final String PASSWORDS_NOT_MATCHING_MESSAGE = "Паролите не съвпадат.";
+
 }

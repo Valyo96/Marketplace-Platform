@@ -1,6 +1,7 @@
 package com.platform.marketplace.Marketplace.Platform.service;
 
 import com.platform.marketplace.Marketplace.Platform.dto.OrganisationDTO;
+import com.platform.marketplace.Marketplace.Platform.dto.OrganisationUpdateDTO;
 import com.platform.marketplace.Marketplace.Platform.utility.exceptions.AlreadyExistException;
 import com.platform.marketplace.Marketplace.Platform.utility.exceptions.NotAuthorizeException;
 import com.platform.marketplace.Marketplace.Platform.utility.exceptions.NotFoundException;
@@ -35,7 +36,6 @@ public class OrganisationService {
 
 
     private final Utility utility;
-
 
 
     private final OrganisationRegDTOToOrganisation mapper;
@@ -90,38 +90,19 @@ public class OrganisationService {
         }
     }
 
-    public void updateCurrentLoggedOrganisation(OrganisationDTO organisationDTO) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth.isAuthenticated()) {
-            User loggedUser = userService.getUserByEmail(auth.getName());
-            Organisation organisation = findOrganisationByUserId(loggedUser.getId());
-            if (userService.getUserByEmail(organisationDTO.getEmail()) == null) {
-                if (utility.passwordConfirmation(organisationDTO.getPassword(), organisationDTO.getConfirmPassword())) {
-                    List<Location> cities = locationService.findLocationByValues(organisationDTO.getLocations());
-                    loggedUser.setUsername(organisationDTO.getEmail());
-                    loggedUser.setPassword(utility.encodePassword(organisationDTO.getPassword()));
-                    organisation.setOrganisationName(organisationDTO.getName());
-                    organisation.setLocations(cities);
-                    organisation.setUser(loggedUser);
-                    userService.saveUser(loggedUser);
-                    organisationRepository.save(organisation);
-                } else {
-                    throw new BadCredentialsException("Паролите не съвпадат");
-                }
-            } else {
-                throw new AlreadyExistException(EMAIL_ALREADY_TAKEN);
-            }
-
-        } else {
-            throw new NotAuthorizeException(NOT_AUTHORIZE_EXCEPTION_MESSAGE);
-        }
-
+    public void updateCurrentLoggedOrganisation(OrganisationUpdateDTO updatedOrganisation, User user) {
+        List<Location> cities = locationService.findLocationByValues(updatedOrganisation.getLocations());
+        organisationRepository.updateOrganisationAndUser(user.getUsername(),
+                updatedOrganisation.getName(),
+                cities,
+                updatedOrganisation.getEmail(),
+                utility.encodePassword(updatedOrganisation.getNewPassword())
+        );
     }
 
     public void updateOrganisationStatus(Organisation organisation, boolean status) {
         organisation.getUser().setEnabled(status);
         userService.saveUser(organisation.getUser());
-        organisationRepository.save(organisation);
     }
 
     public void deleteOrganisationAccount(Organisation org) {

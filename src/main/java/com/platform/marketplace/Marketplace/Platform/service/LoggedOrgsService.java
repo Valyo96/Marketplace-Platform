@@ -2,6 +2,8 @@ package com.platform.marketplace.Marketplace.Platform.service;
 
 import com.platform.marketplace.Marketplace.Platform.dto.EventDTO;
 import com.platform.marketplace.Marketplace.Platform.dto.OrganisationDTO;
+import com.platform.marketplace.Marketplace.Platform.dto.OrganisationUpdateDTO;
+import com.platform.marketplace.Marketplace.Platform.utility.exceptions.AlreadyExistException;
 import com.platform.marketplace.Marketplace.Platform.utility.exceptions.NotAuthorizeException;
 import com.platform.marketplace.Marketplace.Platform.utility.exceptions.WrongPasswordException;
 import com.platform.marketplace.Marketplace.Platform.model.Event;
@@ -9,6 +11,7 @@ import com.platform.marketplace.Marketplace.Platform.model.Organisation;
 import com.platform.marketplace.Marketplace.Platform.model.User;
 import com.platform.marketplace.Marketplace.Platform.utility.Utility;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -16,8 +19,7 @@ import org.springframework.stereotype.Service;
 import java.util.Collections;
 import java.util.List;
 
-import static com.platform.marketplace.Marketplace.Platform.utility.consts.ConstantMessages.NOT_AUTHORIZE_EXCEPTION_MESSAGE;
-import static com.platform.marketplace.Marketplace.Platform.utility.consts.ConstantMessages.WRONG_PASSWORD;
+import static com.platform.marketplace.Marketplace.Platform.utility.consts.ConstantMessages.*;
 
 @Service
 @RequiredArgsConstructor
@@ -49,8 +51,15 @@ public class LoggedOrgsService {
         return eventList != null ? eventList : Collections.emptyList();
     }
 
-    public void updateOrganisation(OrganisationDTO organisationDTO){
-        organisationService.updateCurrentLoggedOrganisation(organisationDTO);
+    public void updateOrganisation(OrganisationUpdateDTO updatedOrganisation) {
+        User loggedUser = utility.authorizationCheck(updatedOrganisation.getOldPassword());
+        if (utility.checkIfEmailExists(updatedOrganisation.getEmail()) || loggedUser.getUsername().equals(updatedOrganisation.getEmail())) {
+            if (utility.passwordConfirmation(updatedOrganisation.getNewPassword(), updatedOrganisation.getConfirmNewPassword())) {
+                organisationService.updateCurrentLoggedOrganisation(updatedOrganisation, loggedUser);
+            }
+
+        }
+
     }
 
     public void createEventByLoggedOrganisation(EventDTO eventDTO) {
@@ -65,18 +74,12 @@ public class LoggedOrgsService {
 
     }
 
-    public void deleteCurrentLoggedAccount(boolean confirmation , String password) {
-        if (!auth.isAuthenticated()) {
-            throw new NotAuthorizeException(NOT_AUTHORIZE_EXCEPTION_MESSAGE);
-        }
-        User user = userService.getUserByEmail(auth.getName());
-        Organisation org = organisationService.findOrganisationByUserId(user.getId());
-        if(confirmation){
-            if(utility.verifyPassword(password , user.getPassword())){
-                organisationService.deleteOrganisationAccount(org);
-            } else {
-                throw new WrongPasswordException(WRONG_PASSWORD);
-            }
+    public void deleteCurrentLoggedAccount(boolean confirmation, String password) {
+        User loggedAccount = utility.authorizationCheck(password);
+        Organisation org = organisationService.findOrganisationByUserId(loggedAccount.getId());
+        if (confirmation) {
+            organisationService.deleteOrganisationAccount(org);
+            userService.deleteUserByOrganizationId(org.getId());
         }
 
     }

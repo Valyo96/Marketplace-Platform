@@ -2,6 +2,7 @@ package com.platform.marketplace.Marketplace.Platform.repository;
 
 import com.platform.marketplace.Marketplace.Platform.model.Event;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -12,6 +13,12 @@ import java.util.Optional;
 
 @Repository
 public interface EventRepository extends JpaRepository<Event , Long> {
+//    @Modifying
+//    @Query("UPDATE Event e SET e.isExpired = 1 WHERE e.endsAt < :now")
+//    void markExpiredEvents(@Param("now") LocalDateTime now);
+
+    @Query("SELECT e FROM Event e WHERE e.isExpired = false")
+    List<Event> findAllActiveEvents();
 
     Optional<List<Event>> findEventsByOrganisationId(Long id);
     @Query("SELECT e FROM Event e WHERE e.name = :name")
