@@ -1,7 +1,7 @@
 package com.platform.marketplace.Marketplace.Platform.service;
 
 import com.platform.marketplace.Marketplace.Platform.dto.EventDTO;
-import com.platform.marketplace.Marketplace.Platform.exceptions.NotFoundException;
+import com.platform.marketplace.Marketplace.Platform.utility.exceptions.NotFoundException;
 import com.platform.marketplace.Marketplace.Platform.mapper.EventToEventDTO;
 import com.platform.marketplace.Marketplace.Platform.mapper.EventDTOToEvent;
 import com.platform.marketplace.Marketplace.Platform.model.Event;
@@ -15,8 +15,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static com.platform.marketplace.Marketplace.Platform.consts.ConstantMessages.eventByNameNotFound;
-import static com.platform.marketplace.Marketplace.Platform.consts.ConstantMessages.eventNotFoundByOrgIdMessage;
+import static com.platform.marketplace.Marketplace.Platform.utility.consts.ConstantMessages.EVENT_BY_NAME_NOT_FOUND;
+import static com.platform.marketplace.Marketplace.Platform.utility.consts.ConstantMessages.EVENT_NOT_FOUND_BY_ORG_ID_MESSAGE;
 
 @Service
 @RequiredArgsConstructor
@@ -26,7 +26,7 @@ public class EventService {
 
     private final UserRepository userRepository;
 
-    private final EventToEventDTO mapperTODto = new EventToEventDTO();
+    private final EventToEventDTO mapperTODto ;
 
     private final EventDTOToEvent mapperToEntity = new EventDTOToEvent();
 
@@ -37,7 +37,7 @@ public class EventService {
     }
 
     public EventDTO getEventByName(String name){
-        Event event = eventRepository.findEventByName(name).orElseThrow(() -> new IllegalArgumentException(eventByNameNotFound));
+        Event event = eventRepository.findEventByName(name).orElseThrow(() -> new IllegalArgumentException(EVENT_BY_NAME_NOT_FOUND));
         EventDTO eventDTO = mapperTODto.apply(event);
         return eventDTO;
     }
@@ -66,7 +66,7 @@ public class EventService {
    }
 
    public List<Event> findEventsByOrgId(Long id){
-        return eventRepository.findEventsByOrganisationId(id).orElseThrow(() -> new NotFoundException(eventNotFoundByOrgIdMessage));
+        return eventRepository.findEventsByOrganisationId(id).orElseThrow(() -> new NotFoundException(EVENT_NOT_FOUND_BY_ORG_ID_MESSAGE));
    }
 
 

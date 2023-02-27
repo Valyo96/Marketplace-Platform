@@ -7,14 +7,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import static com.platform.marketplace.Marketplace.Platform.consts.ConstantMessages.userNotFound;
+import static com.platform.marketplace.Marketplace.Platform.utility.consts.ConstantMessages.USER_NOT_FOUND;
 
 public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     private  UserRepository userRepository;
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user  = userRepository.getUserByEmail(username).orElseThrow(() ->  new UsernameNotFoundException(userNotFound));
+        User user  = userRepository.getUserByEmail(username).orElseThrow(() ->  new UsernameNotFoundException(USER_NOT_FOUND));
         return new MyUserDetails(user);
     }
 }

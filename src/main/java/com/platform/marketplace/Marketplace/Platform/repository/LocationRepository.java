@@ -12,4 +12,6 @@ import java.util.List;
 public interface LocationRepository extends JpaRepository<Location, Long> {
     @Query("SELECT c FROM Location c WHERE c.city IN :values")
     List<Location> findLocationsByValue(@Param("values") List<String>values);
+
+
 }

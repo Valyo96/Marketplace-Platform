@@ -1,4 +1,4 @@
-package com.platform.marketplace.Marketplace.Platform.exceptions;
+package com.platform.marketplace.Marketplace.Platform.utility.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

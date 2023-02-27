@@ -1,9 +1,9 @@
 package com.platform.marketplace.Marketplace.Platform.service;
 
 import com.platform.marketplace.Marketplace.Platform.dto.EventDTO;
-import com.platform.marketplace.Marketplace.Platform.exceptions.NotAuthorizeException;
-import com.platform.marketplace.Marketplace.Platform.exceptions.WrongPasswordException;
-import com.platform.marketplace.Marketplace.Platform.mapper.EventDTOToEvent;
+import com.platform.marketplace.Marketplace.Platform.dto.OrganisationDTO;
+import com.platform.marketplace.Marketplace.Platform.utility.exceptions.NotAuthorizeException;
+import com.platform.marketplace.Marketplace.Platform.utility.exceptions.WrongPasswordException;
 import com.platform.marketplace.Marketplace.Platform.model.Event;
 import com.platform.marketplace.Marketplace.Platform.model.Organisation;
 import com.platform.marketplace.Marketplace.Platform.model.User;
@@ -16,8 +16,8 @@ import org.springframework.stereotype.Service;
 import java.util.Collections;
 import java.util.List;
 
-import static com.platform.marketplace.Marketplace.Platform.consts.ConstantMessages.notAuthorizeExceptionMessage;
-import static com.platform.marketplace.Marketplace.Platform.consts.ConstantMessages.wrongPassword;
+import static com.platform.marketplace.Marketplace.Platform.utility.consts.ConstantMessages.NOT_AUTHORIZE_EXCEPTION_MESSAGE;
+import static com.platform.marketplace.Marketplace.Platform.utility.consts.ConstantMessages.WRONG_PASSWORD;
 
 @Service
 @RequiredArgsConstructor
@@ -28,6 +28,8 @@ public class LoggedOrgsService {
     private final OrganisationService organisationService;
 
     private final EventService eventService;
+
+    private final Utility utility;
 
     private final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
@@ -47,9 +49,13 @@ public class LoggedOrgsService {
         return eventList != null ? eventList : Collections.emptyList();
     }
 
+    public void updateOrganisation(OrganisationDTO organisationDTO){
+        organisationService.updateCurrentLoggedOrganisation(organisationDTO);
+    }
+
     public void createEventByLoggedOrganisation(EventDTO eventDTO) {
         if (!auth.isAuthenticated()) {
-            throw new NotAuthorizeException(notAuthorizeExceptionMessage);
+            throw new NotAuthorizeException(NOT_AUTHORIZE_EXCEPTION_MESSAGE);
         }
         User user = userService.getUserByEmail(auth.getName());
         Organisation org = organisationService.findOrganisationByUserId(user.getId());
@@ -61,15 +67,15 @@ public class LoggedOrgsService {
 
     public void deleteCurrentLoggedAccount(boolean confirmation , String password) {
         if (!auth.isAuthenticated()) {
-            throw new NotAuthorizeException(notAuthorizeExceptionMessage);
+            throw new NotAuthorizeException(NOT_AUTHORIZE_EXCEPTION_MESSAGE);
         }
         User user = userService.getUserByEmail(auth.getName());
         Organisation org = organisationService.findOrganisationByUserId(user.getId());
         if(confirmation){
-            if(Utility.verifyPassword(password , user.getPassword())){
+            if(utility.verifyPassword(password , user.getPassword())){
                 organisationService.deleteOrganisationAccount(org);
             } else {
-                throw new WrongPasswordException(wrongPassword);
+                throw new WrongPasswordException(WRONG_PASSWORD);
             }
         }
 

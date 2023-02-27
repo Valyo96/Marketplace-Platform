@@ -39,4 +39,19 @@ public class Organisation {
         this.user = user;
         this.locations = locations;
     }
+
+    public Organisation(String organisationName, List<Location> locations) {
+        this.organisationName = organisationName;
+        this.locations = locations;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder();
+        sb.append("Id=").append(id);
+        sb.append("Име на организация - ").append(organisationName).append('\'');
+        sb.append("регистрирана на ").append(registeredAt);
+        sb.append("обновена на ").append(updatedAt);
+        return sb.toString();
+    }
 }

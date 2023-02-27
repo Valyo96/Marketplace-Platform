@@ -1,4 +1,4 @@
-package com.platform.marketplace.Marketplace.Platform.consts;
+package com.platform.marketplace.Marketplace.Platform.utility.consts;
 
 public class Regex {
 
@@ -6,4 +6,10 @@ public class Regex {
     public static final String passwordRegexPattern = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[$@$!%*?&])[A-Za-z\\d$@$!%*?&]{6,72}$";
 
     public static final String organisationNameRegexPattern = "^[a-zA-Z][a-zA-Z0-9_\\-\\.]{2,50}$";
+
+    public static final String URL_REGEX_PATTERN = "^(https?://)?(www\\.)?([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*\\.)+[a-zA-Z]{2,}$";
+
+    public static final String CYRILLIC_REGEX_PATTERN = "^[а-яА-ЯёЁ\\s\\.,!\\?-]+$\n";
+
+
 }

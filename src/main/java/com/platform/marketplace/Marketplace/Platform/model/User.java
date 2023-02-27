@@ -1,6 +1,6 @@
 package com.platform.marketplace.Marketplace.Platform.model;
 
-import com.platform.marketplace.Marketplace.Platform.consts.Role;
+import com.platform.marketplace.Marketplace.Platform.utility.consts.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

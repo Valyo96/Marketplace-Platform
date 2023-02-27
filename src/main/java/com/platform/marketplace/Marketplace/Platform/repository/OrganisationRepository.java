@@ -12,9 +12,13 @@ import java.util.Optional;
 public interface OrganisationRepository extends JpaRepository<Organisation , Long> {
     List<Organisation> findOrganisationsByUserId(Long id);
     Optional<Organisation> findOrganisationByUserId(Long id);
-    @Query("SELECT o.id ,o.organisationName , o.registeredAt FROM Organisation o ORDER BY o.registeredAt DESC")
+    @Query("SELECT o FROM Organisation o ORDER BY o.registeredAt DESC")
     List<Organisation> findOrganisationsByRegistrationDateDesc();
 
-    @Query("SELECT o.id ,o.organisationName FROM Organisation o ORDER BY o.registeredAt ASC")
-    List<Organisation> findOrganisationsByRegistrationDateASC();
+
+
+    @Query("SELECT o FROM Organisation o ORDER BY o.registeredAt ASC")
+    List<Organisation> findOrganisationsByRegistrationDateAsc();
+
+
 }
