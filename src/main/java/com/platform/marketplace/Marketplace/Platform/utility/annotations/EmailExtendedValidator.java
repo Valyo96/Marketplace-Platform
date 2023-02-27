@@ -1,4 +1,4 @@
-package com.platform.marketplace.Marketplace.Platform.annotations;
+package com.platform.marketplace.Marketplace.Platform.utility.annotations;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
@@ -6,7 +6,7 @@ import jakarta.validation.ConstraintValidatorContext;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.platform.marketplace.Marketplace.Platform.consts.Regex.emailRegexPattern;
+import static com.platform.marketplace.Marketplace.Platform.utility.consts.Regex.emailRegexPattern;
 
 public class EmailExtendedValidator implements ConstraintValidator<EmailExtended , String> {
     @Override

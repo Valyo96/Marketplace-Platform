@@ -1,21 +1,11 @@
 package com.platform.marketplace.Marketplace.Platform.service;
 
-import com.platform.marketplace.Marketplace.Platform.exceptions.NotAuthorizeException;
-import com.platform.marketplace.Marketplace.Platform.exceptions.WrongPasswordException;
 import com.platform.marketplace.Marketplace.Platform.model.Organisation;
-import com.platform.marketplace.Marketplace.Platform.model.User;
 import com.platform.marketplace.Marketplace.Platform.utility.Utility;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
-import static com.platform.marketplace.Marketplace.Platform.consts.ConstantMessages.notAuthorizeExceptionMessage;
-import static com.platform.marketplace.Marketplace.Platform.consts.ConstantMessages.wrongPassword;
 
 @Service
 @RequiredArgsConstructor

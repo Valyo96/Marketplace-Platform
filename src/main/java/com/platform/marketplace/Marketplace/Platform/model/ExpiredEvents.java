@@ -16,11 +16,11 @@ import java.util.List;
 import static com.platform.marketplace.Marketplace.Platform.utility.consts.ConstantMessages.DATE_TIME_FORMAT;
 
 @Entity
-@Table(name = "events")
+@Table(name = "expired_events")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Event {
+public class ExpiredEvents {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,9 +39,9 @@ public class Event {
     @ManyToMany
     @JoinColumn(name = "organisations_location")
     private List<Location> locations;
-    @CreationTimestamp
+
     private LocalDateTime createdAt;
-    @UpdateTimestamp
+
     private LocalDateTime updatedAt;
     @DateTimeFormat(pattern = DATE_TIME_FORMAT)
     private LocalDateTime startsAt;
@@ -54,15 +54,17 @@ public class Event {
     @JoinColumn(name = "organisation_id")
     private Organisation organisation;
 
-    public Event(HashSet<String> eventTypes ,String name,EntranceType entranceType ,String description, String linkToApplicationForm, List<Location> locations, LocalDateTime startsAt, LocalDateTime endsAt, Organisation organisation) {
-        this.eventTypes = eventTypes;
-        this.name = name;
-        this.entranceType = entranceType;
-        this.description = description;
-        this.linkToApplicationForm = linkToApplicationForm;
-        this.locations = locations;
-        this.startsAt = startsAt;
-        this.endsAt = endsAt;
-        this.organisation = organisation;
+    public ExpiredEvents(Event event) {
+        this.eventTypes = event.getEventTypes();
+        this.name = event.getName();
+        this.entranceType = event.getEntranceType();
+        this.description = event.getDescription();
+        this.linkToApplicationForm = event.getLinkToApplicationForm();
+        this.locations = event.getLocations();
+        this.createdAt = event.getCreatedAt();
+        this.updatedAt = event.getUpdatedAt();
+        this.startsAt = event.getStartsAt();
+        this.endsAt = event.getEndsAt();
+        this.organisation = event.getOrganisation();
     }
 }

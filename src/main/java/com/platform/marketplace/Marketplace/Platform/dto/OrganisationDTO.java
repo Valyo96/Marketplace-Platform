@@ -1,8 +1,8 @@
 package com.platform.marketplace.Marketplace.Platform.dto;
 
-import com.platform.marketplace.Marketplace.Platform.annotations.EmailExtended;
-import com.platform.marketplace.Marketplace.Platform.annotations.OrganisationName;
-import com.platform.marketplace.Marketplace.Platform.annotations.Password;
+import com.platform.marketplace.Marketplace.Platform.utility.annotations.EmailExtended;
+import com.platform.marketplace.Marketplace.Platform.utility.annotations.OrganisationName;
+import com.platform.marketplace.Marketplace.Platform.utility.annotations.Password;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;

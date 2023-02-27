@@ -1,4 +1,4 @@
-package com.platform.marketplace.Marketplace.Platform.annotations;
+package com.platform.marketplace.Marketplace.Platform.utility.annotations;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
@@ -8,7 +8,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import static com.platform.marketplace.Marketplace.Platform.consts.ConstantMessages.passwordValidationMessage;
+import static com.platform.marketplace.Marketplace.Platform.utility.consts.ConstantMessages.PASSWORD_VALIDATION_MESSAGE;
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.PARAMETER;
 
@@ -17,7 +17,7 @@ import static java.lang.annotation.ElementType.PARAMETER;
 @Documented
 @Constraint(validatedBy = PasswordValidator.class)
 public @interface Password {
-    String message() default passwordValidationMessage;
+    String message() default PASSWORD_VALIDATION_MESSAGE;
 
     Class<?>[] groups() default {};
 

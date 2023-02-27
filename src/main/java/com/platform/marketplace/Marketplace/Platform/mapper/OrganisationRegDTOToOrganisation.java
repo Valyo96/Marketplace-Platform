@@ -5,6 +5,7 @@ import com.platform.marketplace.Marketplace.Platform.model.Location;
 import com.platform.marketplace.Marketplace.Platform.model.Organisation;
 import com.platform.marketplace.Marketplace.Platform.model.User;
 import com.platform.marketplace.Marketplace.Platform.repository.LocationRepository;
+import com.platform.marketplace.Marketplace.Platform.service.LocationService;
 import com.platform.marketplace.Marketplace.Platform.utility.Utility;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -15,10 +16,9 @@ import java.util.function.Function;
 @RequiredArgsConstructor
 @Component
 public class OrganisationRegDTOToOrganisation implements Function<OrganisationDTO, Organisation> {
-    OrganisationRegDtoToUser userConverter = new OrganisationRegDtoToUser();
-//    LocationMapper locationMapper = new LocationMapper();
+    private final  OrganisationRegDtoToUser userConverter;
 
-    private final LocationRepository locationRepository;
+    private final LocationService locationService;
 
     private final Utility utility;
 
@@ -27,7 +27,7 @@ public class OrganisationRegDTOToOrganisation implements Function<OrganisationDT
     public Organisation apply(OrganisationDTO organisationDTO) {
         if(utility.passwordConfirmation(organisationDTO.getPassword() , organisationDTO.getConfirmPassword())) {
             User user = userConverter.apply(organisationDTO);
-            List<Location> cities = locationRepository.findLocationsByValue(organisationDTO.getLocations());
+            List<Location> cities = locationService.findLocationByValues(organisationDTO.getLocations());
 
             return new Organisation( organisationDTO.getName(), user,  cities);
         } else {

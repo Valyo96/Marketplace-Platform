@@ -1,29 +1,25 @@
 package com.platform.marketplace.Marketplace.Platform.service;
 
 import com.platform.marketplace.Marketplace.Platform.dto.OrganisationDTO;
-import com.platform.marketplace.Marketplace.Platform.exceptions.AlreadyExistException;
-import com.platform.marketplace.Marketplace.Platform.exceptions.NotAuthorizeException;
-import com.platform.marketplace.Marketplace.Platform.exceptions.NotFoundException;
-import com.platform.marketplace.Marketplace.Platform.exceptions.WrongPasswordException;
+import com.platform.marketplace.Marketplace.Platform.utility.exceptions.AlreadyExistException;
+import com.platform.marketplace.Marketplace.Platform.utility.exceptions.NotAuthorizeException;
+import com.platform.marketplace.Marketplace.Platform.utility.exceptions.NotFoundException;
 import com.platform.marketplace.Marketplace.Platform.mapper.OrganisationRegDTOToOrganisation;
 import com.platform.marketplace.Marketplace.Platform.model.Location;
 import com.platform.marketplace.Marketplace.Platform.model.Organisation;
 import com.platform.marketplace.Marketplace.Platform.model.User;
 import com.platform.marketplace.Marketplace.Platform.repository.EventRepository;
-import com.platform.marketplace.Marketplace.Platform.repository.LocationRepository;
 import com.platform.marketplace.Marketplace.Platform.repository.OrganisationRepository;
 import com.platform.marketplace.Marketplace.Platform.utility.Utility;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import static com.platform.marketplace.Marketplace.Platform.consts.ConstantMessages.*;
+import static com.platform.marketplace.Marketplace.Platform.utility.consts.ConstantMessages.*;
 
 @Service
 @RequiredArgsConstructor
@@ -35,12 +31,12 @@ public class OrganisationService {
 
     private final EventRepository eventRepository;
 
-    private final LocationRepository locationRepository;
+    private final LocationService locationService;
+
 
     private final Utility utility;
 
 
-    BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     private final OrganisationRegDTOToOrganisation mapper;
 
@@ -65,7 +61,7 @@ public class OrganisationService {
 //    }
 
     public Organisation findOrganisationByUserId(Long id) {
-        return organisationRepository.findOrganisationByUserId(id).orElseThrow(() -> new NotFoundException(userNotFound));
+        return organisationRepository.findOrganisationByUserId(id).orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
     }
 
     public List<Organisation> findOrganisationsRegistrationDateByDescOrder() {
@@ -78,19 +74,19 @@ public class OrganisationService {
     }
 
     public Organisation findOrganisationById(Long id) {
-        return organisationRepository.findById(id).orElseThrow(() -> new NotFoundException(organisationNotFound));
+        return organisationRepository.findById(id).orElseThrow(() -> new NotFoundException(ORGANISATION_NOT_FOUND));
     }
 
 
     public void registration(OrganisationDTO orgDto) {
         Organisation org = mapper.apply(orgDto);
         if (organisationRepository.findAll().stream().noneMatch(o -> o.getUser().getUsername().equals(orgDto.getEmail()))) {
-            String encodedPassword = passwordEncoder.encode(org.getUser().getPassword());
-            org.getUser().setPassword(encodedPassword);
+
+            org.getUser().setPassword(utility.encodePassword(org.getUser().getPassword()));
             userService.saveUser(org.getUser());
             organisationRepository.save(org);
         } else {
-            throw new AlreadyExistException(emailAlreadyTaken);
+            throw new AlreadyExistException(EMAIL_ALREADY_TAKEN);
         }
     }
 
@@ -101,10 +97,9 @@ public class OrganisationService {
             Organisation organisation = findOrganisationByUserId(loggedUser.getId());
             if (userService.getUserByEmail(organisationDTO.getEmail()) == null) {
                 if (utility.passwordConfirmation(organisationDTO.getPassword(), organisationDTO.getConfirmPassword())) {
-                    List<Location> cities = locationRepository.findLocationsByValue(organisationDTO.getLocations());
+                    List<Location> cities = locationService.findLocationByValues(organisationDTO.getLocations());
                     loggedUser.setUsername(organisationDTO.getEmail());
-                    String encodedPassword = passwordEncoder.encode(organisationDTO.getPassword());
-                    loggedUser.setPassword(encodedPassword);
+                    loggedUser.setPassword(utility.encodePassword(organisationDTO.getPassword()));
                     organisation.setOrganisationName(organisationDTO.getName());
                     organisation.setLocations(cities);
                     organisation.setUser(loggedUser);
@@ -114,11 +109,11 @@ public class OrganisationService {
                     throw new BadCredentialsException("Паролите не съвпадат");
                 }
             } else {
-                throw new AlreadyExistException(emailAlreadyTaken);
+                throw new AlreadyExistException(EMAIL_ALREADY_TAKEN);
             }
 
         } else {
-            throw new NotAuthorizeException(notAuthorizeExceptionMessage);
+            throw new NotAuthorizeException(NOT_AUTHORIZE_EXCEPTION_MESSAGE);
         }
 
     }

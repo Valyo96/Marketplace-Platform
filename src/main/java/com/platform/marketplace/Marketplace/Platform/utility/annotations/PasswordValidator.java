@@ -1,4 +1,4 @@
-package com.platform.marketplace.Marketplace.Platform.annotations;
+package com.platform.marketplace.Marketplace.Platform.utility.annotations;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
@@ -6,7 +6,7 @@ import jakarta.validation.ConstraintValidatorContext;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.platform.marketplace.Marketplace.Platform.consts.Regex.passwordRegexPattern;
+import static com.platform.marketplace.Marketplace.Platform.utility.consts.Regex.passwordRegexPattern;
 
 public class PasswordValidator implements ConstraintValidator<Password, String> {
     public boolean isValid(String password, ConstraintValidatorContext cxt) {

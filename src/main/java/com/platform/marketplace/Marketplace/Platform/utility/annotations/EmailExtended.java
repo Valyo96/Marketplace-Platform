@@ -1,4 +1,4 @@
-package com.platform.marketplace.Marketplace.Platform.annotations;
+package com.platform.marketplace.Marketplace.Platform.utility.annotations;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
@@ -8,7 +8,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import static com.platform.marketplace.Marketplace.Platform.consts.ConstantMessages.emailValidationMessages;
+import static com.platform.marketplace.Marketplace.Platform.utility.consts.ConstantMessages.EMAIL_VALIDATION_MESSAGES;
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.PARAMETER;
 
@@ -17,7 +17,7 @@ import static java.lang.annotation.ElementType.PARAMETER;
 @Documented
 @Constraint(validatedBy = EmailExtendedValidator.class)
 public @interface EmailExtended {
-    String message() default emailValidationMessages;
+    String message() default EMAIL_VALIDATION_MESSAGES;
 
     Class<?>[] groups() default {};
 

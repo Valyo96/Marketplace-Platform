@@ -1,4 +1,4 @@
-package com.platform.marketplace.Marketplace.Platform.consts;
+package com.platform.marketplace.Marketplace.Platform.utility.consts;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
