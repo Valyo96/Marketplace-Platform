@@ -14,6 +14,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.platform.marketplace.Marketplace.Platform.utility.consts.ConstantMessages.EVENT_BY_NAME_NOT_FOUND;
 import static com.platform.marketplace.Marketplace.Platform.utility.consts.ConstantMessages.EVENT_NOT_FOUND_BY_ORG_ID_MESSAGE;
@@ -28,7 +29,7 @@ public class EventService {
 
     private final EventToEventDTO mapperTODto ;
 
-    private final EventDTOToEvent mapperToEntity = new EventDTOToEvent();
+    private final EventDTOToEvent mapperToEntity;
 
     private Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
@@ -36,8 +37,12 @@ public class EventService {
         return eventRepository.findAll();
     }
 
+    public List<EventDTO>showAllEvents(){
+        return getAllEvents().stream().map(mapperTODto).collect(Collectors.toList());
+    }
+
     public EventDTO getEventByName(String name){
-        Event event = eventRepository.findEventByName(name).orElseThrow(() -> new IllegalArgumentException(EVENT_BY_NAME_NOT_FOUND));
+        Event event = eventRepository.findEventByName(name).orElseThrow(() -> new NotFoundException(EVENT_BY_NAME_NOT_FOUND));
         EventDTO eventDTO = mapperTODto.apply(event);
         return eventDTO;
     }
@@ -65,8 +70,8 @@ public class EventService {
         //TODO : само логната дадена организация да може да трие собствените си събития.
    }
 
-   public List<Event> findEventsByOrgId(Long id){
-        return eventRepository.findEventsByOrganisationId(id).orElseThrow(() -> new NotFoundException(EVENT_NOT_FOUND_BY_ORG_ID_MESSAGE));
+   public List<EventDTO> findEventsByOrgId(Long id){
+        return eventRepository.findEventsByOrganisationId(id).stream().map(mapperTODto).collect(Collectors.toList());
    }
 
 

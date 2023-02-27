@@ -16,6 +16,7 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+
     public List<User> getAllUsers(){
         return userRepository.findAll();
     }
@@ -24,9 +25,15 @@ public class UserService {
         return userRepository.findById(id).orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
     }
 
-    public User getUserByEmail(String email) {
-        return userRepository.getUserByEmail(email).orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
+    public User getOptionalUserByEmail(String email) {
+        return userRepository.getOptionalUserByEmail(email).orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
     }
+
+    public User getUserByEmail(String email){
+        return userRepository.getUserByEmail(email);
+    }
+
+
 
     public void deleteUser(User user){
         userRepository.delete(user);

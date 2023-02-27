@@ -2,7 +2,6 @@ package com.platform.marketplace.Marketplace.Platform.dto;
 
 import com.platform.marketplace.Marketplace.Platform.utility.annotations.EmailExtended;
 import com.platform.marketplace.Marketplace.Platform.utility.annotations.OrganisationName;
-import com.platform.marketplace.Marketplace.Platform.utility.annotations.Password;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,12 +19,6 @@ public class OrganisationUpdateDTO {
     private String name;
     @EmailExtended
     private String email;
-
-    private String oldPassword;
-    @Password
-    private String newPassword;
-    private String confirmNewPassword;
-
 
     private List<String> locations;
 }

@@ -20,18 +20,12 @@ public class OrganisationRegDTOToOrganisation implements Function<OrganisationDT
 
     private final LocationService locationService;
 
-    private final Utility utility;
 
 
     @Override
     public Organisation apply(OrganisationDTO organisationDTO) {
-        if(utility.passwordConfirmation(organisationDTO.getPassword() , organisationDTO.getConfirmPassword())) {
             User user = userConverter.apply(organisationDTO);
             List<Location> cities = locationService.findLocationByValues(organisationDTO.getLocations());
-
             return new Organisation( organisationDTO.getName(), user,  cities);
-        } else {
-            throw new BadCredentialsException("Паролите не съвпадат");
-        }
     }
 }

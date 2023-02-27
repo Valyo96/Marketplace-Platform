@@ -1,19 +1,19 @@
 package com.platform.marketplace.Marketplace.Platform.controller;
 
+import com.platform.marketplace.Marketplace.Platform.dto.OrgPasswordChange;
 import com.platform.marketplace.Marketplace.Platform.dto.OrganisationUpdateDTO;
+import com.platform.marketplace.Marketplace.Platform.model.Organisation;
 import com.platform.marketplace.Marketplace.Platform.service.LoggedOrgsService;
 import com.platform.marketplace.Marketplace.Platform.service.OrganisationService;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -26,25 +26,19 @@ public class OrganisationController {
     private final LoggedOrgsService loggedOrgsService;
 
 
-    @GetMapping
-    public String showOrganisations(Model model){
-        model.addAttribute("orgs" , organisationService.getAllOrganisations());
-        return "admin";
-    }
-
     @GetMapping("/settings")
     public String orgSettings(Model model){
-        Authentication auth= SecurityContextHolder.getContext().getAuthentication();
-        model.addAttribute("currentLogged" ,auth.getName());
-        String name =auth.getName();
+
         model.addAttribute("org" , new OrganisationUpdateDTO());
         return "organisationSettings";
     }
 
+
+
     @PostMapping("update")
     public ModelAndView updateOrg(@Valid OrganisationUpdateDTO org ){
         try{
-            loggedOrgsService.updateOrganisation(org);
+            loggedOrgsService.updateLoggedOrganisationAccount(org);
         }catch (Exception e) {
             return new ModelAndView("redirect:/organisation/settings")
                     .addObject("errorMessage" , e.getMessage());
@@ -54,11 +48,27 @@ public class OrganisationController {
     }
 
 
+    @PostMapping("change-password")
+    public ModelAndView changePassword(@Valid OrgPasswordChange orgPas , BindingResult bindingResult, HttpSession session){
+        if(bindingResult.hasErrors()){
+            session.setAttribute("invalidPassword" ,bindingResult.getFieldError("newPassword").getDefaultMessage());
+            return new ModelAndView("redirect:/organisation/change-password");
+        }
+        try {
+            loggedOrgsService.changeLoggedOrganisationPassword(orgPas);
+        }catch (Exception e) {
+            session.setAttribute("errorMessage" ,e.getMessage());
+            return new ModelAndView("redirect:/organisation/change-password");
+        }
+        return new ModelAndView("organisationSettings");
+    }
+
+
 //    @PostMapping("")
-    @PostMapping("/delete/{id}")
-    public ModelAndView deleteOrganisation(@PathVariable("id") Long id) {
+    @PostMapping("/delete")
+    public ModelAndView deleteOrganisation(@RequestParam("password") String password) {
             try {
-                organisationService.deleteOrganisationAccountById(id);
+                loggedOrgsService.deleteCurrentLoggedAccount(password);
             } catch (Exception e) {
                 return new ModelAndView("redirect:/organisations")
                         .addObject("errorMessage" , e.getMessage());
