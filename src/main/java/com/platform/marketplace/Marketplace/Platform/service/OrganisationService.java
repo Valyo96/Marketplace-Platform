@@ -3,6 +3,8 @@ package com.platform.marketplace.Marketplace.Platform.service;
 import com.platform.marketplace.Marketplace.Platform.dto.OrgPasswordChange;
 import com.platform.marketplace.Marketplace.Platform.dto.OrganisationDTO;
 import com.platform.marketplace.Marketplace.Platform.dto.OrganisationUpdateDTO;
+import com.platform.marketplace.Marketplace.Platform.emailsender.ConfirmationToken;
+import com.platform.marketplace.Marketplace.Platform.emailsender.ConfirmationTokenService;
 import com.platform.marketplace.Marketplace.Platform.utility.exceptions.AlreadyExistException;
 import com.platform.marketplace.Marketplace.Platform.utility.exceptions.NotFoundException;
 import com.platform.marketplace.Marketplace.Platform.mapper.OrganisationRegDTOToOrganisation;
@@ -15,7 +17,9 @@ import com.platform.marketplace.Marketplace.Platform.utility.Utility;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 import static com.platform.marketplace.Marketplace.Platform.utility.consts.ConstantMessages.*;
 
@@ -33,6 +37,8 @@ public class OrganisationService {
 
 
     private final Utility utility;
+
+    private final ConfirmationTokenService confirmationTokenService;
 
 
     private final OrganisationRegDTOToOrganisation mapper;
@@ -70,6 +76,9 @@ public class OrganisationService {
             org.getUser().setPassword(utility.encodePassword(org.getUser().getPassword()));
             userService.saveUser(org.getUser());
             organisationRepository.save(org);
+            String token = UUID.randomUUID().toString();
+            ConfirmationToken confirmationToken = new ConfirmationToken(token, LocalDateTime.now(),LocalDateTime.now().plusMinutes(15),org.getUser());
+            confirmationTokenService.saveConfirmationToken(confirmationToken);
         }
         throw new AlreadyExistException(EMAIL_ALREADY_TAKEN);
 
