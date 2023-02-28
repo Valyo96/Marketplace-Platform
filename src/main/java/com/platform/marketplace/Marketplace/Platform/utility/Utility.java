@@ -1,17 +1,17 @@
 package com.platform.marketplace.Marketplace.Platform.utility;
 
-import com.platform.marketplace.Marketplace.Platform.utility.exceptions.NotAuthorizeException;
-import com.platform.marketplace.Marketplace.Platform.utility.exceptions.WrongPasswordException;
 import com.platform.marketplace.Marketplace.Platform.model.User;
 import com.platform.marketplace.Marketplace.Platform.service.UserService;
+import com.platform.marketplace.Marketplace.Platform.utility.exceptions.NotAuthorizeException;
+import com.platform.marketplace.Marketplace.Platform.utility.exceptions.WrongPasswordException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import static com.platform.marketplace.Marketplace.Platform.utility.consts.ConstantMessages.NOT_AUTHORIZE_EXCEPTION_MESSAGE;
-import static com.platform.marketplace.Marketplace.Platform.utility.consts.ConstantMessages.WRONG_PASSWORD;
+import static com.platform.marketplace.Marketplace.Platform.utility.consts.ConstantMessages.*;
 
 @Component
 @RequiredArgsConstructor
@@ -19,27 +19,45 @@ public class Utility {
     private final UserService userService;
     private final BCryptPasswordEncoder passwordEncoder;
 
-    public boolean passwordConfirmation(String password , String confirmPassword){
-        return password.equals(confirmPassword);
+
+    public boolean checkIfEmailExists(String email) {
+        if (userService.getUserByEmail(email) != null) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
-    public boolean verifyPassword(String givenPassword , String hashedPassword){
-        return passwordEncoder.matches(givenPassword, hashedPassword);
+
+    public boolean passwordConfirmation(String password, String confirmPassword) {
+        if (password.equals(confirmPassword)) {
+            return true;
+        }
+        throw new BadCredentialsException(PASSWORDS_NOT_MATCHING_MESSAGE);
     }
 
-    public void authorizationCheck(String password) {
+    public void verifyPassword(String givenPassword, String hashedPassword) {
+        if (passwordEncoder.matches(givenPassword, hashedPassword)) {
+            return;
+        }
+        throw new WrongPasswordException(WRONG_PASSWORD);
+    }
+
+    public User returnAuthenticatedUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (!auth.isAuthenticated() || auth == null) {
-            throw new NotAuthorizeException(NOT_AUTHORIZE_EXCEPTION_MESSAGE);
+        if (auth.isAuthenticated()) {
+            return userService.getUserByEmail(auth.getName());
         }
-        User user = userService.getUserByEmail(auth.getName());
-
-        if (!verifyPassword(password, user.getPassword())) {
-            throw new WrongPasswordException(WRONG_PASSWORD);
-        }
+        throw new NotAuthorizeException(NOT_AUTHORIZE_EXCEPTION_MESSAGE);
     }
 
-    public String encodePassword(String password){
+    public User authorizationCheck(String password) {
+        User user = returnAuthenticatedUser();
+        verifyPassword(password, user.getPassword());
+        return user;
+    }
+
+    public String encodePassword(String password) {
         return passwordEncoder.encode(password);
     }
 

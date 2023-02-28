@@ -1,8 +1,9 @@
 package com.platform.marketplace.Marketplace.Platform.service;
 
+import com.platform.marketplace.Marketplace.Platform.dto.OrgPasswordChange;
 import com.platform.marketplace.Marketplace.Platform.dto.OrganisationDTO;
+import com.platform.marketplace.Marketplace.Platform.dto.OrganisationUpdateDTO;
 import com.platform.marketplace.Marketplace.Platform.utility.exceptions.AlreadyExistException;
-import com.platform.marketplace.Marketplace.Platform.utility.exceptions.NotAuthorizeException;
 import com.platform.marketplace.Marketplace.Platform.utility.exceptions.NotFoundException;
 import com.platform.marketplace.Marketplace.Platform.mapper.OrganisationRegDTOToOrganisation;
 import com.platform.marketplace.Marketplace.Platform.model.Location;
@@ -12,9 +13,6 @@ import com.platform.marketplace.Marketplace.Platform.repository.EventRepository;
 import com.platform.marketplace.Marketplace.Platform.repository.OrganisationRepository;
 import com.platform.marketplace.Marketplace.Platform.utility.Utility;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -37,7 +35,6 @@ public class OrganisationService {
     private final Utility utility;
 
 
-
     private final OrganisationRegDTOToOrganisation mapper;
 
     public List<Organisation> getAllOrganisations() {
@@ -45,23 +42,12 @@ public class OrganisationService {
     }
 
 
-//    public List<Organisation> getAllOrgs() {
-//         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-//        if (!auth.isAuthenticated()) {
-//            return Collections.emptyList();
-//        }
-//
-//        User user = userRepository.getUserByEmail(auth.getName());
-//
-//        return auth.getAuthorities().stream()
-//                .filter(authority -> "ADMIN".equals(authority.getAuthority()))
-//                .map(authority -> organisationRepository.findAll())
-//                .findFirst()
-//                .orElseGet(() -> organisationRepository.findOrganisationsByUserId(user.getId()));
-//    }
-
     public Organisation findOrganisationByUserId(Long id) {
         return organisationRepository.findOrganisationByUserId(id).orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
+    }
+
+    public Organisation findByEmail(String email) {
+        return organisationRepository.findOrganisationByEmail(email).orElseThrow(() -> new NotFoundException(ORGANISATION_NOT_FOUND));
     }
 
     public List<Organisation> findOrganisationsRegistrationDateByDescOrder() {
@@ -80,48 +66,33 @@ public class OrganisationService {
 
     public void registration(OrganisationDTO orgDto) {
         Organisation org = mapper.apply(orgDto);
-        if (organisationRepository.findAll().stream().noneMatch(o -> o.getUser().getUsername().equals(orgDto.getEmail()))) {
-
+        if (!utility.checkIfEmailExists(orgDto.getEmail()) && utility.passwordConfirmation(orgDto.getPassword(), orgDto.getConfirmPassword())) {
             org.getUser().setPassword(utility.encodePassword(org.getUser().getPassword()));
             userService.saveUser(org.getUser());
             organisationRepository.save(org);
-        } else {
-            throw new AlreadyExistException(EMAIL_ALREADY_TAKEN);
         }
+        throw new AlreadyExistException(EMAIL_ALREADY_TAKEN);
+
     }
 
-    public void updateCurrentLoggedOrganisation(OrganisationDTO organisationDTO) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth.isAuthenticated()) {
-            User loggedUser = userService.getUserByEmail(auth.getName());
-            Organisation organisation = findOrganisationByUserId(loggedUser.getId());
-            if (userService.getUserByEmail(organisationDTO.getEmail()) == null) {
-                if (utility.passwordConfirmation(organisationDTO.getPassword(), organisationDTO.getConfirmPassword())) {
-                    List<Location> cities = locationService.findLocationByValues(organisationDTO.getLocations());
-                    loggedUser.setUsername(organisationDTO.getEmail());
-                    loggedUser.setPassword(utility.encodePassword(organisationDTO.getPassword()));
-                    organisation.setOrganisationName(organisationDTO.getName());
-                    organisation.setLocations(cities);
-                    organisation.setUser(loggedUser);
-                    userService.saveUser(loggedUser);
-                    organisationRepository.save(organisation);
-                } else {
-                    throw new BadCredentialsException("Паролите не съвпадат");
-                }
-            } else {
-                throw new AlreadyExistException(EMAIL_ALREADY_TAKEN);
-            }
-
-        } else {
-            throw new NotAuthorizeException(NOT_AUTHORIZE_EXCEPTION_MESSAGE);
+    public String updateOrganisationAccount(OrganisationUpdateDTO updatedOrganisation, User user) {
+        List<Location> cities = locationService.findLocationByValues(updatedOrganisation.getLocations());
+        if (!utility.checkIfEmailExists(updatedOrganisation.getEmail()) || updatedOrganisation.getEmail().equals(user.getUsername())) {
+            Organisation org = findOrganisationByUserId(user.getId());
+            org.setOrganisationName(updatedOrganisation.getName());
+            org.setLocations(cities);
+            user.setUsername(updatedOrganisation.getEmail());
+            organisationRepository.save(org);
+            userService.saveUser(user);
+            return SUCCESSFULLY_UPDATED_ACCOUNT;
         }
-
+        return EMAIL_ALREADY_TAKEN;
     }
+
 
     public void updateOrganisationStatus(Organisation organisation, boolean status) {
         organisation.getUser().setEnabled(status);
         userService.saveUser(organisation.getUser());
-        organisationRepository.save(organisation);
     }
 
     public void deleteOrganisationAccount(Organisation org) {

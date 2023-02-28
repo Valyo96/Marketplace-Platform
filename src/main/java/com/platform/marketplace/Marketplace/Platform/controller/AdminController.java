@@ -46,12 +46,12 @@ public class AdminController {
         return "redirect:/admin/organisations";
     }
 
-    @GetMapping("/edit-organisation-status/{id}")
-    public String editOrgStatus(@PathVariable("id") Long id ,Model model){
-        Organisation org = organisationService.findOrganisationById(id);
-        model.addAttribute("org" , org);
-        return "admin";
-    }
+//    @GetMapping("/edit-organisation-status/{id}")
+//    public String editOrgStatus(@PathVariable("id") Long id ,Model model){
+//        Organisation org = organisationService.findOrganisationById(id);
+//        model.addAttribute("org" , org);
+//        return "admin";
+//    }
 
     @PostMapping("update/{id}")
     public ModelAndView updateOrgStatus(@PathVariable Long id , @Param("status") boolean status){

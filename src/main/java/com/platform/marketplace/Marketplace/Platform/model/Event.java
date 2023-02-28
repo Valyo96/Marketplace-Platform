@@ -50,6 +50,8 @@ public class Event {
 
     private int duration;
 
+    private boolean isExpired;
+
     @ManyToOne
     @JoinColumn(name = "organisation_id")
     private Organisation organisation;
