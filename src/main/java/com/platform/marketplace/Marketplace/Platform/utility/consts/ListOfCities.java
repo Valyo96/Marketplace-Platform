@@ -1,12 +1,20 @@
 package com.platform.marketplace.Marketplace.Platform.utility.consts;
 
-import java.util.Arrays;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
+import java.util.HashSet;
+@Data
+
+@NoArgsConstructor
+@Component
 public class ListOfCities {
-   public static final Iterable<String> cities = Arrays.asList("Благоевград"
-            , "Бургас",
-            "Варна"
-            ,"Велико Търново",
+   private HashSet<String> cities =new HashSet<>( Arrays.asList("Благоевград",
+            "Бургас",
+            "Варна",
+            "Велико Търново",
             "Видин",
             "Враца",
             "Габрово",
@@ -29,5 +37,9 @@ public class ListOfCities {
             "Търговище",
             "Хасково",
             "Шумен",
-            "Ямбол");
+            "Ямбол"));
+
+   public ListOfCities(String city) {
+       this.cities.add(city);
+   }
 }

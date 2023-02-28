@@ -27,8 +27,12 @@ public class OrganisationController {
 
 
     @GetMapping("/settings")
-    public String orgSettings(Model model){
-
+    public String orgSettings(Model model , HttpSession session){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Organisation org = organisationService.findByEmail(authentication.getName());
+        model.addAttribute("errorMessage" , session.getAttribute("errorMessage"));
+        session.removeAttribute("invalidPassword");
+        model.addAttribute("organisation" , org);
         model.addAttribute("org" , new OrganisationUpdateDTO());
         return "organisationSettings";
     }
@@ -36,15 +40,17 @@ public class OrganisationController {
 
 
     @PostMapping("update")
-    public ModelAndView updateOrg(@Valid OrganisationUpdateDTO org ){
+    public ModelAndView updateOrg(@Valid OrganisationUpdateDTO org , HttpSession session ){
+        String update ="";
         try{
-            loggedOrgsService.updateLoggedOrganisationAccount(org);
+           update=  loggedOrgsService.updateLoggedOrganisationAccount(org);
+           session.invalidate();
         }catch (Exception e) {
             return new ModelAndView("redirect:/organisation/settings")
                     .addObject("errorMessage" , e.getMessage());
         }
 
-        return new ModelAndView("redirect:/organisation/settings");
+        return new ModelAndView("redirect:/login").addObject("update" , update);
     }
 
 
@@ -52,15 +58,16 @@ public class OrganisationController {
     public ModelAndView changePassword(@Valid OrgPasswordChange orgPas , BindingResult bindingResult, HttpSession session){
         if(bindingResult.hasErrors()){
             session.setAttribute("invalidPassword" ,bindingResult.getFieldError("newPassword").getDefaultMessage());
-            return new ModelAndView("redirect:/organisation/change-password");
+            return new ModelAndView("redirect:/organisation/settings");
         }
         try {
             loggedOrgsService.changeLoggedOrganisationPassword(orgPas);
+            session.invalidate();
         }catch (Exception e) {
             session.setAttribute("errorMessage" ,e.getMessage());
-            return new ModelAndView("redirect:/organisation/change-password");
+            return new ModelAndView("redirect:/organisation/settings");
         }
-        return new ModelAndView("organisationSettings");
+        return new ModelAndView("redirect:/login");
     }
 
 

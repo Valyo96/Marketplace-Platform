@@ -3,20 +3,13 @@ package com.platform.marketplace.Marketplace.Platform.service;
 import com.platform.marketplace.Marketplace.Platform.dto.EventDTO;
 import com.platform.marketplace.Marketplace.Platform.dto.OrgPasswordChange;
 import com.platform.marketplace.Marketplace.Platform.dto.OrganisationUpdateDTO;
-import com.platform.marketplace.Marketplace.Platform.utility.exceptions.NotAuthorizeException;
 import com.platform.marketplace.Marketplace.Platform.model.Organisation;
 import com.platform.marketplace.Marketplace.Platform.model.User;
 import com.platform.marketplace.Marketplace.Platform.utility.Utility;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-
-import static com.platform.marketplace.Marketplace.Platform.utility.consts.ConstantMessages.*;
 
 @Service
 @RequiredArgsConstructor
@@ -37,11 +30,9 @@ public class LoggedOrgsService {
         return eventService.findEventsByOrgId(org.getId());
     }
 
-    public void updateLoggedOrganisationAccount(OrganisationUpdateDTO updatedOrganisation) {
+    public String updateLoggedOrganisationAccount(OrganisationUpdateDTO updatedOrganisation) {
         User loggedUser = utility.returnAuthenticatedUser();
-//        Organisation org = organisationService.findOrganisationByUserId(loggedUser.getId());
-        organisationService.updateOrganisationAccount(updatedOrganisation, loggedUser);
-
+       return organisationService.updateOrganisationAccount(updatedOrganisation, loggedUser);
     }
 
     public void changeLoggedOrganisationPassword(OrgPasswordChange pass) {

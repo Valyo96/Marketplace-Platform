@@ -84,9 +84,9 @@ public class OrganisationService {
             user.setUsername(updatedOrganisation.getEmail());
             organisationRepository.save(org);
             userService.saveUser(user);
-            return "Успешно подновихте акаунта си";
+            return SUCCESSFULLY_UPDATED_ACCOUNT;
         }
-        return "Електронна поща с адрес " +updatedOrganisation.getEmail() +" е вече зает";
+        return EMAIL_ALREADY_TAKEN;
     }
 
 

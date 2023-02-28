@@ -1,7 +1,6 @@
-package com.platform.marketplace.Marketplace.Platform.utility;
+package com.platform.marketplace.Marketplace.Platform.utility.scheduler;
 
 import com.platform.marketplace.Marketplace.Platform.model.Event;
-import com.platform.marketplace.Marketplace.Platform.model.ExpiredEvents;
 import com.platform.marketplace.Marketplace.Platform.repository.EventRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;

@@ -1,10 +1,9 @@
 package com.platform.marketplace.Marketplace.Platform.utility;
 
-import com.platform.marketplace.Marketplace.Platform.utility.exceptions.AlreadyExistException;
-import com.platform.marketplace.Marketplace.Platform.utility.exceptions.NotAuthorizeException;
-import com.platform.marketplace.Marketplace.Platform.utility.exceptions.WrongPasswordException;
 import com.platform.marketplace.Marketplace.Platform.model.User;
 import com.platform.marketplace.Marketplace.Platform.service.UserService;
+import com.platform.marketplace.Marketplace.Platform.utility.exceptions.NotAuthorizeException;
+import com.platform.marketplace.Marketplace.Platform.utility.exceptions.WrongPasswordException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
@@ -47,7 +46,7 @@ public class Utility {
     public User returnAuthenticatedUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth.isAuthenticated()) {
-            return userService.getOptionalUserByEmail(auth.getName());
+            return userService.getUserByEmail(auth.getName());
         }
         throw new NotAuthorizeException(NOT_AUTHORIZE_EXCEPTION_MESSAGE);
     }
