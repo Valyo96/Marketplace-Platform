@@ -22,7 +22,7 @@ public class EventDTOToEvent implements Function<EventDTO, Event> {
     @Override
     public Event apply(EventDTO eventDTO) {
         List<Location> cities = locationService.findLocationByValues(eventDTO.getLocations());
-        return new Event(eventDTO.getEventTypes(), eventDTO.getName(), eventDTO.getEntranceType(), eventDTO.getDescription(), eventDTO.getLinkToApplicationForm(), cities, eventDTO.getStartsAt(),
+        return new Event(eventDTO.getEventTypes(), eventDTO.getName(), eventDTO.getEntranceType(), eventDTO.getDescription(), eventDTO.getLinkToApplicationForm(), cities, eventDTO.getAddress(), eventDTO.getStartsAt(),
                 eventDTO.getEndsAt(), organisationService.findOrganisationById(eventDTO.getOrganisationId()));
     }
 }

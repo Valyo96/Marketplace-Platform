@@ -23,8 +23,10 @@ public class EventToEventDTO implements Function<Event, EventDTO> {
                 event.getDescription(),
                 event.getLinkToApplicationForm(),
                 locationMapperToString.apply(event.getLocations()),
+                event.getAddress(),
                 event.getStartsAt(),
                 event.getEndsAt(),
+                event.getDuration(),
                 event.getOrganisation().getId());
     }
 }
