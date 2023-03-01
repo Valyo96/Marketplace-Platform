@@ -3,6 +3,7 @@ package com.platform.marketplace.Marketplace.Platform.controller;
 import com.platform.marketplace.Marketplace.Platform.dto.OrgPasswordChange;
 import com.platform.marketplace.Marketplace.Platform.dto.OrganisationUpdateDTO;
 import com.platform.marketplace.Marketplace.Platform.model.Organisation;
+import com.platform.marketplace.Marketplace.Platform.service.LocationService;
 import com.platform.marketplace.Marketplace.Platform.service.LoggedOrgsService;
 import com.platform.marketplace.Marketplace.Platform.service.OrganisationService;
 import jakarta.servlet.http.HttpSession;
@@ -25,6 +26,8 @@ public class OrganisationController {
 
     private final LoggedOrgsService loggedOrgsService;
 
+    private final LocationService locationService;
+
 
     @GetMapping("/settings")
     public String orgSettings(Model model , HttpSession session){
@@ -34,6 +37,7 @@ public class OrganisationController {
         session.removeAttribute("invalidPassword");
         model.addAttribute("organisation" , org);
         model.addAttribute("org" , new OrganisationUpdateDTO());
+        model.addAttribute("locations" , locationService.getAllLocations());
         return "organisationSettings";
     }
 
@@ -71,15 +75,15 @@ public class OrganisationController {
     }
 
 
-//    @PostMapping("")
-    @PostMapping("/delete")
-    public ModelAndView deleteOrganisation(@RequestParam("password") String password) {
+
+    @PostMapping("disable")
+    public ModelAndView disabledOrganisationAccount(@RequestParam("password") String password) {
             try {
-                loggedOrgsService.deleteCurrentLoggedAccount(password);
+                loggedOrgsService.disableCurrentLoggedAccount(password);
             } catch (Exception e) {
-                return new ModelAndView("redirect:/organisations")
+                return new ModelAndView("redirect:/organisation/settings")
                         .addObject("errorMessage" , e.getMessage());
             }
-            return new ModelAndView("redirect:/organisations");
+            return new ModelAndView("redirect:/login");
     }
 }

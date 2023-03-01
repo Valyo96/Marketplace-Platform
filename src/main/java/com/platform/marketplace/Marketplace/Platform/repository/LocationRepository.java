@@ -14,4 +14,5 @@ public interface LocationRepository extends JpaRepository<Location, Long> {
     List<Location> findLocationsByValue(@Param("values") List<String>values);
 
 
+
 }
