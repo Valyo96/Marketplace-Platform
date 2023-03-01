@@ -49,13 +49,10 @@ public class LoggedOrgsService {
         eventService.createEvent(eventDTO, org);
     }
 
-    public void deleteCurrentLoggedAccount(String password) {
+    public void disableCurrentLoggedAccount(String password) {
         User loggedAccount = utility.authorizationCheck(password);
         Organisation org = organisationService.findOrganisationByUserId(loggedAccount.getId());
-
-            organisationService.deleteOrganisationAccount(org);
-            userService.deleteUserByOrganizationId(org.getId());
-
+            organisationService.updateOrganisationStatus(org , false);
     }
 
 

@@ -22,7 +22,7 @@ public class Organisation {
 
     private String organisationName;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "user_id")
     private User user;
     @CreationTimestamp

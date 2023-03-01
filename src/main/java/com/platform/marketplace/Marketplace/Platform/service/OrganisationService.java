@@ -15,6 +15,8 @@ import com.platform.marketplace.Marketplace.Platform.utility.Utility;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.platform.marketplace.Marketplace.Platform.utility.consts.ConstantMessages.*;
@@ -70,6 +72,7 @@ public class OrganisationService {
             org.getUser().setPassword(utility.encodePassword(org.getUser().getPassword()));
             userService.saveUser(org.getUser());
             organisationRepository.save(org);
+            return;
         }
         throw new AlreadyExistException(EMAIL_ALREADY_TAKEN);
 
@@ -90,15 +93,22 @@ public class OrganisationService {
     }
 
 
+
+
+
     public void updateOrganisationStatus(Organisation organisation, boolean status) {
         organisation.getUser().setEnabled(status);
         userService.saveUser(organisation.getUser());
     }
 
-    public void deleteOrganisationAccount(Organisation org) {
-        organisationRepository.delete(org);
-        userService.deleteUser(org.getUser());
+    public void deleteOrganisationAccountsThatAreInactiveMoreThanSixMonths( LocalDateTime date) {
+       List<Organisation> orgs =organisationRepository.findByIsEnabledFalseAndDisabledPeriodEquals(date);
+        organisationRepository.deleteAll(orgs);
+        orgs.stream().forEach(org -> {
+            userService.deleteUserByOrganizationId(org.getId());
+        });
     }
+
 
     public void deleteOrganisationAccountById(Long id) {
         Organisation org = findOrganisationById(id);

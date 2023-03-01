@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,6 +28,7 @@ public interface OrganisationRepository extends JpaRepository<Organisation, Long
     List<Organisation> findOrganisationsByRegistrationDateAsc();
 
 
-
+    @Query("SELECT o FROM Organisation o WHERE o.user.isEnabled = false AND (12 * YEAR(:date) + MONTH(:date)) - (12 * YEAR(o.updatedAt) + MONTH(o.updatedAt)) >= 6")
+    List<Organisation> findByIsEnabledFalseAndDisabledPeriodEquals(@Param("date") LocalDateTime date);
 
 }
