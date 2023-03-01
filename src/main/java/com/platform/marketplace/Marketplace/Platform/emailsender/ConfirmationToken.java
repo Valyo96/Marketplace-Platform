@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 @Data
@@ -18,6 +19,7 @@ public class ConfirmationToken {
     @Column(nullable = false)
     private String token;
     @Column(nullable = false)
+    @CreationTimestamp
     private LocalDateTime createdAt;
     @Column(nullable = false)
     private LocalDateTime expiresAt;

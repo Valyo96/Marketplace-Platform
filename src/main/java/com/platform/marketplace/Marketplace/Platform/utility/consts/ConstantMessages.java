@@ -31,4 +31,6 @@ public class ConstantMessages {
 
     public static final String SUCCESSFULLY_UPDATED_ACCOUNT = "Успешно обновихте акаунта си";
 
+    public static final String TOKEN_NOT_FOUND_FOR_EMAIL = "Токенът не е намерен";
+
 }

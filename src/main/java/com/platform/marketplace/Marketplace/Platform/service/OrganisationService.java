@@ -14,6 +14,7 @@ import com.platform.marketplace.Marketplace.Platform.model.User;
 import com.platform.marketplace.Marketplace.Platform.repository.EventRepository;
 import com.platform.marketplace.Marketplace.Platform.repository.OrganisationRepository;
 import com.platform.marketplace.Marketplace.Platform.utility.Utility;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -77,11 +78,28 @@ public class OrganisationService {
             userService.saveUser(org.getUser());
             organisationRepository.save(org);
             String token = UUID.randomUUID().toString();
-            ConfirmationToken confirmationToken = new ConfirmationToken(token, LocalDateTime.now(),LocalDateTime.now().plusMinutes(15),org.getUser());
+            ConfirmationToken confirmationToken = new ConfirmationToken(token, LocalDateTime.now(), LocalDateTime.now().plusMinutes(15), org.getUser());
             confirmationTokenService.saveConfirmationToken(confirmationToken);
         }
         throw new AlreadyExistException(EMAIL_ALREADY_TAKEN);
 
+    }
+
+    @Transactional
+    private boolean confirmToken(String token) {
+        ConfirmationToken confirmationToken = confirmationTokenService.getToken(token).orElseThrow(() -> new NotFoundException(TOKEN_NOT_FOUND_FOR_EMAIL));
+        if (confirmationToken.getConfirmedAt() != null) {
+            throw new IllegalArgumentException("Имейлът е вече потвърден");
+        }
+
+        LocalDateTime expiredAt = confirmationToken.getExpiresAt();
+
+        if (expiredAt.isBefore(LocalDateTime.now())) {
+            throw new IllegalArgumentException("Времето за потвърждение изтече");
+        }
+
+        confirmationTokenService.setConfirmedAt(token);
+        return true;
     }
 
     public String updateOrganisationAccount(OrganisationUpdateDTO updatedOrganisation, User user) {
