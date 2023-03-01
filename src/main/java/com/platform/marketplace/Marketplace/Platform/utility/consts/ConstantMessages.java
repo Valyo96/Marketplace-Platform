@@ -31,4 +31,6 @@ public class ConstantMessages {
 
     public static final String SUCCESSFULLY_UPDATED_ACCOUNT = "Успешно обновихте акаунта си";
 
+    public static final String FIELD_MUST_NOT_BE_BLANK = "Полето е задължително";
+
 }

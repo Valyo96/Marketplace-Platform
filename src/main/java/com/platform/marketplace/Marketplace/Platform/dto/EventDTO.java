@@ -22,7 +22,7 @@ import static com.platform.marketplace.Marketplace.Platform.utility.consts.Regex
 @NoArgsConstructor
 public class EventDTO  {
     private Long eventId;
-
+    @NotBlank(message = FIELD_MUST_NOT_BE_BLANK)
     private HashSet<String> eventTypes;
     @NotBlank(message = NOT_BLANK)
     @Length(min = 3 ,message = LENGTH_TOO_SMALL)

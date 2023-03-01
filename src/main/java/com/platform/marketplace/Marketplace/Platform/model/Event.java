@@ -29,8 +29,6 @@ public class Event {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private HashSet<String> eventTypes;
-
     private String name;
 
     @Enumerated(EnumType.STRING)
@@ -38,7 +36,9 @@ public class Event {
     @Column(columnDefinition = "TEXT")
     private String description;
 
-   //TODO should i insert age restriction field here ? Ask Emaka for advice. He knows
+    @ManyToMany
+    @JoinTable(name = "eventId_eventCategoryId")
+    private List<EventCategory> eventCategories;
     private String linkToApplicationForm;
     @ManyToMany
     @JoinColumn(name = "organisations_location")
@@ -65,8 +65,8 @@ public class Event {
     @JoinColumn(name = "organisation_id")
     private Organisation organisation;
 
-    public Event(HashSet<String> eventTypes ,String name,EntranceType entranceType ,String description, String linkToApplicationForm, List<Location> locations,String address ,LocalDateTime startsAt, LocalDateTime endsAt, Organisation organisation) {
-        this.eventTypes = eventTypes;
+    public Event(List<EventCategory> eventCategories ,String name,EntranceType entranceType ,String description, String linkToApplicationForm, List<Location> locations,String address ,LocalDateTime startsAt, LocalDateTime endsAt, Organisation organisation) {
+        this.eventCategories = eventCategories;
         this.name = name;
         this.entranceType = entranceType;
         this.description = description;
