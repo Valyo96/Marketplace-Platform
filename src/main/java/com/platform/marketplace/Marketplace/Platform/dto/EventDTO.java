@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
@@ -21,7 +22,7 @@ import static com.platform.marketplace.Marketplace.Platform.utility.consts.Regex
 @NoArgsConstructor
 public class EventDTO  {
     private Long eventId;
-
+    @NotBlank(message = FIELD_MUST_NOT_BE_BLANK)
     private HashSet<String> eventTypes;
     @NotBlank(message = NOT_BLANK)
     @Length(min = 3 ,message = LENGTH_TOO_SMALL)
@@ -35,14 +36,17 @@ public class EventDTO  {
     private String linkToApplicationForm;
 
     private List<String> locations;
+
+    private String address;
     @DateTimeFormat(pattern = DATE_TIME_FORMAT)
     private LocalDateTime startsAt;
     @DateTimeFormat(pattern = DATE_TIME_FORMAT)
     private LocalDateTime endsAt;
 
+    private String duration;
     private Long organisationId;
 
-    public EventDTO(Long eventId,HashSet<String> eventTypes, String name, EntranceType entranceType, String description, String linkToApplicationForm, List<String> locations, LocalDateTime startsAt, LocalDateTime endsAt , Long orgId) {
+    public EventDTO(Long eventId, HashSet<String> eventTypes, String name, EntranceType entranceType, String description, String linkToApplicationForm, List<String> locations, String address , LocalDateTime startsAt, LocalDateTime endsAt , Duration duration , Long orgId) {
         this.eventId = eventId;
         this.eventTypes = eventTypes;
         this.name = name;
@@ -50,8 +54,12 @@ public class EventDTO  {
         this.description = description;
         this.linkToApplicationForm = linkToApplicationForm;
         this.locations = locations;
+        this.address = address;
         this.startsAt = startsAt;
         this.endsAt = endsAt;
+        this.duration = String.valueOf(duration);
         this.organisationId = orgId;
     }
+
+
 }
