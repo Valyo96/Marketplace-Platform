@@ -1,5 +1,6 @@
 package com.platform.marketplace.Marketplace.Platform.security;
 
+import com.platform.marketplace.Marketplace.Platform.utility.consts.Role;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -20,7 +21,7 @@ public class SecurityConfig {
     public SecurityFilterChain configure(HttpSecurity http) throws Exception {
         return http
                 .csrf().disable()
-                .authorizeHttpRequests()
+                .authorizeHttpRequests().requestMatchers("/admin/**").hasAuthority("ADMIN")
                 .anyRequest().permitAll().and().formLogin().loginPage("/login").permitAll().and().logout().permitAll().and().build();
     }
 
@@ -31,7 +32,7 @@ public class SecurityConfig {
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+        return new BCryptPasswordEncoder(10);
     }
 
     @Bean

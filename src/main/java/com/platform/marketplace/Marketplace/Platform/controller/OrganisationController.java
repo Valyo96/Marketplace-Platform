@@ -3,9 +3,9 @@ package com.platform.marketplace.Marketplace.Platform.controller;
 import com.platform.marketplace.Marketplace.Platform.dto.OrgPasswordChange;
 import com.platform.marketplace.Marketplace.Platform.dto.OrganisationUpdateDTO;
 import com.platform.marketplace.Marketplace.Platform.model.Organisation;
-import com.platform.marketplace.Marketplace.Platform.service.LocationService;
-import com.platform.marketplace.Marketplace.Platform.service.LoggedOrgsService;
-import com.platform.marketplace.Marketplace.Platform.service.OrganisationService;
+import com.platform.marketplace.Marketplace.Platform.service.location.LocationService;
+import com.platform.marketplace.Marketplace.Platform.service.organisation.LoggedOrganisationService;
+import com.platform.marketplace.Marketplace.Platform.service.organisation.OrganisationService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +24,7 @@ public class OrganisationController {
 
     private final OrganisationService organisationService;
 
-    private final LoggedOrgsService loggedOrgsService;
+    private final LoggedOrganisationService loggedOrganisationService;
 
     private final LocationService locationService;
 
@@ -47,7 +47,7 @@ public class OrganisationController {
     public ModelAndView updateOrg(@Valid OrganisationUpdateDTO org , HttpSession session ){
         String update ="";
         try{
-           update=  loggedOrgsService.updateLoggedOrganisationAccount(org);
+           update=  loggedOrganisationService.updateLoggedOrganisationAccount(org);
            session.invalidate();
         }catch (Exception e) {
             return new ModelAndView("redirect:/organisation/settings")
@@ -65,7 +65,7 @@ public class OrganisationController {
             return new ModelAndView("redirect:/organisation/settings");
         }
         try {
-            loggedOrgsService.changeLoggedOrganisationPassword(orgPas);
+            loggedOrganisationService.changeLoggedOrganisationPassword(orgPas);
             session.invalidate();
         }catch (Exception e) {
             session.setAttribute("errorMessage" ,e.getMessage());
@@ -79,7 +79,7 @@ public class OrganisationController {
     @PostMapping("disable")
     public ModelAndView disabledOrganisationAccount(@RequestParam("password") String password) {
             try {
-                loggedOrgsService.disableCurrentLoggedAccount(password);
+                loggedOrganisationService.disableCurrentLoggedAccount(password);
             } catch (Exception e) {
                 return new ModelAndView("redirect:/organisation/settings")
                         .addObject("errorMessage" , e.getMessage());

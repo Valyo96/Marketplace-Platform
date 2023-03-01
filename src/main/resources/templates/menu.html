@@ -33,6 +33,10 @@
           <li sec:authorize="isAuthenticated()">
             <a class="nav-link" th:href="@{/organisation/settings}">Настройки на акаунт</a>
           </li>
+          <li sec:authorize="hasAuthority('ADMIN')">
+            <a class="nav-link" th:href="@{/admin/organisations}">Организации</a>
+          </li>
+
           <li sec:authorize="isAuthenticated()">
             <form class="form-inline" th:action="@{/logout}" method="post">
               <button class="btn btn-link nav-link" type="submit">Изход</button>
@@ -42,12 +46,6 @@
       </div>
     </div>
   </nav>
-<!--  <script>-->
-<!--    const isAuthenticated = authentication.isAuthenticated();-->
-<!--    if (isAuthenticated) {-->
-<!--      document.getElementById("logout-item").style.display = "block";-->
-<!--    }-->
-<!--  </script>-->
 </head>
 <body>
 </body>

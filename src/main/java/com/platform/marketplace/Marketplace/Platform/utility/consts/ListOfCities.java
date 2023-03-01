@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 import java.util.Arrays;
 import java.util.HashSet;
 @Data
-
 @NoArgsConstructor
 @Component
 public class ListOfCities {

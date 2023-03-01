@@ -1,4 +1,4 @@
-package com.platform.marketplace.Marketplace.Platform.service;
+package com.platform.marketplace.Marketplace.Platform.service.event;
 
 import com.platform.marketplace.Marketplace.Platform.model.EventCategory;
 import com.platform.marketplace.Marketplace.Platform.repository.EventCategoryRepository;
