@@ -5,25 +5,20 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
-@AllArgsConstructor
-@Data
-@NoArgsConstructor
 @Entity
-@Table(name = "locations")
-public class Location {
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+@Table(name = "addresses")
+public class Address {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String city;
-    @ManyToMany
-    @JoinColumn(name = "location_address")
-    private List<Address> addresses;
 
-    @Override
-    public String toString() {
-        return city;
+    private String address;
 
+    public Address(String address) {
+        this.address = address;
     }
 }
