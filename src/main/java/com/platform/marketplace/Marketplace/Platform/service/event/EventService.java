@@ -1,13 +1,14 @@
-package com.platform.marketplace.Marketplace.Platform.service;
+package com.platform.marketplace.Marketplace.Platform.service.event;
 
 import com.platform.marketplace.Marketplace.Platform.dto.EventDTO;
 import com.platform.marketplace.Marketplace.Platform.utility.exceptions.NotFoundException;
-import com.platform.marketplace.Marketplace.Platform.mapper.EventToEventDTO;
-import com.platform.marketplace.Marketplace.Platform.mapper.EventDTOToEvent;
+import com.platform.marketplace.Marketplace.Platform.mapper.EventToEventDtoMapper;
+import com.platform.marketplace.Marketplace.Platform.mapper.EventDtoToEventMapper;
 import com.platform.marketplace.Marketplace.Platform.model.Event;
 import com.platform.marketplace.Marketplace.Platform.model.Organisation;
 import com.platform.marketplace.Marketplace.Platform.repository.EventRepository;
 import com.platform.marketplace.Marketplace.Platform.repository.UserRepository;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,19 +18,19 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.platform.marketplace.Marketplace.Platform.utility.consts.ConstantMessages.EVENT_BY_NAME_NOT_FOUND;
-import static com.platform.marketplace.Marketplace.Platform.utility.consts.ConstantMessages.EVENT_NOT_FOUND_BY_ORG_ID_MESSAGE;
 
 @Service
 @RequiredArgsConstructor
+
 public class EventService {
 
     private final EventRepository eventRepository;
 
     private final UserRepository userRepository;
 
-    private final EventToEventDTO mapperTODto ;
+    private final EventToEventDtoMapper mapperTODto ;
 
-    private final EventDTOToEvent mapperToEntity;
+    private final EventDtoToEventMapper mapperToEntity;
 
     private Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 

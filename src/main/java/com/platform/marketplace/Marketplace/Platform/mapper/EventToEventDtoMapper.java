@@ -6,15 +6,14 @@ import com.platform.marketplace.Marketplace.Platform.model.EventCategory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Component
-public class EventToEventDTO implements Function<Event, EventDTO> {
-    private final LocationMapperToString locationMapperToString;
+public class EventToEventDtoMapper implements Function<Event, EventDTO> {
+    private final LocationToStringMapper locationToStringMapper;
 
 
     @Override
@@ -28,7 +27,7 @@ public class EventToEventDTO implements Function<Event, EventDTO> {
                 event.getEntranceType(),
                 event.getDescription(),
                 event.getLinkToApplicationForm(),
-                locationMapperToString.apply(event.getLocations()),
+                locationToStringMapper.apply(event.getLocations()),
                 event.getAddress(),
                 event.getStartsAt(),
                 event.getEndsAt(),

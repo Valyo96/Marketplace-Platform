@@ -1,11 +1,14 @@
-package com.platform.marketplace.Marketplace.Platform.service;
+package com.platform.marketplace.Marketplace.Platform.service.organisation;
 
 import com.platform.marketplace.Marketplace.Platform.dto.EventDTO;
 import com.platform.marketplace.Marketplace.Platform.dto.OrgPasswordChange;
 import com.platform.marketplace.Marketplace.Platform.dto.OrganisationUpdateDTO;
 import com.platform.marketplace.Marketplace.Platform.model.Organisation;
 import com.platform.marketplace.Marketplace.Platform.model.User;
+import com.platform.marketplace.Marketplace.Platform.service.event.EventService;
+import com.platform.marketplace.Marketplace.Platform.service.user.UserService;
 import com.platform.marketplace.Marketplace.Platform.utility.Utility;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +16,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class LoggedOrgsService {
+public class LoggedOrganisationService {
 
     private final UserService userService;
 

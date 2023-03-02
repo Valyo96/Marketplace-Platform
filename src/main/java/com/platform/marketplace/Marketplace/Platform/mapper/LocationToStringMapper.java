@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 @Component
-public class LocationMapperToString implements Function< List<Location>,List<String>> {
+public class LocationToStringMapper implements Function< List<Location>,List<String>> {
 
 
     @Override

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.function.Function;
 @Component
-public class OrganisationRegDtoToUser implements Function<OrganisationDTO, User> {
+public class OrganisationRegDtoUserMapper implements Function<OrganisationDTO, User> {
     @Override
     public User apply(OrganisationDTO organisationDTO) {
         return new User(organisationDTO.getEmail(), organisationDTO.getPassword(), Role.ORGANISATION, true);

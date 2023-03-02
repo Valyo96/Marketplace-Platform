@@ -1,4 +1,4 @@
-package com.platform.marketplace.Marketplace.Platform.service;
+package com.platform.marketplace.Marketplace.Platform.service.user;
 
 import com.platform.marketplace.Marketplace.Platform.utility.exceptions.NotFoundException;
 import com.platform.marketplace.Marketplace.Platform.model.User;
@@ -12,6 +12,7 @@ import static com.platform.marketplace.Marketplace.Platform.utility.consts.Const
 
 @Service
 @RequiredArgsConstructor
+
 public class UserService {
 
     private final UserRepository userRepository;

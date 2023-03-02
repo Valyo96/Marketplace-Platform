@@ -11,7 +11,7 @@ import java.util.HashSet;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class EventType {
+public class ListOfEventCategories {
     private HashSet<String> eventTypes =new HashSet<>(Arrays.asList("фестивал",
             "спорт",
             "култура",
@@ -20,7 +20,7 @@ public class EventType {
             "театър",
             "други"));
 
-    public EventType(String eventType) {
+    public ListOfEventCategories(String eventType) {
         this.eventTypes.add(eventType);
     }
 }

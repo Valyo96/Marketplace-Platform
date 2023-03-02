@@ -1,10 +1,12 @@
 package com.platform.marketplace.Marketplace.Platform.controller;
 
 import com.platform.marketplace.Marketplace.Platform.dto.OrganisationDTO;
-import com.platform.marketplace.Marketplace.Platform.service.LocationService;
-import com.platform.marketplace.Marketplace.Platform.service.OrganisationService;
+import com.platform.marketplace.Marketplace.Platform.service.location.LocationService;
+import com.platform.marketplace.Marketplace.Platform.service.organisation.OrganisationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -48,9 +50,14 @@ public class AuthenticationController {
         if (passwordError != null && !passwordError.isEmpty()) {
             model.addAttribute("passwordError", passwordError);
         }
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if(auth.isAuthenticated()){
+            model.addAttribute("errorMessage" , "Излезте от текущият акаунт, ако искате да се регистрирате наново");
+            return ""; //TODO трябва да направя филтър.. 
+        } else {
+            return "registration";
+        }
 
-
-        return "registration";
     }
 
     @PostMapping("submit")

@@ -2,6 +2,7 @@ package com.platform.marketplace.Marketplace.Platform.utility.scheduler;
 
 import com.platform.marketplace.Marketplace.Platform.model.Event;
 import com.platform.marketplace.Marketplace.Platform.repository.EventRepository;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -11,6 +12,7 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
+
 public class EventScheduler {
     private final EventRepository eventRepository;
 

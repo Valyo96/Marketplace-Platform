@@ -1,7 +1,7 @@
 package com.platform.marketplace.Marketplace.Platform.organisation;
 
 import com.platform.marketplace.Marketplace.Platform.repository.OrganisationRepository;
-import com.platform.marketplace.Marketplace.Platform.service.OrganisationService;
+import com.platform.marketplace.Marketplace.Platform.service.organisation.OrganisationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;

@@ -4,9 +4,11 @@ import com.platform.marketplace.Marketplace.Platform.dto.EventDTO;
 import com.platform.marketplace.Marketplace.Platform.model.Event;
 import com.platform.marketplace.Marketplace.Platform.model.EventCategory;
 import com.platform.marketplace.Marketplace.Platform.model.Location;
-import com.platform.marketplace.Marketplace.Platform.service.EventCategoryService;
-import com.platform.marketplace.Marketplace.Platform.service.LocationService;
-import com.platform.marketplace.Marketplace.Platform.service.OrganisationService;
+import com.platform.marketplace.Marketplace.Platform.service.event.EventCategoryService;
+import com.platform.marketplace.Marketplace.Platform.service.location.LocationService;
+import com.platform.marketplace.Marketplace.Platform.service.organisation.OrganisationService;
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,14 +16,16 @@ import java.util.List;
 import java.util.function.Function;
 
 @Component
-public class EventDTOToEvent implements Function<EventDTO, Event> {
-    @Autowired
-    private LocationService locationService;
+@RequiredArgsConstructor
 
-    @Autowired
-    private OrganisationService organisationService;
-    @Autowired
-    private EventCategoryService eventCategoryService;
+public class EventDtoToEventMapper implements Function<EventDTO, Event> {
+
+    private final LocationService locationService;
+
+
+    private final OrganisationService organisationService;
+
+    private final EventCategoryService eventCategoryService;
 
     @Override
     public Event apply(EventDTO eventDTO) {

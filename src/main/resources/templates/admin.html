@@ -9,18 +9,18 @@
 </head>
 <body>
 <div class="container">
-    <h1>Organisations List</h1>
+    <h1>Списък с акаунти на организации</h1>
     <form action="/admin/filter" method="POST">
-        <label for="order">Sort by date:</label>
+        <label for="order">Подреди по дата на регистрация:</label>
         <select name="order" id="order">
-            <option value="desc">Подреди по низходящ ред</option>
-            <option value="asc">Подреди по възходящ ред</option>
+            <option value="desc">низходящ ред</option>
+            <option value="asc">възходящ ред</option>
         </select>
-        <button type="submit">Filter</button>
+        <button type="submit">филтрирай</button>
     </form>
     <form th:action="@{/admin/deleteAllOrganisations}" method="POST">
         <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#confirmDeleteModal">
-            Delete All Organisations
+            ИЗТРИВАНЕ НА ВСИЧКИ АКАУНТИ
         </button>
         <div th:if="${errorMessage}" class="alert alert-danger">
             <p th:text="${errorMessage}"></p>
@@ -32,15 +32,15 @@
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="confirmDeleteModalLabel">Confirm Delete</h5>
+                        <h5 class="modal-title" id="confirmDeleteModalLabel">Потвърждение на операцията</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        <p>Are you sure you want to delete all organisations?</p>
+                        <p>Сигурни ли сте , че искате да изтриете всички налични акаунти?</p>
                         <div class="form-group">
-                            <label for="password">Password</label>
+                            <label for="password">Въведете парола за сигурност</label>
                             <input type="password" class="form-control" id="password" name="password" required>
                         </div>
                         <div th:if="${errorMessage}" class="alert alert-danger">
@@ -48,8 +48,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-danger">Delete All</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Затвори</button>
+                        <button type="submit" class="btn btn-danger">Изтриване на всички</button>
                     </div>
                 </div>
             </div>
@@ -60,78 +60,51 @@
     <table class="table">
         <thead>
         <tr>
-            <th>Organisation Id</th>
-            <th>Organisation name</th>
-            <th>Registration date</th>
-            <th>Update</th>
-            <th>Delete</th>
+            <th>Идентификационен номер</th>
+            <th>Име на организация</th>
+            <th>Електронна поща</th>
+            <th>Статус на акаунта</th>
+            <th>Дата на регистрация</th>
+            <th>Дата на последно обновяване</th>
         </tr>
         </thead>
         <tbody id="orgs" name="orgs">
         <tr th:each="org : ${orgs}">
             <td th:text="${org.id}">Id</td>
             <td th:text="${org.organisationName}">Default</td>
+            <td th:text="${org.user.username}">Default</td>
+            <td th:text="${org.user.isEnabled}? 'Активен' : 'Неактивен'">Default</td>
             <td th:text="${#temporals.format(org.registeredAt, 'dd-MM-yyyy HH:mm')}">Date</td>
+            <td th:text="${#temporals.format(org.updatedAt, 'dd-MM-yyyy HH:mm')}">Date</td>
 
             <td>
                 <form th:action="@{/admin/update/{id}(id=${org.id})}" method="post">
                     <input type="hidden" name="id" th:value="${org.id}">
-                    <label for="status">Status:</label>
+                    <label for="status">Смени статуса на:</label>
                     <select name="status" id="status">
-                        <option value="true" th:selected="${org.user.isEnabled}">Active</option>
-                        <option value="false" th:selected="${!org.user.isEnabled}">Inactive</option>
+                        <option value="true" th:selected="${org.user.isEnabled}">Активен</option>
+                        <option value="false" th:selected="${!org.user.isEnabled}">Неактивен</option>
                     </select>
 
-                    <button type="submit" class="btn btn-primary">Update</button>
+                    <button type="submit" class="btn btn-primary">Обнови</button>
                 </form>
             </td>
             <td>
                 <form th:action="@{/admin/delete/{id}(id=${org.id})}" method="post">
-                    <button type="submit" class="btn btn-danger">Delete</button>
+                    <button type="submit" class="btn btn-danger">Изтрий</button>
                 </form>
             </td>
         </tr>
+        <ul class="navbar-nav ml-auto">
+            <li sec:authorize="isAuthenticated()">
+                <form class="form-inline" th:action="@{/logout}" method="post">
+                    <button class="btn btn-link nav-link" type="submit">Изход</button>
+                </form>
+            </li>
+        </ul>
         </tbody>
     </table>
-    <!--<table class="table">
-        <thead>
-        <tr>
-            <th>Name</th>
-            <th>Registration Date</th>
-            <th>Status</th>
-            <th>Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        <div>
-            <label for="orgs">Locations:</label>
-            <div class="form-control" id="orgs" name="orgs" multiple>
-                <div th:each="org : ${orgs}"
-                     th:text="${org.organisationName}"></div>
-            </div>
 
-        </div>
-<td>
-    <div class="form-check">
-        <input class="form-check-input" type="checkbox" {% if organisation.user.isEnabled %}checked{% endif %}
-               id="status-{{ organisation.id }}">
-        <label class="form-check-label" for="status-{{ organisation.id }}">Active</label>
-    </div>
-</td>
-<td>
-    <div class="btn-group">
-        <a class="btn btn-primary" href="/admin/edit-organisation-status/{{ organisation.id }}">
-            Edit
-        </a>
-        <form action="/admin/delete/{{ organisation.id }}" method="post">
-            <button type="submit" class="btn btn-danger">Delete</button>
-        </form>
-    </div>
-</td>
-</tr>
-{% endfor %}
-</tbody>
-</table>-->
 </div>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"

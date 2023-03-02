@@ -1,14 +1,13 @@
 package com.platform.marketplace.Marketplace.Platform.controller;
 
 import com.platform.marketplace.Marketplace.Platform.model.Organisation;
-import com.platform.marketplace.Marketplace.Platform.service.AdminService;
-import com.platform.marketplace.Marketplace.Platform.service.OrganisationService;
+import com.platform.marketplace.Marketplace.Platform.service.admin.AdminService;
+import com.platform.marketplace.Marketplace.Platform.service.organisation.OrganisationService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 

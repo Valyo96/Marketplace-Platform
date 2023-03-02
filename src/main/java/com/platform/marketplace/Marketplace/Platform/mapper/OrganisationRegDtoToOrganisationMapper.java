@@ -4,19 +4,16 @@ import com.platform.marketplace.Marketplace.Platform.dto.OrganisationDTO;
 import com.platform.marketplace.Marketplace.Platform.model.Location;
 import com.platform.marketplace.Marketplace.Platform.model.Organisation;
 import com.platform.marketplace.Marketplace.Platform.model.User;
-import com.platform.marketplace.Marketplace.Platform.repository.LocationRepository;
-import com.platform.marketplace.Marketplace.Platform.service.LocationService;
-import com.platform.marketplace.Marketplace.Platform.utility.Utility;
+import com.platform.marketplace.Marketplace.Platform.service.location.LocationService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.function.Function;
 @RequiredArgsConstructor
 @Component
-public class OrganisationRegDTOToOrganisation implements Function<OrganisationDTO, Organisation> {
-    private final  OrganisationRegDtoToUser userConverter;
+public class OrganisationRegDtoToOrganisationMapper implements Function<OrganisationDTO, Organisation> {
+    private final OrganisationRegDtoUserMapper userConverter;
 
     private final LocationService locationService;
 
