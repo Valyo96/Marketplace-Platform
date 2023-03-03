@@ -1,10 +1,8 @@
 package com.platform.marketplace.Marketplace.Platform.security;
 
-import com.platform.marketplace.Marketplace.Platform.utility.consts.Role;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -17,12 +15,14 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableMethodSecurity
 public class SecurityConfig {
 
+
     @Bean
     public SecurityFilterChain configure(HttpSecurity http) throws Exception {
         return http
                 .csrf().disable()
                 .authorizeHttpRequests().requestMatchers("/admin/**").hasAuthority("ADMIN")
                 .anyRequest().permitAll().and().formLogin().loginPage("/login").permitAll().and().logout().permitAll().and().build();
+
     }
 
     @Bean

@@ -17,6 +17,9 @@ public class Address {
     private Long id;
 
     private String address;
+    @ManyToOne
+    @JoinColumn(name = "location_id")
+    private Location location;
 
     public Address(String address) {
         this.address = address;

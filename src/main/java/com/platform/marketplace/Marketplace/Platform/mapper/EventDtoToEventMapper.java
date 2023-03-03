@@ -7,11 +7,10 @@ import com.platform.marketplace.Marketplace.Platform.model.Location;
 import com.platform.marketplace.Marketplace.Platform.service.event.EventCategoryService;
 import com.platform.marketplace.Marketplace.Platform.service.location.LocationService;
 import com.platform.marketplace.Marketplace.Platform.service.organisation.OrganisationService;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.function.Function;
 
@@ -29,9 +28,18 @@ public class EventDtoToEventMapper implements Function<EventDTO, Event> {
 
     @Override
     public Event apply(EventDTO eventDTO) {
-        List<Location> cities = locationService.findLocationByValues(eventDTO.getLocations());
-        List<EventCategory> categories = eventCategoryService.findEventCategoriesByValues((List<String>) eventDTO.getEventTypes());
-        return new Event(categories, eventDTO.getName(), eventDTO.getEntranceType(), eventDTO.getDescription(), eventDTO.getLinkToApplicationForm(), cities, eventDTO.getAddress(), eventDTO.getStartsAt(),
-                eventDTO.getEndsAt(), organisationService.findOrganisationById(eventDTO.getOrganisationId()));
+        List<Location> cities = locationService.findLocationsByCityAndAddressIn(eventDTO.getLocations());
+        HashSet<EventCategory> categories = eventCategoryService.findEventCategoriesByValues(eventDTO.getEventCategories());
+
+        return new Event(categories,
+                eventDTO.getName(),
+                eventDTO.getEntranceType(),
+                eventDTO.getDescription(),
+                eventDTO.getLinkToApplicationForm(),
+                cities,
+                eventDTO.getStartsAt(),
+                eventDTO.getEndsAt(),
+                eventDTO.getKeywords(),
+                organisationService.findOrganisationById(eventDTO.getOrganisationId()));
     }
 }

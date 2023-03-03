@@ -2,7 +2,7 @@ package com.platform.marketplace.Marketplace.Platform.utility.consts;
 
 public class ConstantMessages {
 
-    public static final String DATE_TIME_FORMAT = "dd-MM-yyyy hh:mm";
+    public static final String DATE_TIME_FORMAT = "dd-MM-yyyy hh:mm:ss";
 
     public static final String EMAIL_ALREADY_TAKEN = "Имейлът е вече зает , моля опитайте с друг.";
 
@@ -33,4 +33,15 @@ public class ConstantMessages {
 
     public static final String FIELD_MUST_NOT_BE_BLANK = "Полето е задължително";
 
+    public static final String ONLY_CYRILLIC_ALLOWED = "Моля използвайте само кирилица";
+
+    public static final String LOCATION_SIZE_NOT_NULL = "Изберете локация за събитието";
+
+    public static final String DATE_NOT_NULL = "Моля изберете дата";
+
+    public static final String DATE_MUST_BE_VALID = "Моля изберете валидна дата";
+
+    public static final String CYRILLIC_AND_COMA_ALLOWED_MESSAGE = "Позволени са само букви на кирилица и запетаи";
+
+    public static final String EVENT_BY_ID_NOT_FOUND = "Търсеното от вас събитие не съществува";
 }

@@ -9,7 +9,11 @@ public class Regex {
 
     public static final String URL_REGEX_PATTERN = "^(https?://)?(www\\.)?([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*\\.)+[a-zA-Z]{2,}$";
 
-    public static final String CYRILLIC_REGEX_PATTERN = "^[а-яА-ЯёЁ\\s\\.,!\\?-]+$\n";
+    public static final String CYRILLIC_AND_SYMBOLS_REGEX_PATTERN = "^[а-яА-Я,.+\\-_!?\\s@#$%^&*()]+$";
+
+    public static final String CYRILLIC_REGEX_PATTERN = "^[а-яА-Я]+$";
+
+    public static final String CYRILLIC_AND_COMA_PATTERN = "^[а-яА-ЯёЁ\\s,]+$";
 
 
 }

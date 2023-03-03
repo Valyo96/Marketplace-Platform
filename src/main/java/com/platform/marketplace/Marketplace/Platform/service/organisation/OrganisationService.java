@@ -85,7 +85,7 @@ public class OrganisationService {
     }
 
     public String updateOrganisationAccount(OrganisationUpdateDTO updatedOrganisation, User user) {
-        List<Location> cities = locationService.findLocationByValues(updatedOrganisation.getLocations());
+        List<Location> cities = locationService.findLocationsByValues(updatedOrganisation.getLocations());
         if (!utility.checkIfEmailExists(updatedOrganisation.getEmail()) || updatedOrganisation.getEmail().equals(user.getUsername())) {
             Organisation org = findOrganisationByUserId(user.getId());
             org.setOrganisationName(updatedOrganisation.getName());

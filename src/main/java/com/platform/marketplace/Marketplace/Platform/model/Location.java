@@ -17,9 +17,14 @@ public class Location {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String city;
-    @ManyToMany
-    @JoinColumn(name = "location_address")
+    @OneToMany
+    @JoinColumn(name = "location_id")
     private List<Address> addresses;
+
+    public Location(String city, List<Address> addresses) {
+        this.city = city;
+        this.addresses = addresses;
+    }
 
     @Override
     public String toString() {
