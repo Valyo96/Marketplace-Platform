@@ -2,7 +2,6 @@ package com.platform.marketplace.Marketplace.Platform.dto;
 
 import com.platform.marketplace.Marketplace.Platform.utility.annotations.FutureDateTime;
 import com.platform.marketplace.Marketplace.Platform.utility.consts.EntranceType;
-import com.platform.marketplace.Marketplace.Platform.utility.scheduler.EventScheduler;
 import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -16,7 +15,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.HashSet;
 import java.util.List;
 
 import static com.platform.marketplace.Marketplace.Platform.utility.consts.ConstantMessages.*;
@@ -26,9 +24,10 @@ import static com.platform.marketplace.Marketplace.Platform.utility.consts.Regex
 @NoArgsConstructor
 public class EventDTO {
     private Long eventId;
+
     @NotBlank(message = FIELD_MUST_NOT_BE_BLANK)
-    @Pattern(regexp = CYRILLIC_REGEX_PATTERN, message = ONLY_CYRILLIC_ALLOWED)
-    private HashSet<EventCategoryDTO> eventCategories;
+    @Pattern(regexp = CYRILLIC_AND_COMA_PATTERN, message = ONLY_CYRILLIC_ALLOWED)
+    private String eventCategories;
     @NotBlank(message = NOT_BLANK)
     @Length(min = 3, message = LENGTH_TOO_SMALL)
     @Pattern(regexp = CYRILLIC_AND_SYMBOLS_REGEX_PATTERN, message = ONLY_CYRILLIC_ALLOWED)
@@ -37,12 +36,15 @@ public class EventDTO {
     private EntranceType entranceType;
     @Pattern(regexp = CYRILLIC_AND_SYMBOLS_REGEX_PATTERN, message = ONLY_CYRILLIC_ALLOWED)
     @NotBlank(message = FIELD_MUST_NOT_BE_BLANK)
+    @Size(min =10 , max = 250 , message = DESCRIPTION_LENGTH_OUT_OF_BOUNDS)
     private String description;
     @Pattern(regexp = URL_REGEX_PATTERN, message = INVALID_URL_MESSAGE)
+    @Nullable
     private String linkToApplicationForm;
     @Size(min = 1, message = LOCATION_SIZE_NOT_NULL)
     private List<String> locations;
     @Nullable
+    @Pattern(regexp = CYRILLIC_AND_SYMBOLS_REGEX_PATTERN , message =ONLY_CYRILLIC_ALLOWED)
     private String address;
     @DateTimeFormat(pattern = DATE_TIME_FORMAT)
     @NotNull(message = DATE_NOT_NULL)
@@ -53,13 +55,16 @@ public class EventDTO {
     @FutureDateTime
     private LocalDateTime endsAt;
     @Pattern(regexp = CYRILLIC_AND_COMA_PATTERN, message = CYRILLIC_AND_COMA_ALLOWED_MESSAGE)
+    @Nullable
     private String keywords;
     private String duration;
+    @Pattern(regexp =  IMAGE_URL_PATTERN , message = INVALID_URL_MESSAGE)
+    private String imageUrl;
     private Long organisationId;
 
     private String counter;
 
-    public EventDTO(Long eventId, HashSet<EventCategoryDTO> eventCategories, String name, EntranceType entranceType, String description, String linkToApplicationForm, List<String> locations, String address,LocalDateTime startsAt, LocalDateTime endsAt, String keywords, Duration duration, Long orgId) {
+    public EventDTO(Long eventId, String eventCategories, String name, EntranceType entranceType, String description, String linkToApplicationForm, List<String> locations, String address,LocalDateTime startsAt, LocalDateTime endsAt, String keywords, Duration duration,String imageUrl ,Long orgId) {
         this.eventId = eventId;
         this.eventCategories = eventCategories;
         this.name = name;
@@ -73,6 +78,7 @@ public class EventDTO {
         this.keywords = keywords;
         this.duration = String.valueOf(duration);
         this.counter = getCounter();
+        this.imageUrl = imageUrl;
         this.organisationId = orgId;
     }
 
@@ -108,6 +114,6 @@ public class EventDTO {
                 "Ключови думи: " + keywords + '\'' +
                 "Времетраене: " + duration + '\'' +
                 "Организирано от: " + organisationId +
-                "Броят до започването на събитието: " + counter;
+                "Брояч до започване: " + counter;
     }
 }

@@ -15,4 +15,8 @@ import java.util.List;
 public interface EventCategoryRepository extends JpaRepository<EventCategory , Long> {
     @Query("SELECT c FROM EventCategory c WHERE c.type IN :values")
     HashSet<EventCategory> findEventCategoriesByValue(@Param("values")HashSet<EventCategoryDTO>values);
+
+    @Query("SELECT c FROM EventCategory c WHERE c.type = :value")
+    EventCategory findCategoryByValue(@Param("value") String value);
+
 }

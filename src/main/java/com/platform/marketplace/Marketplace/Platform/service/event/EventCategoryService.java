@@ -18,4 +18,12 @@ public class EventCategoryService {
     public HashSet<EventCategory> findEventCategoriesByValues(HashSet<EventCategoryDTO> values){
         return eventCategoryRepository.findEventCategoriesByValue(values);
     }
+
+    public EventCategory findCategoryByValue(String value){
+        return eventCategoryRepository.findCategoryByValue(value);
+    }
+
+    public void saveEventCategory(EventCategory eventCategory){
+        eventCategoryRepository.save(eventCategory);
+    }
 }

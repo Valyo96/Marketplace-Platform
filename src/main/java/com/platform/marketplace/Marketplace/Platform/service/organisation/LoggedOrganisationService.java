@@ -34,9 +34,9 @@ public class LoggedOrganisationService {
         return eventService.findEventsByOrgId(org.getId());
     }
 
-    public String updateLoggedOrganisationAccount(OrganisationUpdateDTO updatedOrganisation) {
+    public void updateLoggedOrganisationAccount(OrganisationUpdateDTO updatedOrganisation) {
         User loggedUser = utility.returnAuthenticatedUser();
-       return organisationService.updateOrganisationAccount(updatedOrganisation, loggedUser);
+        organisationService.updateOrganisationAccount(updatedOrganisation, loggedUser);
     }
 
     public void changeLoggedOrganisationPassword(OrgPasswordChange pass) {
@@ -57,6 +57,7 @@ public class LoggedOrganisationService {
     public void createEventByLoggedOrganisation(EventDTO eventDTO) {
         User user = utility.returnAuthenticatedUser();
         Organisation org = organisationService.findOrganisationByUserId(user.getId());
+        eventDTO.setOrganisationId(org.getId());
         eventService.createEvent(eventDTO, org);
     }
 

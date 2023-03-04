@@ -1,13 +1,10 @@
 package com.platform.marketplace.Marketplace.Platform.service.event;
 
 import com.platform.marketplace.Marketplace.Platform.dto.EventDTO;
-import com.platform.marketplace.Marketplace.Platform.mapper.EventCategoryDTOMapperToList;
-import com.platform.marketplace.Marketplace.Platform.mapper.EventCategoryMapperToList;
+import com.platform.marketplace.Marketplace.Platform.mapper.*;
 import com.platform.marketplace.Marketplace.Platform.model.Location;
 import com.platform.marketplace.Marketplace.Platform.service.location.LocationService;
 import com.platform.marketplace.Marketplace.Platform.utility.exceptions.NotFoundException;
-import com.platform.marketplace.Marketplace.Platform.mapper.EventToEventDtoMapper;
-import com.platform.marketplace.Marketplace.Platform.mapper.EventDtoToEventMapper;
 import com.platform.marketplace.Marketplace.Platform.model.Event;
 import com.platform.marketplace.Marketplace.Platform.model.Organisation;
 import com.platform.marketplace.Marketplace.Platform.repository.EventRepository;
@@ -33,14 +30,10 @@ public class EventService {
 
     private final EventDtoToEventMapper mapperToEntity;
 
-    private final EventCategoryMapperToList mapCategoriesToList;
-
-    private final EventCategoryDTOMapperToList eventCategoryDTOMapperToList;
-
     private final LocationService locationService;
 
+    private final EventCategoryConverter converter;
 
-    private Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
     public List<Event> getAllEvents(){
         return eventRepository.findAll();
@@ -102,7 +95,7 @@ public class EventService {
         event.setName(eventDTO.getName());
         event.setEntranceType(eventDTO.getEntranceType());
         event.setDescription(eventDTO.getDescription());
-        event.setEventCategories(eventCategoryDTOMapperToList.apply(eventDTO.getEventCategories()));
+        event.setEventCategories(converter.convertToEventCategories(eventDTO.getEventCategories()));
         event.setLinkToApplicationForm(eventDTO.getLinkToApplicationForm());
         event.setLocations(locations);
         event.setStartsAt(eventDTO.getStartsAt());

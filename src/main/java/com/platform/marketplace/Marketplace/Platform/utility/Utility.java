@@ -4,13 +4,11 @@ import com.platform.marketplace.Marketplace.Platform.model.User;
 import com.platform.marketplace.Marketplace.Platform.service.user.UserService;
 import com.platform.marketplace.Marketplace.Platform.utility.exceptions.NotAuthorizeException;
 import com.platform.marketplace.Marketplace.Platform.utility.exceptions.WrongPasswordException;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import static com.platform.marketplace.Marketplace.Platform.utility.consts.ConstantMessages.*;

@@ -1,55 +1,162 @@
 <!DOCTYPE html>
-<html>
+<html lang="bg" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Create Event</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <a th:href="@{/menu}">Меню</a>
 </head>
 <body>
-<h1>Create Event</h1>
-<form action="/create-event" method="POST" th:object="${event}">
-    <div>
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name" required th:field="*{name}" />
+
+<form th:action="@{create}" th:object="${event}" method="POST">
+    <div class="container-fluid vh-100" style="margin-top:100px">
+        <div class="rounded d-flex justify-content-center">
+            <div class="col-md-4 col-sm-12 shadow-lg p-5 bg-light">
+                <div class="text-center">
+                    <h3 class="text-primary">Създаване на събитие</h3>
+                </div>
+                <div class="p-4">
+                    <div class="input-group mb-3">
+                        <input type="text" th:field="*{name}" class="form-control" placeholder="Заглавие на събитието"
+                               required title="Полето е задължително">
+                        <p style="color:red">*</p>
+                        <div th:if="${nameError != null}" class="alert alert-danger">
+                            <p th:text="${nameError}" style="color: red;"></p>
+                        </div>
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <input type="text" th:field="*{description}" class="form-control"
+                               placeholder="Подробно описание на събитието"  required title="Полето е задължително">
+                        <p style="color:red">*</p>
+                        <div th:if="${descriptionError != null}" class="alert alert-danger">
+                            <p th:text="${descriptionError}" style="color: red;"></p>
+                        </div>
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <input type="url" th:field="*{linkToApplicationForm}" class="form-control"
+                               placeholder="Линк към събитието">
+                        <p style="color:red"></p>
+                        <div th:if="${linkError != null}" class="alert alert-danger">
+                            <p th:text="${linkError}" style="color: red;"></p>
+                        </div>
+                    </div>
+                    <div>
+                        <label for="locations">Локации:(не е задължително да посочвате)</label>
+                        <select class="form-control" id="locations" name="locations" multiple>
+                            <option th:each="location : ${locations}" th:value="${location}"
+                                    th:text="${location}"></option>
+                        </select>
+                        <div th:if="${locationError != null}" class="alert alert-danger">
+                            <p th:text="${locationError}" style="color: red;"></p>
+                        </div>
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <input type="text" th:field="*{address}" class="form-control"
+                               placeholder="Адрес на събитието">
+                    </div>
+                    <div class="input-group mb-3">
+                        <label for="startsAt"></label>
+                        <input class="form-control" type="datetime-local" id="startsAt" name="startsAt"
+                               th:field="*{startsAt}" step="1" placeholder="Дата на започване"  required title="Полето е задължително"/>
+                        <p style="color:red">*</p>
+                        <div th:if="${startsAtError != null}" class="alert alert-danger">
+                            <p th:text="${startsAtError}" style="color: red;"></p>
+                        </div>
+                    </div>
+                    <div class="input-group mb-3">
+                        <label for="endsAt"></label>
+                        <input class="form-control" type="datetime-local" id="endsAt" name="endsAt"
+                               th:field="*{endsAt}" step="1" placeholder="Дата на приключване"  required title="Полето е задължително"/>
+                        <p style="color:red">*</p>
+                        <div th:if="${endsAtError != null}" class="alert alert-danger">
+                            <p th:text="${endsAtError}" style="color: red;"></p>
+                        </div>
+                    </div>
+                    <div class="input-group mb-3">
+                        <input type="text" th:field="*{keywords}" class="form-control" placeholder="Ключови думи">
+                        <div th:if="${keywordsError != null}" class="alert alert-danger">
+                            <p th:text="${keywordsError}" style="color: red;"></p>
+                        </div>
+                    </div>
+                    <div class="input-group mb-3">
+                        <input type="text" th:field="*{eventCategories}" class="form-control"
+                               placeholder="Категория/и на събитието:"  required title="Полето е задължително">
+                        <p style="color:red">*</p>
+                        <div th:if="${categoryError != null}" class="alert alert-danger">
+                            <p th:text="${categoryError}" style="color: red;"></p>
+                        </div>
+                    </div>
+                    <div class="input-group mb-3">
+                        <input type="url" th:field="*{imageUrl}" class="form-control"
+                               placeholder="Изображение(моля поставете линк към изображението)"  required title="Полето е задължително">
+                        <p style="color:red">*</p>
+                        <p th:if="${#fields.hasErrors('imageUrl')}" th:errors="*{imageUrl}"
+                           style="color:red"></p>
+                    </div>
+                    <!--                    <div class="form-group">-->
+                    <!--                        <div class="form-check">-->
+                    <!--                            <input type="radio" name="role" value=WAITER> Waiter<br>-->
+                    <!--                            <span th:if = "${#fields.hasErrors('role')}" th:errors = "*{role}" style = "color:red"></span>-->
+                    <!--                        </div>-->
+                    <!--                        <div class="form-check">-->
+                    <!--                            <input type="radio" name="role" value=COOK> Cook<br>-->
+                    <!--                            <span th:if = "${#fields.hasErrors('role')}" th:errors = "*{role}" style = "color:red"></span>-->
+                    <!--                        </div>-->
+                    <!--                    </div>-->
+                    <div class="d-grid col-12 mx-auto">
+                        <br>
+                        <div class="form-group">
+                            <div th:if="${errorMessage}" class="alert alert-danger" id="errorMessage">
+                                <p th:text="${errorMessage}" style="color: red;"></p>
+                            </div>
+
+                            <script th:inline="javascript">
+    setTimeout(function() {
+        var errorMessage = document.getElementById('errorMessage');
+        if (errorMessage) {
+            errorMessage.style.display = 'none';
+        }
+    }, 5000);
+
+
+                            </script>
+                            <button type="submit" class="btn btn-success">Създай</button>
+                            <button type="reset" class="btn btn-primary">Нулиране</button>
+                        </div>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <div>
-        <label for="description">Description:</label>
-        <textarea id="description" name="description" required th:field="*{description}"></textarea>
-    </div>
-    <div>
-        <label for="startsAt">Start Date:</label>
-        <input type="datetime-local" id="startsAt" name="startsAt" required th:field="*{startsAt}" />
-    </div>
-    <div>
-        <label for="endsAt">End Date:</label>
-        <input type="datetime-local" id="endsAt" name="endsAt" required th:field="*{endsAt}" />
-    </div>
-    <div>
-        <label for="entranceType">Entrance Type:</label>
-        <select id="entranceType" name="entranceType" th:field="*{entranceType}">
-            <option value="FREE">Free</option>
-            <option value="PAID">Paid</option>
-        </select>
-    </div>
-    <div>
-        <label for="linkToApplicationForm">Link to Application Form:</label>
-        <input type="url" id="linkToApplicationForm" name="linkToApplicationForm" th:field="*{linkToApplicationForm}" />
-    </div>
-    <div>
-        <label for="keywords">Keywords:</label>
-        <input type="text" id="keywords" name="keywords" th:field="*{keywords}" />
-    </div>
-    <div>
-        <label for="eventCategories">Event Categories:</label>
-        <input type="text" id="eventCategories" name="eventCategories" th:field="*{eventCategories}" />
-    </div>
-    <div>
-        <label for="duration">Duration:</label>
-        <input type="text" id="duration" name="duration" th:field="*{duration}" />
-    </div>
-    <div>
-        <label for="locations">Locations:</label>
-        <input type="text" id="locations" name="locations" th:field="*{locations}" />
-    </div>
-    <button type="submit">Create Event</button>
 </form>
 </body>
 </html>
+<style>
+body  {
+  background-image: url("https://images.pexels.com/photos/3377405/pexels-photo-3377405.jpeg?cs=srgb&dl=pexels-el%C4%ABna-ar%C4%81ja-3377405.jpg&fm=jpg");
+  background-size: cover;
+  background-color: #cccccc;
+   height: 80%;
+			width: 140%;
+			margin: 0;
+			padding: 0;
+
+
+}
+
+
+
+
+</style>

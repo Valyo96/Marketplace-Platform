@@ -12,8 +12,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static com.platform.marketplace.Marketplace.Platform.utility.consts.ConstantMessages.DATE_TIME_FORMAT;
 
@@ -37,7 +37,7 @@ public class Event {
 
     @ManyToMany
     @JoinTable(name = "eventId_eventCategoryId")
-    private HashSet<EventCategory> eventCategories;
+    private Set<EventCategory> eventCategories;
     private String linkToApplicationForm;
     @ManyToMany
     @JoinColumn(name = "organisations_location")
@@ -57,7 +57,10 @@ public class Event {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_TIME_FORMAT, locale = "bg_BG")
     private Duration duration;
 
+
     private String keyWords;
+
+    private String imageUrl;
 
     private boolean isEnabled;
     private boolean isExpired;
@@ -70,7 +73,7 @@ public class Event {
     @JoinColumn(name = "organisation_id")
     private Organisation organisation;
 
-    public Event(HashSet<EventCategory> eventCategories ,String name,EntranceType entranceType ,String description, String linkToApplicationForm, List<Location> locations,String address,LocalDateTime startsAt, LocalDateTime endsAt,String keyWords, Organisation organisation) {
+    public Event(Set<EventCategory> eventCategories , String name, EntranceType entranceType , String description, String linkToApplicationForm, List<Location> locations, String address, LocalDateTime startsAt, LocalDateTime endsAt, String keyWords,String imageUrl ,Organisation organisation) {
         this.eventCategories = eventCategories;
         this.name = name;
         this.entranceType = entranceType;
@@ -84,6 +87,7 @@ public class Event {
         this.keyWords = keyWords;
         this.isEnabled = true;
         this.isExpired = false;
+        this.imageUrl = imageUrl;
         this.organisation = organisation;
     }
 }

@@ -10,8 +10,8 @@ import com.platform.marketplace.Marketplace.Platform.service.organisation.Organi
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Function;
 
 @Component
@@ -26,12 +26,14 @@ public class EventDtoToEventMapper implements Function<EventDTO, Event> {
 
     private final EventCategoryService eventCategoryService;
 
+    private final EventCategoryConverter converter;
+
     @Override
     public Event apply(EventDTO eventDTO) {
         List<Location> cities = locationService.findLocationsByValues(eventDTO.getLocations());
-        HashSet<EventCategory> categories = eventCategoryService.findEventCategoriesByValues(eventDTO.getEventCategories());
+        Set<EventCategory> categories = converter.convertToEventCategories(eventDTO.getEventCategories());
 
-        return new Event(categories,
+        return new Event( categories,
                 eventDTO.getName(),
                 eventDTO.getEntranceType(),
                 eventDTO.getDescription(),
@@ -41,6 +43,7 @@ public class EventDtoToEventMapper implements Function<EventDTO, Event> {
                 eventDTO.getStartsAt(),
                 eventDTO.getEndsAt(),
                 eventDTO.getKeywords(),
+                eventDTO.getImageUrl(),
                 organisationService.findOrganisationById(eventDTO.getOrganisationId()));
     }
 }

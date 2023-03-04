@@ -10,8 +10,10 @@ import java.util.function.Function;
 @RequiredArgsConstructor
 @Component
 public class EventToEventDtoMapper implements Function<Event, EventDTO> {
-    private final EventCategoryMapperToList eventCategoryMapperToList;
+
     private final LocationToStringMapper locationToStringMapper;
+
+    private final EventCategoryConverter categoryConverter;
 
 
 
@@ -20,7 +22,7 @@ public class EventToEventDtoMapper implements Function<Event, EventDTO> {
 
 
         return new EventDTO(event.getId(),
-              eventCategoryMapperToList.apply(event.getEventCategories()),
+                categoryConverter.convertToString(event.getEventCategories()),
                 event.getName(),
                 event.getEntranceType(),
                 event.getDescription(),
@@ -31,6 +33,7 @@ public class EventToEventDtoMapper implements Function<Event, EventDTO> {
                 event.getEndsAt(),
                 event.getKeyWords(),
                 event.getDuration(),
+                event.getImageUrl(),
                 event.getOrganisation().getId());
     }
 }
