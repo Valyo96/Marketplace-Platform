@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Event</title>
+</head>
+<body>
+<h1>Create Event</h1>
+<form action="/create-event" method="POST" th:object="${event}">
+    <div>
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required th:field="*{name}" />
+    </div>
+    <div>
+        <label for="description">Description:</label>
+        <textarea id="description" name="description" required th:field="*{description}"></textarea>
+    </div>
+    <div>
+        <label for="startsAt">Start Date:</label>
+        <input type="datetime-local" id="startsAt" name="startsAt" required th:field="*{startsAt}" />
+    </div>
+    <div>
+        <label for="endsAt">End Date:</label>
+        <input type="datetime-local" id="endsAt" name="endsAt" required th:field="*{endsAt}" />
+    </div>
+    <div>
+        <label for="entranceType">Entrance Type:</label>
+        <select id="entranceType" name="entranceType" th:field="*{entranceType}">
+            <option value="FREE">Free</option>
+            <option value="PAID">Paid</option>
+        </select>
+    </div>
+    <div>
+        <label for="linkToApplicationForm">Link to Application Form:</label>
+        <input type="url" id="linkToApplicationForm" name="linkToApplicationForm" th:field="*{linkToApplicationForm}" />
+    </div>
+    <div>
+        <label for="keywords">Keywords:</label>
+        <input type="text" id="keywords" name="keywords" th:field="*{keywords}" />
+    </div>
+    <div>
+        <label for="eventCategories">Event Categories:</label>
+        <input type="text" id="eventCategories" name="eventCategories" th:field="*{eventCategories}" />
+    </div>
+    <div>
+        <label for="duration">Duration:</label>
+        <input type="text" id="duration" name="duration" th:field="*{duration}" />
+    </div>
+    <div>
+        <label for="locations">Locations:</label>
+        <input type="text" id="locations" name="locations" th:field="*{locations}" />
+    </div>
+    <button type="submit">Create Event</button>
+</form>
+</body>
+</html>

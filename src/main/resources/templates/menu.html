@@ -28,21 +28,23 @@
             <a class="nav-link" th:href="@{/register}">Регистрация</a>
           </li>
           <li sec:authorize="isAnonymous()">
-            <a class="nav-link" th:href="@{/login}">Вход</a>
-          </li>
-          <li sec:authorize="isAuthenticated()">
-            <a class="nav-link" th:href="@{/organisation/settings}">Настройки на акаунт</a>
+            <a class="nav-link" th:href="@{/login}">Вписване</a>
           </li>
           <li sec:authorize="hasAuthority('ADMIN')">
             <a class="nav-link" th:href="@{/admin/organisations}">Организации</a>
           </li>
-
+          <li sec:authorize="isAuthenticated()">
+            <a class="nav-link" th:href="@{/organisation/settings}">Настройки</a>
+          </li>
           <li sec:authorize="isAuthenticated()">
             <form class="form-inline" th:action="@{/logout}" method="post">
               <button class="btn btn-link nav-link" type="submit">Изход</button>
             </form>
           </li>
         </ul>
+
+
+
       </div>
     </div>
   </nav>
@@ -50,3 +52,4 @@
 <body>
 </body>
 </html>
+

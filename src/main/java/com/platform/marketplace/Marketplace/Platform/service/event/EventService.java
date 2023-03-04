@@ -98,7 +98,7 @@ public class EventService {
    }
 
    public void updateEvent(Event event , EventDTO eventDTO){
-        List<Location> locations = locationService.findLocationsByCityAndAddressIn(eventDTO.getLocations());
+        List<Location> locations = locationService.findLocationsByValues(eventDTO.getLocations());
         event.setName(eventDTO.getName());
         event.setEntranceType(eventDTO.getEntranceType());
         event.setDescription(eventDTO.getDescription());

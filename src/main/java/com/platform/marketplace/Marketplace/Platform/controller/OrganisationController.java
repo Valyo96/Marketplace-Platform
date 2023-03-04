@@ -1,5 +1,6 @@
 package com.platform.marketplace.Marketplace.Platform.controller;
 
+import com.platform.marketplace.Marketplace.Platform.dto.EventDTO;
 import com.platform.marketplace.Marketplace.Platform.dto.OrgPasswordChange;
 import com.platform.marketplace.Marketplace.Platform.dto.OrganisationUpdateDTO;
 import com.platform.marketplace.Marketplace.Platform.model.Organisation;
@@ -85,5 +86,26 @@ public class OrganisationController {
                         .addObject("errorMessage" , e.getMessage());
             }
             return new ModelAndView("redirect:/login");
+    }
+
+    @GetMapping("/create-event")
+    public String createEvent(Model model){
+        model.addAttribute("event" , new EventDTO());
+        model.addAttribute("locations" , locationService.getAllLocations());
+        return "createEvent";
+    }
+
+    @PostMapping("create")
+    public ModelAndView createEvent(@Valid EventDTO event , BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            return new ModelAndView("redirect:/organisation/create-event");
+        }
+        try {
+            loggedOrganisationService.createEventByLoggedOrganisation(event);
+        }catch (Exception e) {
+            return new ModelAndView("redirect:/organisation/create-event")
+                    .addObject("errorMessage" , e.getMessage());
+        }
+        return new ModelAndView("menu");
     }
 }

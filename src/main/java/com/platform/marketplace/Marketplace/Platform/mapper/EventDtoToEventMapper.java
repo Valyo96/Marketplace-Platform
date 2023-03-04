@@ -28,7 +28,7 @@ public class EventDtoToEventMapper implements Function<EventDTO, Event> {
 
     @Override
     public Event apply(EventDTO eventDTO) {
-        List<Location> cities = locationService.findLocationsByCityAndAddressIn(eventDTO.getLocations());
+        List<Location> cities = locationService.findLocationsByValues(eventDTO.getLocations());
         HashSet<EventCategory> categories = eventCategoryService.findEventCategoriesByValues(eventDTO.getEventCategories());
 
         return new Event(categories,
@@ -37,6 +37,7 @@ public class EventDtoToEventMapper implements Function<EventDTO, Event> {
                 eventDTO.getDescription(),
                 eventDTO.getLinkToApplicationForm(),
                 cities,
+                eventDTO.getAddress(),
                 eventDTO.getStartsAt(),
                 eventDTO.getEndsAt(),
                 eventDTO.getKeywords(),

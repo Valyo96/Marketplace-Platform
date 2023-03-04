@@ -42,6 +42,9 @@ public class Event {
     @ManyToMany
     @JoinColumn(name = "organisations_location")
     private List<Location> locations;
+
+    private  String address;
+
     @CreationTimestamp
     private LocalDateTime createdAt;
     @UpdateTimestamp
@@ -67,13 +70,14 @@ public class Event {
     @JoinColumn(name = "organisation_id")
     private Organisation organisation;
 
-    public Event(HashSet<EventCategory> eventCategories ,String name,EntranceType entranceType ,String description, String linkToApplicationForm, List<Location> locations,LocalDateTime startsAt, LocalDateTime endsAt,String keyWords, Organisation organisation) {
+    public Event(HashSet<EventCategory> eventCategories ,String name,EntranceType entranceType ,String description, String linkToApplicationForm, List<Location> locations,String address,LocalDateTime startsAt, LocalDateTime endsAt,String keyWords, Organisation organisation) {
         this.eventCategories = eventCategories;
         this.name = name;
         this.entranceType = entranceType;
         this.description = description;
         this.linkToApplicationForm = linkToApplicationForm;
         this.locations = locations;
+        this.address = address;
         this.startsAt = startsAt;
         this.endsAt = endsAt;
         this.duration = Duration.between(startsAt, endsAt);

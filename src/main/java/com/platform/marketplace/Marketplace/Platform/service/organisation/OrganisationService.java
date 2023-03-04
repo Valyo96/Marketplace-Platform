@@ -69,8 +69,6 @@ public class OrganisationService {
 
 
     public void registration(OrganisationDTO orgDto) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (!auth.isAuthenticated()) {
             Organisation org = mapper.apply(orgDto);
             if (!utility.checkIfEmailExists(orgDto.getEmail()) && utility.passwordConfirmation(orgDto.getPassword(), orgDto.getConfirmPassword())) {
                 org.getUser().setPassword(utility.encodePassword(org.getUser().getPassword()));
@@ -78,8 +76,7 @@ public class OrganisationService {
                 organisationRepository.save(org);
                 return;
             }
-            return;
-        }
+
         throw new AlreadyExistException(EMAIL_ALREADY_TAKEN);
 
     }

@@ -3,6 +3,7 @@ package com.platform.marketplace.Marketplace.Platform.dto;
 import com.platform.marketplace.Marketplace.Platform.utility.annotations.FutureDateTime;
 import com.platform.marketplace.Marketplace.Platform.utility.consts.EntranceType;
 import com.platform.marketplace.Marketplace.Platform.utility.scheduler.EventScheduler;
+import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -40,7 +41,9 @@ public class EventDTO {
     @Pattern(regexp = URL_REGEX_PATTERN, message = INVALID_URL_MESSAGE)
     private String linkToApplicationForm;
     @Size(min = 1, message = LOCATION_SIZE_NOT_NULL)
-    private List<LocationDTO> locations;
+    private List<String> locations;
+    @Nullable
+    private String address;
     @DateTimeFormat(pattern = DATE_TIME_FORMAT)
     @NotNull(message = DATE_NOT_NULL)
     @FutureDateTime
@@ -56,7 +59,7 @@ public class EventDTO {
 
     private String counter;
 
-    public EventDTO(Long eventId, HashSet<EventCategoryDTO> eventCategories, String name, EntranceType entranceType, String description, String linkToApplicationForm, List<LocationDTO> locations, LocalDateTime startsAt, LocalDateTime endsAt, String keywords, Duration duration, Long orgId) {
+    public EventDTO(Long eventId, HashSet<EventCategoryDTO> eventCategories, String name, EntranceType entranceType, String description, String linkToApplicationForm, List<String> locations, String address,LocalDateTime startsAt, LocalDateTime endsAt, String keywords, Duration duration, Long orgId) {
         this.eventId = eventId;
         this.eventCategories = eventCategories;
         this.name = name;
@@ -64,6 +67,7 @@ public class EventDTO {
         this.description = description;
         this.linkToApplicationForm = linkToApplicationForm;
         this.locations = locations;
+        this.address = address;
         this.startsAt = startsAt;
         this.endsAt = endsAt;
         this.keywords = keywords;
@@ -89,5 +93,21 @@ public class EventDTO {
         } else {
             this.counter = "Събитието е започнало";
         }
+    }
+
+    @Override
+    public String toString() {
+        return
+                "Име на събитието:" + name + '\'' +
+                "Вход: " + entranceType +
+                "Описание: " + description + '\'' +
+                "Линк към сайт: " + linkToApplicationForm + '\'' +
+                "Локации:" + locations +
+                "Ще се състои на:" + startsAt +
+                "Ще свърши на:" + endsAt +
+                "Ключови думи: " + keywords + '\'' +
+                "Времетраене: " + duration + '\'' +
+                "Организирано от: " + organisationId +
+                "Броят до започването на събитието: " + counter;
     }
 }
