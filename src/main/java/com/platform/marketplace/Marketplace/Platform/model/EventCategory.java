@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Table(name = "event_types")
+@Table(name = "event_categories")
 public class EventCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,5 +17,7 @@ public class EventCategory {
 
     private String type;
 
-
+    public EventCategory(String type) {
+        this.type = type;
+    }
 }

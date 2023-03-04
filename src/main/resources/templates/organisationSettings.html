@@ -1,6 +1,5 @@
-
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Bootstrap Example</title>
     <meta charset="utf-8">
@@ -17,26 +16,30 @@
         <div class="form-group">
             <label class="control-label col-sm-2" for="name">Име на организация:</label>
             <div class="col-sm-10">
-                <input type="name" class="form-control" id="name" placeholder="Име на организация" name="name"
-                       th:value="${organisation.organisationName}" required>
+                <input type="name" class="form-control" id="name" placeholder="Име на организация" name="name" th:value="${organisation.organisationName}" required>
+                <div th:if="${nameError != null}" class="alert alert-danger">
+                    <p th:text="${nameError}" style="color: red;"></p>
+                </div>
             </div>
+
         </div>
         <div class="form-group">
             <label class="control-label col-sm-2" for="pwd">Електронна поща:</label>
             <div class="col-sm-10">
-                <input type="email" class="form-control" id="pwd" placeholder="Електронна поща" name="email"
-                       th:value="${organisation.user.username}" required>
+                <input type="email" class="form-control" id="pwd" placeholder="Електронна поща" name="email" th:value="${organisation.user.username}" required>
+                <div th:if="${emailError != null}" class="alert alert-danger">
+                    <p th:text="${emailError}" style="color: red;"></p>
+                </div>
             </div>
-        </div>
-        <div>
-            <label for="locations">Локации:</label>
-            <select class="form-control" id="locations" name="locations" multiple>
-                <option th:each="location : ${locations}" th:value="${location.city}"
-                        th:text="${location}"></option>
-            </select>
-        </div>
 
-
+        </div>
+<!--        <div>-->
+<!--            <label for="locations">Локации:</label>-->
+<!--            <select class="form-control" id="locations" name="locations" multiple>-->
+<!--                <option th:each="location : ${locations}" th:value="${location}"-->
+<!--                        th:text="${location}"></option>-->
+<!--            </select>-->
+<!--        </div>-->
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
                 <button type="submit" class="btn btn-default">Запази</button>
@@ -48,34 +51,39 @@
         <div class="form-group">
             <label class="control-label col-sm-2" for="currentPassword">Текуща парола:</label>
             <div class="col-sm-10">
-                <input type="password" class="form-control" id="currentPassword" placeholder="Настояща парола"
-                       name="oldPassword" required>
+                <input type="password" class="form-control" id="currentPassword" placeholder="Настояща парола" name="oldPassword" required>
             </div>
         </div>
         <div class="form-group">
             <label class="control-label col-sm-2" for="pass">Нова парола:</label>
             <div class="col-sm-10">
-                <input type="password" class="form-control" id="pass" placeholder="Нова парола" name="newPassword"
-                       required>
+                <input type="password" class="form-control" id="pass" placeholder="Нова парола" name="newPassword"  required>
+                <div th:if="${invalidPassword != null}" class="alert alert-danger">
+                    <p th:text="${invalidPassword}" style="color: red;"></p>
+                </div>
             </div>
         </div>
         <div class="form-group">
             <label class="control-label col-sm-2" for="passs">Потвърди новата парола:</label>
             <div class="col-sm-10">
-                <input type="password" class="form-control" id="passs" placeholder="Нова парола"
-                       name="confirmNewPassword" required>
+                <input type="password" class="form-control" id="passs" placeholder="Нова парола" name="confirmNewPassword"  required>
             </div>
         </div>
-        <div th:if="${errordMessage}" class="alert alert-danger">
-            <p th:text="${errorMessage}" style="color: red;"></p>
-        </div>
 
+        <!--        <div class="form-group">-->
+        <!--            <div class="col-sm-offset-2 col-sm-10">-->
+        <!--                <div class="checkbox">-->
+        <!--                    <label><input type="checkbox" name="remember"> Remember me</label>-->
+        <!--                </div>-->
+        <!--            </div>-->
+        <!--        </div>-->
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
                 <button type="submit" class="btn btn-default">Запази</button>
             </div>
         </div>
     </form>
+
     <form class="form-horizontal" action="/organisation/disable" method="post">
         <div class="form-group">
             <label class="control-label col-sm-2" for="password">Парола:</label>
@@ -89,7 +97,9 @@
             </div>
         </div>
     </form>
-
+    <div th:if="${errorMessage}" class="alert alert-danger">
+        <p th:text="${errorMessage}" style="color: red;"></p>
+    </div>
 </div>
 
 </body>

@@ -22,7 +22,7 @@ public class OrganisationRegDtoToOrganisationMapper implements Function<Organisa
     @Override
     public Organisation apply(OrganisationDTO organisationDTO) {
             User user = userConverter.apply(organisationDTO);
-            List<Location> cities = locationService.findLocationByValues(organisationDTO.getLocations());
+            List<Location> cities = locationService.findLocationsByValues(organisationDTO.getLocations());
             return new Organisation( organisationDTO.getName(), user,  cities);
     }
 }

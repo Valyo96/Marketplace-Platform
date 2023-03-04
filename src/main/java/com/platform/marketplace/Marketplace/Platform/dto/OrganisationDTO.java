@@ -4,9 +4,11 @@ import com.platform.marketplace.Marketplace.Platform.utility.annotations.EmailEx
 import com.platform.marketplace.Marketplace.Platform.utility.annotations.OrganisationName;
 import com.platform.marketplace.Marketplace.Platform.utility.annotations.Password;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.lang.Nullable;
 
 import java.util.List;
 
@@ -23,7 +25,7 @@ public class OrganisationDTO {
     private String password;
     private String confirmPassword;
 
-
+    @Nullable
     private List<String> locations;
 
 }

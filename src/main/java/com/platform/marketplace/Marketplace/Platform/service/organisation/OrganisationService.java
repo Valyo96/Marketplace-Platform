@@ -69,8 +69,6 @@ public class OrganisationService {
 
 
     public void registration(OrganisationDTO orgDto) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (!auth.isAuthenticated()) {
             Organisation org = mapper.apply(orgDto);
             if (!utility.checkIfEmailExists(orgDto.getEmail()) && utility.passwordConfirmation(orgDto.getPassword(), orgDto.getConfirmPassword())) {
                 org.getUser().setPassword(utility.encodePassword(org.getUser().getPassword()));
@@ -78,24 +76,23 @@ public class OrganisationService {
                 organisationRepository.save(org);
                 return;
             }
-            return;
-        }
+
         throw new AlreadyExistException(EMAIL_ALREADY_TAKEN);
 
     }
 
-    public String updateOrganisationAccount(OrganisationUpdateDTO updatedOrganisation, User user) {
-        List<Location> cities = locationService.findLocationByValues(updatedOrganisation.getLocations());
+    public void updateOrganisationAccount(OrganisationUpdateDTO updatedOrganisation, User user) {
+//        List<Location> cities = locationService.findLocationsByValues(updatedOrganisation.getLocations());
         if (!utility.checkIfEmailExists(updatedOrganisation.getEmail()) || updatedOrganisation.getEmail().equals(user.getUsername())) {
             Organisation org = findOrganisationByUserId(user.getId());
             org.setOrganisationName(updatedOrganisation.getName());
-            org.setLocations(cities);
+//            org.setLocations(cities);
             user.setUsername(updatedOrganisation.getEmail());
             organisationRepository.save(org);
             userService.saveUser(user);
-            return SUCCESSFULLY_UPDATED_ACCOUNT;
+            return;
         }
-        return EMAIL_ALREADY_TAKEN;
+        throw new AlreadyExistException(EMAIL_ALREADY_TAKEN);
     }
 
 

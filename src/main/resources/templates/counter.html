@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Counter Example</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+       $(document).ready(function() {
+    var counter = 0;
+    setInterval(function() {
+        counter++;
+        $("#counter").text(counter);
+    }, 1000);
+});
+    </script>
+</head>
+<body>
+<div class="container">
+    <h1>Counter: <span id="counter">0</span></h1>
+</div>
+</body>
+</html>
