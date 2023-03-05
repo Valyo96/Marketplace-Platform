@@ -9,8 +9,6 @@ import com.platform.marketplace.Marketplace.Platform.model.Event;
 import com.platform.marketplace.Marketplace.Platform.model.Organisation;
 import com.platform.marketplace.Marketplace.Platform.repository.EventRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -59,11 +57,15 @@ public class EventService {
     }
 
     public List<EventDTO> getEventsByDescriptionKeyword(String keyword){
-        List<Event> events = eventRepository.findEventsByDescriptionKeyword(keyword);
+        List<Event> events = eventRepository.findEventsByDescriptionSearch(keyword);
         return events.stream()
                 .map(mapperTODto)
                 .toList();
 
+    }
+
+    public List<EventDTO> getEventsByOneStringKeyword(String keyword){
+        return eventRepository.findEventsByOneStringKeyword(keyword).stream().map(mapperTODto).toList();
     }
 
     public Event getEventByEventIdAndOrgId(Long orgId, Long eventId){
