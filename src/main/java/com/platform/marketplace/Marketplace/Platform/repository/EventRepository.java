@@ -34,7 +34,7 @@ public interface EventRepository extends JpaRepository<Event , Long> {
     @Query("UPDATE Event e SET e.isExpired = true WHERE e.endsAt< :now")
     void updateEventStatusWhenExpires(@Param("now") LocalDateTime now);
 
-    @Query("SELECT e FROM Event e WHERE e.name LIKE :keyword OR e.description LIKE :keyword OR e.address LIKE :keyword OR e.keyWords LIKE :keyword OR e.entranceType LIKE :keyword OR e.locations LIKE :keyword OR e.organisation.organisationName LIKE :keyword")
+    @Query("SELECT e FROM Event e WHERE e.name LIKE :keyword OR e.description LIKE :keyword OR e.address LIKE :keyword OR e.keyWords LIKE :keyword OR e.locations LIKE :keyword OR e.organisation.organisationName LIKE :keyword")
     List<Event> findEventsByOneStringKeyword(@Param("keyword") String keyword);
 
 

@@ -118,7 +118,9 @@ public class OrganisationService {
 
     public void deleteAllOrganisationsAndUsers() {
         List<Organisation> orgs = getAllOrganisations();
+        eventRepository.deleteAll();
         organisationRepository.deleteAll();
+
         orgs.stream().forEach(org -> {
             userService.deleteUserByOrganizationId(org.getId());
         });

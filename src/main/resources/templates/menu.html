@@ -33,11 +33,11 @@
           <li sec:authorize="hasAuthority('ADMIN')">
             <a class="nav-link" th:href="@{/admin/organisations}">Организации</a>
           </li>
-          <li sec:authorize="isAuthenticated()">
+          <li sec:authorize="hasAuthority('ORGANISATION')">
             <a class="nav-link" th:href="@{/organisation/settings}">Настройки</a>
           </li>
-          <li sec:authorize="isAuthenticated()">
-            <a class="nav-link" th:href="@{/organisation/create-event}">Създаване на събития</a>
+          <li sec:authorize="hasAuthority('ORGANISATION')">
+            <a class="nav-link" th:href="@{/organisation/event-management}">Управление на събития</a>
           </li>
           <li sec:authorize="isAuthenticated()">
             <form class="form-inline" th:action="@{/logout}" method="post">
@@ -46,8 +46,6 @@
           </li>
         </ul>
 
-
-
       </div>
     </div>
   </nav>
@@ -55,4 +53,5 @@
 <body>
 </body>
 </html>
+
 

@@ -89,6 +89,12 @@ public class OrganisationController {
             return new ModelAndView("redirect:/login");
     }
 
+    @GetMapping("/event-management")
+    public String eventManagement(Model model){
+        model.addAttribute("events" ,loggedOrganisationService.getEventsOfLoggedOrganisationById());
+        return "eventManagement";
+    }
+
     @GetMapping("/create-event")
     public String createEvent(Model model ,@ModelAttribute("errorMessage")String errorMessage){
         model.addAttribute("event" , new EventDTO());
@@ -145,5 +151,11 @@ public class OrganisationController {
             loggedOrganisationService.createEventByLoggedOrganisation(event);
 
         return new ModelAndView("menu");
+    }
+
+    @PostMapping("delete-event/{id}")
+    public ModelAndView deleteEvent(@PathVariable Long id ,@RequestParam String password ){
+        loggedOrganisationService.deleteEventPermanent(id , password);
+        return new ModelAndView("eventManagement");
     }
 }
