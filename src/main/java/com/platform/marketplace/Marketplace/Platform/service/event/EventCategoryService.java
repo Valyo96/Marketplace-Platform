@@ -26,4 +26,8 @@ public class EventCategoryService {
     public void saveEventCategory(EventCategory eventCategory){
         eventCategoryRepository.save(eventCategory);
     }
+
+    public void saveEventCategories(List<EventCategory>categories){
+        eventCategoryRepository.saveAll(categories);
+    }
 }

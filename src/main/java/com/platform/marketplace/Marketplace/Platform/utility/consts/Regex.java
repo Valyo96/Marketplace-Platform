@@ -7,15 +7,16 @@ public class Regex {
 
     public static final String ORGANISATION_NAME_REGEX_PATTERN = "^[a-zA-Z][a-zA-Z0-9_\\-\\.]{2,50}$";
 
-    public static final String URL_REGEX_PATTERN = "^((https?://)?(www\\.)?([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*\\.)+[a-zA-Z]{2,})$";
+    public static final String URL_REGEX_PATTERN = "\\b(?:https?://|www\\.)\\S+\\b";
 
-    public static final String CYRILLIC_AND_SYMBOLS_REGEX_PATTERN = "^[а-яА-Я,.+\\-_!?\\s@#$%^&*()]+$";
+    public static final String CYRILLIC_AND_SYMBOLS_ADDRESS_DESCRIPTION_PATTERN = "^[а-яА-ЯёЁ\\s,.?'`_\\d-]+$";
 
-    public static final String CYRILLIC_REGEX_PATTERN = "^[а-яА-Я]+$";
+
+    public static final String CYRILLIC_EVENT_NAME_PATTERN = "^[а-яА-Я\\s]+$";
 
     public static final String CYRILLIC_AND_COMA_PATTERN = "^[а-яА-ЯёЁ\\s,]+$";
 
-    public static final String IMAGE_URL_PATTERN = "^(https?:\\/\\/)?(www\\.)?[\\w-]+\\.[\\w.-]+(\\/[\\w-]+)*\\/?.(jpg|jpeg|png|gif)$\n";
+    public static final String IMAGE_URL_PATTERN = "^(https?:\\/\\/)?(www\\.)?[a-zA-Z0-9_-]+\\.[a-zA-Z0-9_.-]+(\\/[a-zA-Z0-9_-]+)*\\/?[^\\\\s]+(\\.(jpg|jpeg|png|gif))$\n";
 
 
 }

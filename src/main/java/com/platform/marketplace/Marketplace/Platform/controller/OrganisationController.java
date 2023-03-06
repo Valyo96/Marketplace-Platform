@@ -3,10 +3,14 @@ package com.platform.marketplace.Marketplace.Platform.controller;
 import com.platform.marketplace.Marketplace.Platform.dto.EventDTO;
 import com.platform.marketplace.Marketplace.Platform.dto.OrgPasswordChange;
 import com.platform.marketplace.Marketplace.Platform.dto.OrganisationUpdateDTO;
+import com.platform.marketplace.Marketplace.Platform.model.Event;
+import com.platform.marketplace.Marketplace.Platform.model.EventCategory;
 import com.platform.marketplace.Marketplace.Platform.model.Organisation;
+import com.platform.marketplace.Marketplace.Platform.service.event.EventService;
 import com.platform.marketplace.Marketplace.Platform.service.location.LocationService;
 import com.platform.marketplace.Marketplace.Platform.service.organisation.LoggedOrganisationService;
 import com.platform.marketplace.Marketplace.Platform.service.organisation.OrganisationService;
+import com.platform.marketplace.Marketplace.Platform.utility.consts.EntranceType;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -27,6 +31,8 @@ public class OrganisationController {
     private final LoggedOrganisationService loggedOrganisationService;
 
     private final LocationService locationService;
+
+    private final EventService eventService;
 
 
     @GetMapping("/settings")
@@ -100,6 +106,7 @@ public class OrganisationController {
         model.addAttribute("event" , new EventDTO());
         model.addAttribute("errorMessage" ,errorMessage);
         model.addAttribute("locations" , locationService.getAllLocations());
+        model.addAttribute("entrance" , EntranceType.values());
         return "createEvent";
     }
 
@@ -113,6 +120,8 @@ public class OrganisationController {
         String startsAtError ="";
         String endsAtError="";
         String keywordsError="";
+        String imageError = "";
+        String addressError ="";
         if(bindingResult.hasErrors()){
             if(bindingResult.hasFieldErrors("eventCategories")){
                 categoryError = bindingResult.getFieldError("eventCategories").getDefaultMessage();
@@ -124,7 +133,7 @@ public class OrganisationController {
                 descriptionError = bindingResult.getFieldError("description").getDefaultMessage();
             }
             if(bindingResult.hasFieldErrors("linkToApplicationForm")){
-                locationError = bindingResult.getFieldError("linkToApplicationForm").getDefaultMessage();
+                linkError = bindingResult.getFieldError("linkToApplicationForm").getDefaultMessage();
             }
             if(bindingResult.hasFieldErrors("locations")){
                 locationError = bindingResult.getFieldError("locations").getDefaultMessage();
@@ -138,6 +147,12 @@ public class OrganisationController {
             if(bindingResult.hasFieldErrors("keywords")){
                 keywordsError = bindingResult.getFieldError("keywords").getDefaultMessage();
             }
+            if(bindingResult.hasFieldErrors("imageUrl")){
+                imageError = bindingResult.getFieldError("imageUrl").getDefaultMessage();
+            }
+            if(bindingResult.hasFieldErrors("address")){
+                addressError = bindingResult.getFieldError("address").getDefaultMessage();
+            }
             return new ModelAndView("createEvent").addObject("event" ,event)
                     .addObject("categoryError" , categoryError)
                     .addObject("nameError" ,nameError)
@@ -146,7 +161,10 @@ public class OrganisationController {
                     .addObject("locationError",locationError)
                     .addObject("startsAtError",startsAtError)
                     .addObject("endsAtError",endsAtError)
-                    .addObject("keywordsError" , keywordsError);
+                    .addObject("keywordsError" , keywordsError)
+                    .addObject("imageError" , imageError)
+                    .addObject("addressError" , addressError)
+                    .addObject("locations" , locationService.getAllLocations());
         }
             loggedOrganisationService.createEventByLoggedOrganisation(event);
 
@@ -158,4 +176,12 @@ public class OrganisationController {
         loggedOrganisationService.deleteEventPermanent(id , password);
         return new ModelAndView("eventManagement");
     }
+
+    @GetMapping("/event-details/{id}")
+    public String showEventDetails(@PathVariable Long id,Model model){
+        model.addAttribute("event" ,eventService.getEventDTOById(id));
+        model.addAttribute("eventId" ,eventService.getEventDTOById(id).getEventId());
+        return "eventDetails";
+    }
+
 }

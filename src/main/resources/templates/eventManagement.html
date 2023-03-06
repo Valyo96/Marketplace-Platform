@@ -36,32 +36,55 @@
     </nav>
 </head>
 <body>
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog"
+     aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmDeleteModalLabel">Потвърждение на операцията</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Сигурни ли сте , че искате да изпълните операцията?</p>
+                <div class="form-group">
+                    <label for="password">Въведете парола за сигурност</label>
+                    <input type="password" class="form-control" id="password" name="password" required>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Затвори</button>
+                <button type="submit" class="btn btn-danger">Изтриване</button>
+            </div>
+        </div>
+    </div>
+</div>
 <table class="table table-striped">
     <thead>
     <tr>
         <th>Име на събитие</th>
-        <th>Дата на събитие</th>
-        <th>Дата на събитие</th>
-        <th>Местоположение</th>
-        <th>Описание</th>
+        <th>Дата на започване</th>
+        <th>Дата на приключване</th>
+        <th>Местоположения</th>
         <th>Брояч до започване</th>
         <th></th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="event : ${events}">
-        <td th:text="${event.eventId}">Id</td>
-        <td th:text="${event.name}"></td>
+        <td th:text="${event.name}" class="event-name"></td>
         <td th:text="${#temporals.format(event.startsAt, 'dd.MM.yyyy hh:mm')}"></td>
         <td th:text="${#temporals.format(event.endsAt, 'dd.MM.yyyy hh:mm')}"></td>
-        <td th:text="${event.address}"></td>
-        <td th:text="${event.description}"></td>
-        <td th:text="${event.counter}"></td>
         <td>
-            <a th:href="@{/event/{id}/edit(id=${event.eventId})}" class="btn btn-sm btn-primary mr-2">Редактирай</a>
-            <form th:action="@{/organisation/delete-event/{id}(id=${event.eventId})}" method="post" style="display: inline-block;">
-                <button class="btn btn-sm btn-danger" type="submit">Изтрий</button>
-            </form>
+            <a th:href="@{/organisation/event-details/{id}(id=${event.eventId})}"><button type="button"  >
+                Подробности
+            </button></a>
+            <form th:action="@{/organisation/event/{id}/edit(id=${event.eventId})}" methods="post">Редактирай</form>
+            <form th:action="@{/organisation/delete-event/{id}(id=${event.eventId})}" method="post"><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#confirmDeleteModal">
+                изтрий
+            </button></form>
         </td>
     </tr>
     </tbody>

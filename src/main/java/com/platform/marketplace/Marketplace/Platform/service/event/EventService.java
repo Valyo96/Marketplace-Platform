@@ -2,6 +2,7 @@ package com.platform.marketplace.Marketplace.Platform.service.event;
 
 import com.platform.marketplace.Marketplace.Platform.dto.EventDTO;
 import com.platform.marketplace.Marketplace.Platform.mapper.*;
+import com.platform.marketplace.Marketplace.Platform.model.EventCategory;
 import com.platform.marketplace.Marketplace.Platform.model.Location;
 import com.platform.marketplace.Marketplace.Platform.service.location.LocationService;
 import com.platform.marketplace.Marketplace.Platform.utility.exceptions.NotFoundException;
@@ -11,6 +12,7 @@ import com.platform.marketplace.Marketplace.Platform.repository.EventRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,6 +24,8 @@ import static com.platform.marketplace.Marketplace.Platform.utility.consts.Const
 public class EventService {
 
     private final EventRepository eventRepository;
+
+    private final EventCategoryService eventCategoryService;
 
 
     private final EventToEventDtoMapper mapperTODto ;
@@ -76,6 +80,8 @@ public class EventService {
    public void createEvent(EventDTO eventDTO, Organisation org){
         Event event = mapperToEntity.apply(eventDTO);
         event.setOrganisation(org);
+        List<EventCategory> categories = new ArrayList<>(event.getEventCategories());
+        eventCategoryService.saveEventCategories(categories);
         eventRepository.save(event);
    }
 

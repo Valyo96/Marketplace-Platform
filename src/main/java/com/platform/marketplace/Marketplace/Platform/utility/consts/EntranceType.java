@@ -16,4 +16,6 @@ public enum EntranceType {
     public String getValue() {
         return value;
     }
+
+
 }

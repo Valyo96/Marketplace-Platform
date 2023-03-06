@@ -2,7 +2,7 @@ package com.platform.marketplace.Marketplace.Platform.utility.consts;
 
 public class ConstantMessages {
 
-    public static final String DATE_TIME_FORMAT = "dd-MM-yyyy hh:mm:ss";
+    public static final String DATE_TIME_FORMAT = "dd-MM-yyyy hh:mm";
 
     public static final String EMAIL_ALREADY_TAKEN = "Имейлът е вече зает , моля опитайте с друг.";
 
