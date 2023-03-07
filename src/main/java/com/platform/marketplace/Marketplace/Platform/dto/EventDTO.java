@@ -60,7 +60,7 @@ public class EventDTO {
     @Nullable
     private String keywords;
     private String duration;
-//    @Pattern(regexp =  IMAGE_URL_PATTERN , message = INVALID_URL_MESSAGE)
+   @Pattern(regexp =  IMAGE_URL_PATTERN , message = INVALID_URL_MESSAGE)
     private String imageUrl;
     private Long organisationId;
 
@@ -94,7 +94,10 @@ public class EventDTO {
 
         if (now.isBefore(getStartsAt())) {
             Duration duration = Duration.between(now, this.startsAt);
-         return  String.format("%02d:%02d:%02d:%02d",
+         return  String.format("%02d ДЕНА " +
+                         "%02d ЧАСА " +
+                         "%02d МИНУТИ " +
+                         "%02d СЕКУНДИ ",
                     duration.toDaysPart(),
                     duration.toHoursPart(),
                     duration.toMinutesPart(),

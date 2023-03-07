@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public enum EntranceType {
-    FREE("безплатно"),
+    FREE("свободен"),
     PAID("платен");
 
     private String value;

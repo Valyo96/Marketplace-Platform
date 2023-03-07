@@ -30,4 +30,12 @@ public class EventCategoryService {
     public void saveEventCategories(List<EventCategory>categories){
         eventCategoryRepository.saveAll(categories);
     }
+
+    public void saveEventCategoriesFromList(List<EventCategory> eventCategories){
+        eventCategories.forEach(category -> {
+            if (findCategoryByValue(category.getType()) == null) {
+                saveEventCategory(category);
+            }
+        });
+    }
 }

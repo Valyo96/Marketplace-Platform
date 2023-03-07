@@ -16,7 +16,8 @@ public class Regex {
 
     public static final String CYRILLIC_AND_COMA_PATTERN = "^[а-яА-ЯёЁ\\s,]+$";
 
-    public static final String IMAGE_URL_PATTERN = "^(https?:\\/\\/)?(www\\.)?[a-zA-Z0-9_-]+\\.[a-zA-Z0-9_.-]+(\\/[a-zA-Z0-9_-]+)*\\/?[^\\\\s]+(\\.(jpg|jpeg|png|gif))$\n";
+    public static final String IMAGE_URL_PATTERN = "\\bhttps?:\\/\\/\\S+\\.([a-zA-Z]{2,6})(\\S+)?\\b";
+
 
 
 }

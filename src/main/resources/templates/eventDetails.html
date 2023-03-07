@@ -20,7 +20,7 @@
             <p th:text="${event.description}"></p>
             <ul>
                 <li><strong>Категории: </strong><span th:text="${event.eventCategories}"></span></li>
-                <li><strong>Вход: </strong><span th:text="${#strings.toString(event.entranceType)}"></span></li>
+                <li><strong>Вход: </strong><span th:text="${#strings.toString(event.entranceType.value)}"></span></li>
 
                 <li><strong>Дата на започване: </strong><span th:text="${#temporals.format(event.startsAt, 'dd/MM/yyyy HH:mm')}"></span></li>
 

@@ -1,6 +1,7 @@
 package com.platform.marketplace.Marketplace.Platform.service.admin;
 
 import com.platform.marketplace.Marketplace.Platform.model.Organisation;
+import com.platform.marketplace.Marketplace.Platform.service.event.EventService;
 import com.platform.marketplace.Marketplace.Platform.service.user.UserService;
 import com.platform.marketplace.Marketplace.Platform.service.organisation.OrganisationService;
 import com.platform.marketplace.Marketplace.Platform.utility.Utility;
@@ -20,6 +21,8 @@ public class AdminService {
     private final UserService userService;
 
     private final Utility utility;
+
+    private final EventService eventService;
 
 
     public List<Organisation> getAllOrganisations() {
