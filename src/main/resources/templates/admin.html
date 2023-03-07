@@ -38,18 +38,16 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <p>Сигурни ли сте , че искате да изтриете всички налични акаунти?</p>
+                        <p>Сигурни ли сте , че искате да изпълните операцията?</p>
                         <div class="form-group">
                             <label for="password">Въведете парола за сигурност</label>
                             <input type="password" class="form-control" id="password" name="password" required>
                         </div>
-                        <div th:if="${errorMessage}" class="alert alert-danger">
-                            <p th:text="${errorMessage}"></p>
-                        </div>
                     </div>
+
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Затвори</button>
-                        <button type="submit" class="btn btn-danger">Изтриване на всички</button>
+                        <button type="submit" class="btn btn-danger">Изтриване</button>
                     </div>
                 </div>
             </div>
@@ -78,6 +76,11 @@
             <td th:text="${#temporals.format(org.updatedAt, 'dd-MM-yyyy HH:mm')}">Date</td>
 
             <td>
+                <a th:href="@{/admin/organisation-events-management/{id}(id=${org.id})}">
+                    <button type="button">
+                        Събития
+                    </button>
+                </a>
                 <form th:action="@{/admin/update/{id}(id=${org.id})}" method="post">
                     <input type="hidden" name="id" th:value="${org.id}">
                     <label for="status">Смени статуса на:</label>
@@ -85,13 +88,17 @@
                         <option value="true" th:selected="${org.user.isEnabled}">Активен</option>
                         <option value="false" th:selected="${!org.user.isEnabled}">Неактивен</option>
                     </select>
-
                     <button type="submit" class="btn btn-primary">Обнови</button>
                 </form>
             </td>
             <td>
                 <form th:action="@{/admin/delete/{id}(id=${org.id})}" method="post">
-                    <button type="submit" class="btn btn-danger">Изтрий</button>
+                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#confirmDeleteModal">
+                        ИЗТРИВАНЕ НА ПРОФИЛЪТ
+                    </button>
+                    <div th:if="${errorMessage}" class="alert alert-danger">
+                        <p th:text="${errorMessage}"></p>
+                    </div>
                 </form>
             </td>
         </tr>

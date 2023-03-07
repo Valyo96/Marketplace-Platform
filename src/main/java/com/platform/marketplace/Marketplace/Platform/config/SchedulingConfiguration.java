@@ -19,6 +19,7 @@ public class SchedulingConfiguration {
     @Autowired
     private OrganisationAccountScheduler organisationAccountScheduler;
 
+
     @Bean
     public TaskScheduler taskScheduler() {
         ThreadPoolTaskScheduler taskScheduler = new ThreadPoolTaskScheduler();

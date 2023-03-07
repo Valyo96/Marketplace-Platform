@@ -1,8 +1,12 @@
 package com.platform.marketplace.Marketplace.Platform.controller;
 
+import com.platform.marketplace.Marketplace.Platform.dto.EventDTO;
+import com.platform.marketplace.Marketplace.Platform.model.Event;
 import com.platform.marketplace.Marketplace.Platform.model.Organisation;
 import com.platform.marketplace.Marketplace.Platform.service.admin.AdminService;
+import com.platform.marketplace.Marketplace.Platform.service.event.EventService;
 import com.platform.marketplace.Marketplace.Platform.service.organisation.OrganisationService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.repository.query.Param;
@@ -20,6 +24,8 @@ public class AdminController {
     private final AdminService adminService;
 
     private final OrganisationService organisationService;
+
+    private final EventService eventService;
 
     @GetMapping("/organisations")
     public String getAllOrgs( Model model , String errorMessage, HttpSession session){
@@ -79,4 +85,31 @@ public class AdminController {
         }
         return new ModelAndView("redirect:/admin/organisations");
     }
+
+    @GetMapping("/organisation-events-management/{id}")
+    public String getEventsByOrganisationId(@PathVariable Long id , Model model){
+        String previousUrl = "admin/organisation-events-management/"+id;
+        model.addAttribute("events" , eventService.findEventsByOrgId(id));
+        model.addAttribute("previousUrl" ,previousUrl);
+        return "adminEventManagement";
+    }
+
+    @PostMapping("/delete-organisation-event/{id}")
+    public ModelAndView deleteEvent(@PathVariable Long id , @RequestParam String previousUrl){
+        adminService.deleteEventByOrgId(id);
+        return new ModelAndView("redirect:/"+previousUrl);
+    }
+
+    @PostMapping("/update-event-status/{id}")
+    public ModelAndView updateEventStatus(@PathVariable Long id , @RequestParam boolean status , @RequestParam String previousUrl){
+        eventService.setIsEnabledEventField(id, status);
+        return new ModelAndView("redirect:/"+previousUrl);
+    }
+
+    @GetMapping("/event-details/{id}")
+    public String getEventDetails(@PathVariable Long id , Model model){
+        model.addAttribute("event" , eventService.getEventDTOById(id));
+        return "eventDetails";
+    }
+
 }

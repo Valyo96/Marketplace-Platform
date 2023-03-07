@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
@@ -22,6 +23,7 @@ import static com.platform.marketplace.Marketplace.Platform.utility.consts.Regex
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class EventDTO {
     private Long eventId;
 
@@ -30,11 +32,11 @@ public class EventDTO {
     private String eventCategories;
     @NotBlank(message = NOT_BLANK)
     @Length(min = 3, message = LENGTH_TOO_SMALL)
-    @Pattern(regexp = CYRILLIC_AND_SYMBOLS_REGEX_PATTERN, message = ONLY_CYRILLIC_ALLOWED)
+    @Pattern(regexp = CYRILLIC_EVENT_NAME_PATTERN, message = ONLY_CYRILLIC_ALLOWED)
     private String name;
 
     private EntranceType entranceType;
-    @Pattern(regexp = CYRILLIC_AND_SYMBOLS_REGEX_PATTERN, message = ONLY_CYRILLIC_ALLOWED)
+    @Pattern(regexp = CYRILLIC_AND_SYMBOLS_ADDRESS_DESCRIPTION_PATTERN, message = ONLY_CYRILLIC_ALLOWED)
     @NotBlank(message = FIELD_MUST_NOT_BE_BLANK)
     @Size(min =10 , max = 250 , message = DESCRIPTION_LENGTH_OUT_OF_BOUNDS)
     private String description;
@@ -44,7 +46,7 @@ public class EventDTO {
     @Size(min = 1, message = LOCATION_SIZE_NOT_NULL)
     private List<String> locations;
     @Nullable
-    @Pattern(regexp = CYRILLIC_AND_SYMBOLS_REGEX_PATTERN , message =ONLY_CYRILLIC_ALLOWED)
+    @Pattern(regexp = CYRILLIC_AND_SYMBOLS_ADDRESS_DESCRIPTION_PATTERN, message =ONLY_CYRILLIC_ALLOWED)
     private String address;
     @DateTimeFormat(pattern = DATE_TIME_FORMAT)
     @NotNull(message = DATE_NOT_NULL)
@@ -58,13 +60,13 @@ public class EventDTO {
     @Nullable
     private String keywords;
     private String duration;
-    @Pattern(regexp =  IMAGE_URL_PATTERN , message = INVALID_URL_MESSAGE)
+   @Pattern(regexp =  IMAGE_URL_PATTERN , message = INVALID_URL_MESSAGE)
     private String imageUrl;
     private Long organisationId;
-
+    private boolean isEnabled;
     private String counter;
 
-    public EventDTO(Long eventId, String eventCategories, String name, EntranceType entranceType, String description, String linkToApplicationForm, List<String> locations, String address,LocalDateTime startsAt, LocalDateTime endsAt, String keywords, Duration duration,String imageUrl ,Long orgId) {
+    public EventDTO(Long eventId, String eventCategories, String name, EntranceType entranceType, String description, String linkToApplicationForm, List<String> locations, String address,LocalDateTime startsAt, LocalDateTime endsAt, String keywords, boolean isEnabled,String imageUrl ,Long orgId) {
         this.eventId = eventId;
         this.eventCategories = eventCategories;
         this.name = name;
@@ -76,29 +78,43 @@ public class EventDTO {
         this.startsAt = startsAt;
         this.endsAt = endsAt;
         this.keywords = keywords;
-        this.duration = String.valueOf(duration);
-        this.counter = getCounter();
+        this.duration = setDuration();
         this.imageUrl = imageUrl;
+        this.counter = setCounter();
+        this.isEnabled = isEnabled;
         this.organisationId = orgId;
     }
+
 
     public String getCounter() {
         return counter;
     }
     @Scheduled(fixedRate = 1000)
-    public void setCounter() {
+    public String setCounter() {
         LocalDateTime now = LocalDateTime.now();
 
-        if (now.isBefore(now)) {
-            Duration duration = Duration.between(now, getStartsAt());
-            this.counter = String.format("%02d:%02d:%02d:%02d",
+        if (now.isBefore(getStartsAt())) {
+            Duration duration = Duration.between(now, this.startsAt);
+         return  String.format("%02d ДЕНА " +
+                         "%02d ЧАСА " +
+                         "%02d МИНУТИ " +
+                         "%02d СЕКУНДИ ",
                     duration.toDaysPart(),
                     duration.toHoursPart(),
                     duration.toMinutesPart(),
                     duration.toSecondsPart());
         } else {
-            this.counter = "Събитието е започнало";
+           return "Събитието е започнало";
         }
+    }
+
+    public String setDuration(){
+        Duration duration = Duration.between(startsAt , endsAt);
+        return String.format("%02d:%02d:%02d:%02d",
+        duration.toDaysPart(),
+                duration.toHoursPart(),
+                duration.toMinutesPart(),
+                duration.toSecondsPart());
     }
 
     @Override

@@ -90,4 +90,5 @@ public class Event {
         this.imageUrl = imageUrl;
         this.organisation = organisation;
     }
+
 }

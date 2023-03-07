@@ -2,8 +2,10 @@ package com.platform.marketplace.Marketplace.Platform.service.event;
 
 import com.platform.marketplace.Marketplace.Platform.dto.EventDTO;
 import com.platform.marketplace.Marketplace.Platform.mapper.*;
+import com.platform.marketplace.Marketplace.Platform.model.EventCategory;
 import com.platform.marketplace.Marketplace.Platform.model.Location;
 import com.platform.marketplace.Marketplace.Platform.service.location.LocationService;
+import com.platform.marketplace.Marketplace.Platform.utility.consts.EntranceType;
 import com.platform.marketplace.Marketplace.Platform.utility.exceptions.NotFoundException;
 import com.platform.marketplace.Marketplace.Platform.model.Event;
 import com.platform.marketplace.Marketplace.Platform.model.Organisation;
@@ -11,6 +13,7 @@ import com.platform.marketplace.Marketplace.Platform.repository.EventRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,8 +26,10 @@ public class EventService {
 
     private final EventRepository eventRepository;
 
+    private final EventCategoryService eventCategoryService;
 
-    private final EventToEventDtoMapper mapperTODto ;
+
+    private final EventToEventDtoMapper mapperTODto;
 
     private final EventDtoToEventMapper mapperToEntity;
 
@@ -32,67 +37,160 @@ public class EventService {
 
     private final EventCategoryConverter converter;
 
+    private List<EventDTO> convertToDtoList(List<Event> events){
+        return events.stream().map(mapperTODto).collect(Collectors.toList());
+    }
 
-    public List<Event> getAllEvents(){
+    private List<Event> getAllEvents() {
         return eventRepository.findAll();
     }
 
-    public List<EventDTO>showAllEvents(){
-        return getAllEvents().stream().map(mapperTODto).collect(Collectors.toList());
+    public List<EventDTO> showAllEvents() {
+        return convertToDtoList(getAllEvents());
     }
 
-    public Event getEventById(Long id){
-        return eventRepository.findById(id).orElseThrow(()-> new  NotFoundException(EVENT_BY_ID_NOT_FOUND));
+    public Event getEventById(Long id) {
+        return eventRepository.findById(id).orElseThrow(() -> new NotFoundException(EVENT_BY_ID_NOT_FOUND));
     }
 
-    public EventDTO getEventByName(String name){
-        Event event = eventRepository.findEventByName(name).orElseThrow(() -> new NotFoundException(EVENT_BY_NAME_NOT_FOUND));
-        return mapperTODto.apply(event);
+    private Event getEventByName(String name){
+        return eventRepository.findEventByName(name).orElseThrow(() -> new NotFoundException(EVENT_BY_NAME_NOT_FOUND));
     }
 
-    public EventDTO getEventDTOById(Long id){
-        Event event = getEventById(id);
-        return mapperTODto.apply(event);
-
+    public List<EventDTO> getAllActiveEvents(){
+        return convertToDtoList(eventRepository.findAllActiveEvents());
     }
 
-    public List<EventDTO> getEventsByDescriptionKeyword(String keyword){
-        List<Event> events = eventRepository.findEventsByDescriptionSearch(keyword);
-        return events.stream()
-                .map(mapperTODto)
-                .toList();
-
+    public List<EventDTO> getAllInactiveEvents(){
+        return convertToDtoList(eventRepository.findAllInactiveEvents());
     }
 
-    public List<EventDTO> getEventsByOneStringKeyword(String keyword){
-        return eventRepository.findEventsByOneStringKeyword(keyword).stream().map(mapperTODto).toList();
+    public List<EventDTO> getEventsByDescriptionKeyword(String keyword) {
+        return convertToDtoList(eventRepository.findEventsByDescriptionSearch(keyword));
     }
 
-    public Event getEventByEventIdAndOrgId(Long orgId, Long eventId){
-        return eventRepository.getEventByEventIdAndOrgId(orgId , eventId).orElseThrow(()-> new NotFoundException(EVENT_NOT_FOUND_BY_ORG_ID_MESSAGE));
+    public List<EventDTO> getEventsByNameKeyword(String keyword){
+        return convertToDtoList(eventRepository.findEventsByName(keyword));
+    }
+
+    public List<EventDTO> getEventsByOneStringKeyword(String keyword) {
+        return convertToDtoList(eventRepository.findEventsByOneStringKeyword(keyword));
+    }
+
+    public List<EventDTO> findEventsByOrgId(Long id) {
+        return convertToDtoList(eventRepository.findEventsByOrganisationId(id));
+    }
+
+    public List<EventDTO>findEventsByAddress(String address){
+        return convertToDtoList(eventRepository.findEventsByAddress(address));
+    }
+
+    public List<EventDTO>findEventsByLocation(String city){
+        return convertToDtoList(eventRepository.findEventsByLocation(city));
+    }
+
+    public List<EventDTO>findEventsByEntranceType(EntranceType entrance){
+        return convertToDtoList(eventRepository.findEventsByEntranceType(entrance));
+    }
+
+    public List<EventDTO>findEventsByKeyWords(String keyword){
+        return convertToDtoList(eventRepository.findEventsByKeyWords(keyword));
+    }
+
+    private List<EventDTO> findEventsByStartDateAsc(){
+        return convertToDtoList(eventRepository.findEventsByStartDateAsc());
+    }
+
+    private List<EventDTO>findEventsByStartDateDesc(){
+        return convertToDtoList(eventRepository.findEventsByStartDateDesc());
+    }
+
+    public List<EventDTO> filterEventsByStartDate(String filter){
+        if(filter.equals("desc")){
+            return findEventsByStartDateDesc();
+        } else {
+            return findEventsByStartDateAsc();
+        }
+    }
+
+    private List<EventDTO>findEventsByEndDateDesc(){
+        return convertToDtoList(eventRepository.findEventsByEndDateDesc());
     }
 
 
-   public void createEvent(EventDTO eventDTO, Organisation org){
+
+    private List<EventDTO>findEventsByEndDateAsc(){
+        return convertToDtoList(eventRepository.findEventsByEndDateAsc());
+    }
+
+    public List<EventDTO> filterEventsByEndDate(String filter){
+        if(filter.equals("desc")){
+            return findEventsByEndDateDesc();
+        } else {
+            return findEventsByEndDateAsc();
+        }
+    }
+
+    private List<EventDTO>findNewestEvents(){
+        return convertToDtoList(eventRepository.findNewestCreatedEvents());
+    }
+
+    private List<EventDTO>findOldestEvents(){
+        return convertToDtoList(eventRepository.findOldestCreatedEvents());
+    }
+
+    public List<EventDTO> filterByCreatedDate(String filter){
+        if(filter.equals("desc")){
+            return  findNewestEvents();
+        } else {
+            return findOldestEvents();
+        }
+    }
+
+    public List<EventDTO>findEventsByCategory(String category){
+        return convertToDtoList(eventRepository.findEventsByCategories(category));
+    }
+
+
+    public EventDTO getEventDTOById(Long id) {
+        return mapperTODto.apply(getEventById(id));
+    }
+
+
+    public EventDTO getEventDTOByName(String name) {
+        return mapperTODto.apply(getEventByName(name));
+    }
+
+    public Event getEventByEventIdAndOrgId(Long orgId, Long eventId) {
+        return eventRepository.getEventByEventIdAndOrgId(orgId, eventId).orElseThrow(() -> new NotFoundException(EVENT_NOT_FOUND_BY_ORG_ID_MESSAGE));
+    }
+
+
+    public void createEvent(EventDTO eventDTO, Organisation org) {
         Event event = mapperToEntity.apply(eventDTO);
         event.setOrganisation(org);
+        List<EventCategory> categories = new ArrayList<>(event.getEventCategories());
+        eventCategoryService.saveEventCategoriesFromList(categories);
         eventRepository.save(event);
-   }
+    }
 
-   public void deleteEvent(Event event){
+    public void deleteEvent(Event event) {
         eventRepository.delete(event);
-   }
+    }
 
-   public void setIsEnabledEventField(Event event,boolean status){
+    public void deleteEventById(Long id){
+        eventRepository.deleteById(id);
+    }
+
+    public void setIsEnabledEventField(Long id, boolean status) {
+        Event event = getEventById(id);
         event.setEnabled(status);
         eventRepository.save(event);
-   }
+    }
 
-   public List<EventDTO> findEventsByOrgId(Long id){
-        return eventRepository.findEventsByOrganisationId(id).stream().map(mapperTODto).collect(Collectors.toList());
-   }
 
-   public void updateEvent(Event event , EventDTO eventDTO){
+
+    public void updateEvent(Event event, EventDTO eventDTO) {
         List<Location> locations = locationService.findLocationsByValues(eventDTO.getLocations());
         event.setName(eventDTO.getName());
         event.setEntranceType(eventDTO.getEntranceType());
@@ -104,7 +202,7 @@ public class EventService {
         event.setEndsAt(eventDTO.getEndsAt());
         event.setKeyWords(eventDTO.getKeywords());
         eventRepository.save(event);
-   }
+    }
 
 
 }

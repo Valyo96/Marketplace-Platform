@@ -13,123 +13,112 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <a th:href="@{/menu}">Меню</a>
+
 </head>
 <body>
 
-<form th:action="@{create}" th:object="${event}" method="POST">
+<form th:action="@{/organisation/update-event}" th:object="${event}" method="POST">
     <div class="container-fluid vh-100" style="margin-top:100px">
         <div class="rounded d-flex justify-content-center">
             <div class="col-md-4 col-sm-12 shadow-lg p-5 bg-light">
                 <div class="text-center">
-                    <h3 class="text-primary">Създаване на събитие</h3>
+                    <h3 class="text-primary">Обновяване на събитие</h3>
                 </div>
                 <div class="p-4">
                     <div class="input-group mb-3">
                         <input type="text" th:field="*{name}" class="form-control" placeholder="Заглавие на събитието"
                                required title="Полето е задължително">
                         <p style="color:red">*</p>
-
-                    </div>
-                    <div th:if="${nameError != null}" >
-                        <p th:text="${nameError}" style="color: red;"></p>
+                        <div th:if="${nameError != null}" class="alert alert-danger">
+                            <p th:text="${nameError}" style="color: red;"></p>
+                        </div>
                     </div>
 
                     <div class="input-group mb-3">
                         <input type="text" th:field="*{description}" class="form-control"
                                placeholder="Подробно описание на събитието"  required title="Полето е задължително">
                         <p style="color:red">*</p>
-
-                    </div>
-                    <div th:if="${descriptionError != null}" >
-                        <p th:text="${descriptionError}" style="color: red;"></p>
+                        <div th:if="${descriptionError != null}" class="alert alert-danger">
+                            <p th:text="${descriptionError}" style="color: red;"></p>
+                        </div>
                     </div>
 
                     <div class="input-group mb-3">
                         <input type="url" th:field="*{linkToApplicationForm}" class="form-control"
                                placeholder="Линк към събитието">
                         <p style="color:red"></p>
-
-                    </div>
-                    <div th:if="${linkError != null}" >
-                        <p th:text="${linkError}" style="color: red;"></p>
+                        <div th:if="${linkError != null}" class="alert alert-danger">
+                            <p th:text="${linkError}" style="color: red;"></p>
+                        </div>
                     </div>
                     <div>
-                        <label for="locations">Локация:</label>
-                        <select class="form-control" id="locations" name="locations" required>
+                        <label for="locations">Локации:(не е задължително да посочвате)</label>
+                        <select class="form-control" id="locations" name="locations" multiple>
                             <option th:each="location : ${locations}" th:value="${location}"
                                     th:text="${location}"></option>
                         </select>
-                    </div>
-                    <div th:if="${locationError != null}" >
-                        <p th:text="${locationError}" style="color: red;"></p>
+                        <div th:if="${locationError != null}" class="alert alert-danger">
+                            <p th:text="${locationError}" style="color: red;"></p>
+                        </div>
                     </div>
 
                     <div class="input-group mb-3">
                         <input type="text" th:field="*{address}" class="form-control"
                                placeholder="Адрес на събитието">
                     </div>
-                    <div th:if="${addressError != null}" >
-                        <p th:text="${addressError}" style="color: red;"></p>
-                    </div>
                     <div class="input-group mb-3">
                         <label for="startsAt"></label>
                         <input class="form-control" type="datetime-local" id="startsAt" name="startsAt"
                                th:field="*{startsAt}" step="1" placeholder="Дата на започване"  required title="Полето е задължително"/>
                         <p style="color:red">*</p>
-
-                    </div>
-                    <div th:if="${startsAtError != null}" >
-                        <p th:text="${startsAtError}" style="color: red;"></p>
+                        <div th:if="${startsAtError != null}" class="alert alert-danger">
+                            <p th:text="${startsAtError}" style="color: red;"></p>
+                        </div>
                     </div>
                     <div class="input-group mb-3">
                         <label for="endsAt"></label>
                         <input class="form-control" type="datetime-local" id="endsAt" name="endsAt"
                                th:field="*{endsAt}" step="1" placeholder="Дата на приключване"  required title="Полето е задължително"/>
                         <p style="color:red">*</p>
-                        <div th:if="${endsAtError != null}" >
+                        <div th:if="${endsAtError != null}" class="alert alert-danger">
                             <p th:text="${endsAtError}" style="color: red;"></p>
                         </div>
                     </div>
                     <div class="input-group mb-3">
                         <input type="text" th:field="*{keywords}" class="form-control" placeholder="Ключови думи">
-
-                    </div>
-                    <div th:if="${keywordsError != null}" >
-                        <p th:text="${keywordsError}" style="color: red;"></p>
+                        <div th:if="${keywordsError != null}" class="alert alert-danger">
+                            <p th:text="${keywordsError}" style="color: red;"></p>
+                        </div>
                     </div>
                     <div class="input-group mb-3">
                         <input type="text" th:field="*{eventCategories}" class="form-control"
                                placeholder="Категория/и на събитието:"  required title="Полето е задължително">
                         <p style="color:red">*</p>
-
-                    </div>
-                    <div th:if="${categoryError != null}" >
-                        <p th:text="${categoryError}" style="color: red;"></p>
+                        <div th:if="${categoryError != null}" class="alert alert-danger">
+                            <p th:text="${categoryError}" style="color: red;"></p>
+                        </div>
                     </div>
                     <div class="input-group mb-3">
                         <input type="url" th:field="*{imageUrl}" class="form-control"
                                placeholder="Изображение(моля поставете линк към изображението)"  required title="Полето е задължително">
                         <p style="color:red">*</p>
+                        <p th:if="${#fields.hasErrors('imageUrl')}" th:errors="*{imageUrl}"
+                           style="color:red"></p>
                     </div>
-                    <div th:if="${imageError != null}" >
-                        <p th:text="${imageError}" style="color: red;"></p>
-                    </div>
-                    <div class="form-group">
-                        <p>Вход : </p>
-                        <div class="form-check">
-                            <input type="radio" th:field="*{entranceType}" name="entrance" value="FREE" id="freeEntrance">
-                            <label for="freeEntrance">Безплатно</label>
-                        </div>
-                        <div class="form-check">
-                            <input type="radio" th:field="*{entranceType}" name="entrance" value="PAID" id="paidEntrance">
-                            <label for="paidEntrance">Платен</label>
-                        </div>
-                    </div>
-
+                    <!--                    <div class="form-group">-->
+                    <!--                        <div class="form-check">-->
+                    <!--                            <input type="radio" name="role" value=WAITER> Waiter<br>-->
+                    <!--                            <span th:if = "${#fields.hasErrors('role')}" th:errors = "*{role}" style = "color:red"></span>-->
+                    <!--                        </div>-->
+                    <!--                        <div class="form-check">-->
+                    <!--                            <input type="radio" name="role" value=COOK> Cook<br>-->
+                    <!--                            <span th:if = "${#fields.hasErrors('role')}" th:errors = "*{role}" style = "color:red"></span>-->
+                    <!--                        </div>-->
+                    <!--                    </div>-->
                     <div class="d-grid col-12 mx-auto">
                         <br>
                         <div class="form-group">
-                            <div th:if="${errorMessage}"  id="errorMessage">
+                            <div th:if="${errorMessage}" class="alert alert-danger" id="errorMessage">
                                 <p th:text="${errorMessage}" style="color: red;"></p>
                             </div>
 
@@ -143,8 +132,10 @@
 
 
                             </script>
-                            <button type="submit" class="btn btn-success">Създай</button>
+                            <button type="submit" class="btn btn-success">Обнови</button>
                             <button type="reset" class="btn btn-primary">Нулиране</button>
+                            <button type="button" class="btn btn-danger" onclick="window.location.href='/organisation/event-management'">Отмени</button>
+
                         </div>
                         </p>
                     </div>
@@ -153,6 +144,7 @@
         </div>
     </div>
 </form>
+
 </body>
 </html>
 <style>
