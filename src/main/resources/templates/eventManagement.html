@@ -61,10 +61,26 @@
                     Подробности
                 </button>
             </a>
+            <a th:href="@{/organisation/update-event/{id}(id=${event.eventId})}">
+                <button type="button">
+                   Редактирай
+                </button>
+            </a>
 <!--            <form th:action="@{/organisation/event/{id}/edit(id=${event.eventId})}" methods="post">Редактирай</form>-->
             <form th:action="@{/organisation/delete-event/{id}(id=${event.eventId})}" method="POST">
                 <!-- Delete button with Bootstrap modal confirmation -->
                 <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
+                <div th:if="${errorMessage}" >
+                    <p th:text="${errorMessage}"></p>
+                </div>
+                <script th:inline="javascript">
+    setTimeout(function() {
+        var errorMessage = document.getElementById('errorMessage');
+        if (errorMessage) {
+            errorMessage.style.display = 'none';
+        }
+    }, 5000);
+</script>
 
                 <!-- Bootstrap modal confirmation dialog -->
                 <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">

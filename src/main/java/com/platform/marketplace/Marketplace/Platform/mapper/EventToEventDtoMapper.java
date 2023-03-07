@@ -32,7 +32,7 @@ public class EventToEventDtoMapper implements Function<Event, EventDTO> {
                 event.getStartsAt(),
                 event.getEndsAt(),
                 event.getKeyWords(),
-                event.getDuration(),
+                event.isEnabled(),
                 event.getImageUrl(),
                 event.getOrganisation().getId());
     }

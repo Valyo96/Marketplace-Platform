@@ -31,8 +31,12 @@
                 <li><strong>Адрес: </strong><span th:text="${event.address}"></span></li>
             </ul>
             <a th:href="${event.linkToApplicationForm}" class="btn btn-primary">Линк към събитието</a>
+            <li sec:authorize="hasAuthority('ORGANISATION')">
             <a th:href="@{/organisation/event-management}">
-                Назад</a>
+                Назад</a></li>
+            <li sec:authorize="hasAuthority('ADMIN')">
+                <a href="javascript:history.back()">Назад</a>
+            </li>
         </div>
     </div>
 </div>
@@ -48,23 +52,6 @@
 </body>
 </html>
 
-<script>
-    function updateCounter() {
-  // Send an AJAX request to fetch the current value of the counter
-  $.ajax({
-    url: "/organisation/event-details/{id}",
-    method: "GET",
-    success: function(data) {
-      // Update the HTML element with the new counter value
-      $("#counter").text(data);
-    },
-    error: function(xhr, status, error) {
-      console.error("Error fetching counter: " + error);
-    }
-  });
-}
 
-// Call the updateCounter function every 1 second
-setInterval(updateCounter, 1000);
 
-</script>
+

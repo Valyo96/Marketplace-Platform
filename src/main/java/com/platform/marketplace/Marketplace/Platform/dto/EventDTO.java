@@ -63,10 +63,10 @@ public class EventDTO {
    @Pattern(regexp =  IMAGE_URL_PATTERN , message = INVALID_URL_MESSAGE)
     private String imageUrl;
     private Long organisationId;
-
+    private boolean isEnabled;
     private String counter;
 
-    public EventDTO(Long eventId, String eventCategories, String name, EntranceType entranceType, String description, String linkToApplicationForm, List<String> locations, String address,LocalDateTime startsAt, LocalDateTime endsAt, String keywords, Duration duration,String imageUrl ,Long orgId) {
+    public EventDTO(Long eventId, String eventCategories, String name, EntranceType entranceType, String description, String linkToApplicationForm, List<String> locations, String address,LocalDateTime startsAt, LocalDateTime endsAt, String keywords, boolean isEnabled,String imageUrl ,Long orgId) {
         this.eventId = eventId;
         this.eventCategories = eventCategories;
         this.name = name;
@@ -81,6 +81,7 @@ public class EventDTO {
         this.duration = setDuration();
         this.imageUrl = imageUrl;
         this.counter = setCounter();
+        this.isEnabled = isEnabled;
         this.organisationId = orgId;
     }
 

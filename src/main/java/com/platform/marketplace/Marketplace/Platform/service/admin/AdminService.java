@@ -53,5 +53,9 @@ public class AdminService {
         organisationService.deleteAllOrganisationsAndUsers();
     }
 
+    public void deleteEventByOrgId(Long id ){
+        eventService.deleteEventById(id);
+    }
+
 
 }

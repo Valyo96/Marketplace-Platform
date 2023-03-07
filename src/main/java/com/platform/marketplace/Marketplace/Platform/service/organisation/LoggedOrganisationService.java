@@ -61,12 +61,12 @@ public class LoggedOrganisationService {
         eventService.createEvent(eventDTO, org);
     }
 
-    public void updateEventAvailabilityStatusOfEvent(Long eventId, boolean status ){
-       User user = utility.returnAuthenticatedUser();
-       Organisation org = organisationService.findOrganisationByUserId(user.getId());
-       Event event = eventService.getEventByEventIdAndOrgId(org.getId(), eventId);
-       eventService.setIsEnabledEventField(event , status);
-    }
+//    public void updateEventAvailabilityStatusOfEvent(Long eventId, boolean status ){
+//       User user = utility.returnAuthenticatedUser();
+//       Organisation org = organisationService.findOrganisationByUserId(user.getId());
+//       Event event = eventService.getEventByEventIdAndOrgId(org.getId(), eventId);
+//       eventService.setIsEnabledEventField(event , status);
+//    }
 
     public void deleteEventPermanent(Long id , String confirmationPassword){
         User loggedUser = utility.authorizationCheck(confirmationPassword);
@@ -75,8 +75,8 @@ public class LoggedOrganisationService {
         eventService.deleteEvent(event);
     }
 
-    public void updateEventByOrgIdAndEventId(Long eventId , String confirmationPassword){
-        User loggedUser = utility.authorizationCheck(confirmationPassword);
+    public void updateEventByOrgIdAndEventId(Long eventId){
+        User loggedUser = utility.returnAuthenticatedUser();
         Organisation org = organisationService.findOrganisationByUserId(loggedUser.getId());
         Event event = eventService.getEventByEventIdAndOrgId(org.getId(), eventId);
         EventDTO eventDTO = eventService.getEventDTOById(event.getId());

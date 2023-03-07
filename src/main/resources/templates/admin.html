@@ -76,6 +76,11 @@
             <td th:text="${#temporals.format(org.updatedAt, 'dd-MM-yyyy HH:mm')}">Date</td>
 
             <td>
+                <a th:href="@{/admin/organisation-events-management/{id}(id=${org.id})}">
+                    <button type="button">
+                        Събития
+                    </button>
+                </a>
                 <form th:action="@{/admin/update/{id}(id=${org.id})}" method="post">
                     <input type="hidden" name="id" th:value="${org.id}">
                     <label for="status">Смени статуса на:</label>
@@ -83,7 +88,6 @@
                         <option value="true" th:selected="${org.user.isEnabled}">Активен</option>
                         <option value="false" th:selected="${!org.user.isEnabled}">Неактивен</option>
                     </select>
-
                     <button type="submit" class="btn btn-primary">Обнови</button>
                 </form>
             </td>
