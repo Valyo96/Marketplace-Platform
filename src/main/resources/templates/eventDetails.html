@@ -37,6 +37,9 @@
             <li sec:authorize="hasAuthority('ADMIN')">
                 <a href="javascript:history.back()">Назад</a>
             </li>
+            <li sec:authorize="isAnonymous()">
+                <a href="javascript:history.back()">Назад</a>
+            </li>
         </div>
     </div>
 </div>

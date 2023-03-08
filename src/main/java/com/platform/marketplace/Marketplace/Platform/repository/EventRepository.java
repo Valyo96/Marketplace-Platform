@@ -3,6 +3,7 @@ package com.platform.marketplace.Marketplace.Platform.repository;
 import com.platform.marketplace.Marketplace.Platform.model.Event;
 import com.platform.marketplace.Marketplace.Platform.utility.consts.EntranceType;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -12,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface EventRepository extends JpaRepository<Event , Long> {
+public interface EventRepository extends JpaRepository<Event , Long> , JpaSpecificationExecutor<Event> {
 
     //заявки за организации
     @Query("SELECT e FROM Event e WHERE e.organisation.id = :orgId AND e.id = :eventId")

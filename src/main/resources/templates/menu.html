@@ -1,92 +1,196 @@
 <!DOCTYPE html>
 <html lang="bg-BG" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>Main Menu</title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-  <!-- jQuery -->
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-  <!-- Bootstrap JS -->
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <meta charset="UTF-8">
+    <title>Main Menu</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container">
-      <a class="navbar-brand" href="#">Платформа за генериране на събития</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-              aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item active">
-            <a class="nav-link" href="#">Меню</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Събития</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Свържи се с нас</a>
-          </li>
-        </ul>
-        <ul class="navbar-nav ml-auto">
-          <li sec:authorize="isAnonymous()">
-            <a class="nav-link" th:href="@{/register}">Регистрация</a>
-          </li>
-          <li sec:authorize="isAnonymous()">
-            <a class="nav-link" th:href="@{/login}">Вписване</a>
-          </li>
-          <li sec:authorize="hasAuthority('ADMIN')">
-            <a class="nav-link" th:href="@{/admin/organisations}">Организации</a>
-          </li>
-          <li sec:authorize="hasAuthority('ORGANISATION')">
-            <a class="nav-link" th:href="@{/organisation/settings}">Настройки</a>
-          </li>
-          <li sec:authorize="hasAuthority('ORGANISATION')">
-            <a class="nav-link" th:href="@{/organisation/event-management}">Управление на събития</a>
-          </li>
-          <li sec:authorize="isAuthenticated()">
-            <form class="form-inline" th:action="@{/logout}" method="post">
-              <button class="btn btn-link nav-link" type="submit">Изход</button>
-            </form>
-          </li>
-        </ul>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">Платформа за генериране на събития</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Меню</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Събития</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Свържи се с нас</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ml-auto">
+                    <li sec:authorize="isAnonymous()">
+                        <a class="nav-link" th:href="@{/register}">Регистрация</a>
+                    </li>
+                    <li sec:authorize="isAnonymous()">
+                        <a class="nav-link" th:href="@{/login}">Вписване</a>
+                    </li>
+                    <li sec:authorize="hasAuthority('ADMIN')">
+                        <a class="nav-link" th:href="@{/admin/organisations}">Организации</a>
+                    </li>
+                    <li sec:authorize="hasAuthority('ORGANISATION')">
+                        <a class="nav-link" th:href="@{/organisation/settings}">Настройки</a>
+                    </li>
+                    <li sec:authorize="hasAuthority('ORGANISATION')">
+                        <a class="nav-link" th:href="@{/organisation/event-management}">Управление на събития</a>
+                    </li>
+                    <li sec:authorize="isAuthenticated()">
+                        <form class="form-inline" th:action="@{/logout}" method="post">
+                            <button class="btn btn-link nav-link" type="submit">Изход</button>
+                        </form>
+                    </li>
+                </ul>
 
-      </div>
-    </div>
-  </nav>
+            </div>
+        </div>
+    </nav>
+    <style>
+  .event-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin: 20px -10px;
+}
+
+.event-item {
+  width: calc(33.33% - 20px);
+  margin: 10px;
+  box-sizing: border-box;
+  text-decoration: none;
+}
+
+.event-frame {
+  border: 1px solid black;
+  padding: 10px;
+  text-align: center;
+}
+
+.event-item img {
+  max-width: 100%;
+  height: auto;
+}
+
+
+
+    </style>
+
 </head>
 <body>
-<form method="post" action="/findByName">
-  <div class="form-group">
-    <label for="nameInput">Search by name:</label>
-    <input type="text" name="name" id="nameInput" class="form-control">
-  </div>
-  <button type="submit" class="btn btn-primary">Search</button>
-</form>
+<!--<form method="post" action="/findByName">-->
+<!--  <div class="form-group">-->
+<!--    <label for="nameInput">Search by name:</label>-->
+<!--    <input type="text" name="name" id="nameInput" class="form-control">-->
+<!--  </div>-->
+<!--  <button type="submit" class="btn btn-primary">Search</button>-->
+<!--</form>-->
 <div class="container">
-  <table class="table table-striped table-hover">
-    <thead>
-    <tr>
-      <th>Image</th>
-      <th>Name</th>
-      <th>Starts at</th>
-      <th>Ends at</th>
-    </tr>
-    </thead>
-    <tbody>
-    <!-- iterate through each event -->
-    <tr th:each="event : ${events}">
-      <!-- image column -->
-      <td>
-        <img th:src="${event.imageUrl}" class="img-fluid" alt="Event Image" style="max-width: 100%; height: auto;">
-      </td>
-      <!-- event information columns -->
-      <td th:text="${event.name}" class="event-name"></td>
-      <td th:text="${#temporals.format(event.startsAt, 'dd.MM.yyyy hh:mm')}"></td>
-      <td th:text="${#temporals.format(event.endsAt, 'dd.MM.yyyy hh:mm')}"></td>
-    </tr>
-    </tbody>
-  </table>
+    <h1>Търсачка</h1>
+    <button type="button" class="btn btn-primary mb-3" data-toggle="collapse" data-target="#advanced-search"
+            aria-expanded="false" aria-controls="advanced-search">
+        Разширено търсене
+    </button>
+    <div class="collapse" id="advanced-search">
+        <form method="post" th:action="@{/uniqueFilter}">
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label for="name">Име на събитието:</label>
+                    <input type="text" class="form-control form-control-sm" id="name" name="name" th:value="${name}">
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="organisationName">Име на организатор:</label>
+                    <input type="text" class="form-control form-control-sm" id="organisationName"
+                           name="organisationName"
+                           th:value="${organisationName}">
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="address">Адрес:</label>
+                    <input type="text" class="form-control form-control-sm" id="address" name="address"
+                           th:value="${address}">
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="location">Град:</label>
+                    <input type="text" class="form-control form-control-sm" id="location" name="location"
+                           th:value="${location}">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label>Цена:</label>
+                    <div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" id="entrance-free" name="entrance"
+                                   value="FREE"
+                                   th:checked="${entrance == 'FREE'}">
+                            <label class="form-check-label" for="entrance-free">Безплатно</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" id="entrance-paid" name="entrance"
+                                   value="PAID"
+                                   th:checked="${entrance == 'PAID'}">
+                            <label class="form-check-label" for="entrance-paid">Платено</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="category">Категория на събитието:</label>
+                    <input type="text" class="form-control form-control-sm" id="category" name="category"
+                           th:value="${category}">
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="keyword">Ключови думи:</label>
+                    <input type="text" class="form-control form-control-sm" id="keyword" name="keyword"
+                           th:value="${keyword}">
+                </div>
+                <div class="form-group">
+                    <div th:if="${errorMessage}" id="errorMessage">
+                        <p th:text="${errorMessage}" style="color: red;"></p>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Търси</button>
+                    <button type="reset" class="btn btn-secondary">Изчисти</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- iterate through each event -->
+<div class="event-wrapper">
+    <a th:each="event : ${events}" th:href="@{/event-details/{id}(id=${event.eventId})}" class="event-item">
+        <div class="event-frame">
+            <table>
+                <tr>
+                    <td th:text="${'Име: ' + event.name}" style="color: black;"></td>
+                </tr>
+                <tr>
+                    <td style="color: black;">Начална дата: <span th:text="${#temporals.format(event.startsAt, 'dd MMMM')}"></span> от <span th:text="${#temporals.format(event.startsAt, 'HH:mm')}"></span> часа.</td>
+                </tr>
+                <tr th:if="${#temporals.format(event.startsAt, 'yyyyMMdd') != #temporals.format(event.endsAt, 'yyyyMMdd')}">
+                    <td style="color: black;">Крайна дата: <span th:text="${#temporals.format(event.endsAt, 'dd MMMM')}"></span> до <span th:text="${#temporals.format(event.endsAt, 'HH:mm')}"></span> часа.</td>
+                </tr>
+                <tr th:if="${#temporals.format(event.startsAt, 'yyyyMMdd') == #temporals.format(event.endsAt, 'yyyyMMdd')}">
+                    <td style="color: black;">Крайна дата: <span th:text="${#temporals.format(event.endsAt, 'dd MMMM')}"></span> до <span th:text="${#temporals.format(event.endsAt, 'HH:mm')}"></span> часа.</td>
+                </tr>
+
+                <tr>
+                      <td  style="display:inline-block" th:each="location : ${event.locations}"> <span th:text="*{'Град:' +location}" style="color: black;"></span></td></tr>
+
+                <tr>
+                    <td th:text="${'Организатор: ' + event.organisationName}" style="color: black;"></td>
+                </tr>
+            </table>
+            <img th:src="${event.imageUrl}" alt="Event Image">
+        </div>
+    </a>
 </div>
 
 
@@ -98,6 +202,9 @@
             responsive: true
         });
     });
+
+
+
 </script>
 
 

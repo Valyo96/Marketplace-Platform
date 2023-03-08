@@ -6,7 +6,7 @@ public class ConstantMessages {
 
     public static final String EMAIL_ALREADY_TAKEN = "Имейлът е вече зает , моля опитайте с друг.";
 
-    public static final String EVENT_BY_NAME_NOT_FOUND = "Търсеното от вас събитие не отговаря или не съществува от подаденият текст";
+    public static final String EVENT_NOT_FOUND = "Няма намерени събития с посочените от вас изисквания";
 
     public static final String EMAIL_VALIDATION_MESSAGES = "Грешно въведена електронна поща. Трябва да е във формат \"<потребител>@<домейн>.<tld>\"";
     public static final String ORGANISATION_NAME_VALIDATION_MESSAGES = "Невалидно потребителско име: трябва да е дълго поне 3 и максимум 50 знака, да започва с буква, да съдържа само букви, цифри, долна черта, тире и точка";
