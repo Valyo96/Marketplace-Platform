@@ -30,7 +30,7 @@ public class EventDTO {
     private String organisationName;
 
     @NotBlank(message = FIELD_MUST_NOT_BE_BLANK)
-    @Pattern(regexp = CYRILLIC_AND_COMA_PATTERN, message = ONLY_CYRILLIC_ALLOWED)
+    @Pattern(regexp = CYRILLIC_AND_COMA_PATTERN, message = CYRILLIC_AND_COMA_ALLOWED_MESSAGE)
     private String eventCategories;
     @NotBlank(message = NOT_BLANK)
     @Length(min = 3, message = LENGTH_TOO_SMALL)

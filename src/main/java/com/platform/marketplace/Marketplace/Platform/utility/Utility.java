@@ -2,6 +2,7 @@ package com.platform.marketplace.Marketplace.Platform.utility;
 
 import com.platform.marketplace.Marketplace.Platform.model.User;
 import com.platform.marketplace.Marketplace.Platform.service.user.UserService;
+import com.platform.marketplace.Marketplace.Platform.utility.exceptions.InvalidDateTimeFormatException;
 import com.platform.marketplace.Marketplace.Platform.utility.exceptions.NotAuthorizeException;
 import com.platform.marketplace.Marketplace.Platform.utility.exceptions.WrongPasswordException;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +11,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import static com.platform.marketplace.Marketplace.Platform.utility.consts.ConstantMessages.*;
 
@@ -62,4 +66,13 @@ public class Utility {
         return passwordEncoder.encode(password);
     }
 
+    public LocalDateTime parseStringToLocalDate(String date){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        try{
+            LocalDateTime dateTime = LocalDateTime.parse(date, formatter);
+            return dateTime;
+        } catch (Exception e) {
+            throw new InvalidDateTimeFormatException(INVALID_DATE_TIME_FORMAT);
+        }
+    }
 }

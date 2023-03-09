@@ -86,15 +86,49 @@
 
 </head>
 <body>
-<!--<form method="post" action="/findByName">-->
-<!--  <div class="form-group">-->
-<!--    <label for="nameInput">Search by name:</label>-->
-<!--    <input type="text" name="name" id="nameInput" class="form-control">-->
-<!--  </div>-->
-<!--  <button type="submit" class="btn btn-primary">Search</button>-->
-<!--</form>-->
-<div class="container">
+<p></p>
+<p>Брой намерени събития от търсеният от вас избор: <span th:text="${eventCounterFromSearchResults}"></span></p>
     <h1>Търсачка</h1>
+    <button type="button" class="btn btn-primary mb-3" data-toggle="collapse" data-target="#data-search"
+            aria-expanded="false" aria-controls="data-search">Сортирай по дата</button>
+
+    <div class="collapse" id="data-search">
+        <form method="post" th:action="@{filterByCreatedDate}">
+            <div class="form-group">
+                <label for="sortingOrderByCreatedDate">Сотрирай по дата на създаване:</label>
+                <select class="form-control" id="sortingOrderByCreatedDate" name="filter">
+                    <option value="asc">Най-нови</option>
+                    <option value="desc">Най-стари</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Потвърди</button>
+        </form>
+        <form method="post" th:action="@{filterByStartDate}">
+            <div class="form-group">
+                <label for="sortingOrderByStartDate">Сортирай по начална дата на събитие:</label>
+                <select class="form-control" id="sortingOrderByStartDate" name="filter">
+                    <option value="asc">Възходящ ред</option>
+                    <option value="desc">Низходящ ред</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Потвърди</button>
+        </form>
+        <form method="post" th:action="@{filterByEndDate}">
+            <div class="form-group">
+                <label for="sortingOrderByEndDate">Сортирай по крайна дата на събитие:</label>
+                <select class="form-control" id="sortingOrderByEndDate" name="filter">
+                    <option value="asc">Възходящ ред</option>
+                    <option value="desc">Низходящ ред</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Потвърди</button>
+        </form>
+
+    </div>
+    <form method="post" th:action="@{/inactive}">
+        <!-- Button element -->
+        <button type="submit" class="btn btn-primary">Отминали събития</button>
+    </form>
     <button type="button" class="btn btn-primary mb-3" data-toggle="collapse" data-target="#advanced-search"
             aria-expanded="false" aria-controls="advanced-search">
         Разширено търсене
@@ -151,10 +185,11 @@
                     <input type="text" class="form-control form-control-sm" id="keyword" name="keyword"
                            th:value="${keyword}">
                 </div>
-                <div class="form-group">
-                    <div th:if="${errorMessage}" id="errorMessage">
-                        <p th:text="${errorMessage}" style="color: red;"></p>
-                    </div>
+                <div class="form-group col-md-4">
+                    <label for="date">По дата на започване:</label>
+                    <input type="text" class="form-control form-control-sm" id="date" name="date"
+                           th:value="${date}">
+                </div>
                     <button type="submit" class="btn btn-primary">Търси</button>
                     <button type="reset" class="btn btn-secondary">Изчисти</button>
                 </div>
@@ -162,6 +197,22 @@
         </form>
     </div>
 </div>
+
+<div class="form-group">
+    <div th:if="${errorMessage}"   id="errorMessage">
+        <p th:text="${errorMessage}" style="color: red;"></p>
+    </div>
+
+    <script th:inline="javascript">
+    setTimeout(function() {
+        var errorMessage = document.getElementById('errorMessage');
+        if (errorMessage) {
+            errorMessage.style.display = 'none';
+        }
+    }, 5000);
+</script>
+
+    <a th:href="@{/all-active-events}">View all active events</a>
 
 <!-- iterate through each event -->
 <div class="event-wrapper">
@@ -188,7 +239,7 @@
                     <td th:text="${'Организатор: ' + event.organisationName}" style="color: black;"></td>
                 </tr>
             </table>
-            <img th:src="${event.imageUrl}" alt="Event Image">
+            <img th:src="${event.imageUrl}" alt="Event Image" >
         </div>
     </a>
 </div>

@@ -19,64 +19,30 @@ public class MenuController {
     private final EventService eventService;
 
 
+
     @GetMapping("/menu")
     public String main(Model model, HttpSession session , @ModelAttribute("errorMessage") String errorMessage) {
         List<EventDTO> events = (List<EventDTO>) session.getAttribute("events");
         session.removeAttribute("events");
         if (events == null || events.size() == 0) {
-            model.addAttribute("events", eventService.getAllActiveEvents());
             model.addAttribute("errorMessage" ,errorMessage);
             return "menu";
         }
         model.addAttribute("events", events);
+        model.addAttribute("eventCounterFromSearchResults" , eventService.eventCounter(events));
+        return "menu";
+    }
+
+    @GetMapping("/all-active-events")
+    public String showAllActiveEvents(Model model){
+        model.addAttribute("events" ,eventService.getAllActiveEvents());
+
         return "menu";
     }
 
     @PostMapping("inactive")
     public ModelAndView getInactiveEvents(HttpSession session) {
         session.setAttribute("events", eventService.getAllInactiveEvents());
-        return new ModelAndView("redirect:/menu");
-    }
-
-    @PostMapping("/findByName")
-    public ModelAndView getEventsByName(@RequestParam String name, HttpSession session) {
-        session.setAttribute("events", eventService.getEventsByNameKeyword(name));
-        return new ModelAndView("redirect:/menu");
-    }
-
-    @PostMapping("findByAddress")
-    public ModelAndView getEventsByAddress(@RequestParam String address, HttpSession session) {
-        session.setAttribute("events", eventService.findEventsByAddress(address));
-        return new ModelAndView("redirect:/menu");
-    }
-
-    @PostMapping("findByLocation")
-    public ModelAndView getEventsByLocation(@RequestParam String location, HttpSession session) {
-        session.setAttribute("events", eventService.findEventsByLocation(location));
-        return new ModelAndView("redirect:/menu");
-    }
-
-    @PostMapping("findByEntrance")
-    public ModelAndView getEventsByEntranceType(@RequestParam EntranceType entranceType, HttpSession session) {
-        session.setAttribute("events", eventService.findEventsByEntranceType(entranceType));
-        return new ModelAndView("redirect:/menu");
-    }
-
-    @PostMapping("findByDescription")
-    public ModelAndView getEventsByDescription(@RequestParam String description, HttpSession session) {
-        session.setAttribute("events", eventService.getEventsByDescriptionKeyword(description));
-        return new ModelAndView("redirect:/menu");
-    }
-
-    @PostMapping("findByKeyWords")
-    public ModelAndView getEventsByKeywords(@RequestParam String keywords, HttpSession session) {
-        session.setAttribute("events", eventService.findEventsByKeyWords(keywords));
-        return new ModelAndView("redirect:/menu");
-    }
-
-    @PostMapping("findByOneKeyword")
-    public ModelAndView getEventsByOneKeyWord(@RequestParam String keyword, HttpSession session) {
-        session.setAttribute("events", eventService.getEventsByOneStringKeyword(keyword));
         return new ModelAndView("redirect:/menu");
     }
 
@@ -98,11 +64,6 @@ public class MenuController {
         return new ModelAndView("redirect:/menu");
     }
 
-    @PostMapping("filterByCategories")
-    public ModelAndView getEventsByCategories(@RequestParam String category, HttpSession session) {
-        session.setAttribute("events", eventService.findEventsByCategory(category));
-        return new ModelAndView("redirect:/menu");
-    }
 
     @PostMapping("uniqueFilter")
     public ModelAndView getEvents(@RequestParam(name = "name", required = false)String name,
@@ -112,9 +73,10 @@ public class MenuController {
                                   @RequestParam(name = "entrance", required = false)String entrance,
                                   @RequestParam(name = "category", required = false)String category,
                                   @RequestParam(name = "keyword", required = false)String keyword,
+                                  @RequestParam(name = "date" , required = false)String date,
                                   HttpSession session) {
 
-        session.setAttribute("events", eventService.returnSpecificFilteredEvents(name, organisationName,address, location, entrance, category, keyword));
+        session.setAttribute("events", eventService.returnSpecificFilteredEvents(name, organisationName,address, location, entrance, category, keyword,date));
         return new ModelAndView("redirect:/menu");
     }
 

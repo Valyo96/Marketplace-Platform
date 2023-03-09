@@ -5,6 +5,7 @@ import com.platform.marketplace.Marketplace.Platform.mapper.*;
 import com.platform.marketplace.Marketplace.Platform.model.EventCategory;
 import com.platform.marketplace.Marketplace.Platform.model.Location;
 import com.platform.marketplace.Marketplace.Platform.service.location.LocationService;
+import com.platform.marketplace.Marketplace.Platform.utility.Utility;
 import com.platform.marketplace.Marketplace.Platform.utility.consts.EntranceType;
 import com.platform.marketplace.Marketplace.Platform.utility.exceptions.NotFoundException;
 import com.platform.marketplace.Marketplace.Platform.model.Event;
@@ -16,7 +17,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -40,6 +43,12 @@ public class EventService {
     private final LocationService locationService;
 
     private final EventCategoryConverter converter;
+
+    private final Utility validate;
+
+    public int eventCounter(List<EventDTO>events){
+        return events.size();
+    }
 
     private List<EventDTO> convertToDtoList(List<Event> events) {
         return events.stream().map(mapperTODto).collect(Collectors.toList());
@@ -66,6 +75,9 @@ public class EventService {
     }
 
     public List<EventDTO> getAllInactiveEvents() {
+        if(eventRepository.findAllInactiveEvents() == null || eventRepository.findAllInactiveEvents().size()==0){
+            return Collections.emptyList();
+        }
         return convertToDtoList(eventRepository.findAllInactiveEvents());
     }
 
@@ -206,9 +218,9 @@ public class EventService {
         eventRepository.save(event);
     }
 
-    public List<EventDTO> returnSpecificFilteredEvents(String name,String organisationName ,String address, String location, String entrance, String category, String keyword){
-        List<EventDTO> events =convertToDtoList(eventRepository.findAll(filterEvents(name ,organisationName,address ,location ,entrance ,category ,keyword)));
-        if(events.isEmpty() || events.size() == 0 || events == null){
+    public List<EventDTO> returnSpecificFilteredEvents(String name, String organisationName, String address, String location, String entrance, String category, String keyword ,String date) {
+        List<EventDTO> events = convertToDtoList(eventRepository.findAll(filterEvents(name, organisationName, address, location, entrance, category, keyword ,date)));
+        if (events.isEmpty() || events.size() == 0 || events == null) {
             throw new NotFoundException(EVENT_NOT_FOUND);
         } else {
             return events;
@@ -216,15 +228,17 @@ public class EventService {
 
     }
 
-    public Specification<Event> filterEvents(String name,String organisationName ,String address, String location, String entrance, String category, String keyword) {
+    public Specification<Event> filterEvents(String name, String organisationName, String address, String location, String entrance, String category, String keyword , String date) {
         return Specification.where(withName(name))
                 .and(withOrganisationName(organisationName))
                 .and(withAddress(address))
                 .and(withLocation(location))
                 .and(withEntrance(entrance))
                 .and(withCategory(category))
-                .and(withKeyword(keyword));
+                .and(withKeyword(keyword))
+                .and(withDate(date));
     }
+
     private Specification<Event> withName(String name) {
         return (root, query, builder) -> {
             if (name == null) {
@@ -234,13 +248,13 @@ public class EventService {
         };
     }
 
-    private Specification<Event> withOrganisationName(String organisationName){
+    private Specification<Event> withOrganisationName(String organisationName) {
         return (root, query, builder) -> {
-            if(organisationName == null){
+            if (organisationName == null) {
                 return null;
             }
-            Join<Event , Organisation> join =root.join("organisation" ,JoinType.INNER);
-            return builder.like(join.get("organisationName"), "%"+organisationName+"%");
+            Join<Event, Organisation> join = root.join("organisation", JoinType.INNER);
+            return builder.like(join.get("organisationName"), "%" + organisationName + "%");
         };
     }
 
@@ -252,15 +266,17 @@ public class EventService {
             return builder.like(root.get("address"), "%" + address + "%");
         };
     }
+
     private Specification<Event> withLocation(String location) {
         return (root, query, builder) -> {
             if (location == null) {
                 return null;
             }
-            Join<Event , Location> join = root.join("locations" , JoinType.INNER);
+            Join<Event, Location> join = root.join("locations", JoinType.INNER);
             return builder.like(join.get("city"), "%" + location + "%");
         };
     }
+
     private Specification<Event> withEntrance(String entrance) {
         return (root, query, builder) -> {
             if (entrance == null) {
@@ -280,12 +296,23 @@ public class EventService {
         };
 
     }
-    private  Specification<Event> withKeyword(String keyword) {
+
+    private Specification<Event> withKeyword(String keyword) {
         return (root, query, builder) -> {
             if (keyword == null) {
                 return null;
             }
-            return builder.like(root.get("keyWords"), "%" +keyword+ "%");
+            return builder.like(root.get("keyWords"), "%" + keyword + "%");
+        };
+    }
+
+    private Specification<Event> withDate(String date) {
+        return (root, query, builder) -> {
+            if (date == null || date.equals("")) {
+                return null;
+            }
+            LocalDateTime parsedDate = validate.parseStringToLocalDate(date);
+            return builder.like(root.get("startsAt"), "%" + parsedDate + "%");
         };
     }
 }

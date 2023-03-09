@@ -74,7 +74,7 @@
                     <div class="input-group mb-3">
                         <label for="startsAt"></label>
                         <input class="form-control" type="datetime-local" id="startsAt" name="startsAt"
-                               th:field="*{startsAt}" step="1" placeholder="Дата на започване"  required title="Полето е задължително"/>
+                               th:field="*{startsAt}" step="60" placeholder="Дата на започване"  required title="Полето е задължително"/>
                         <p style="color:red">*</p>
 
                     </div>
@@ -84,7 +84,7 @@
                     <div class="input-group mb-3">
                         <label for="endsAt"></label>
                         <input class="form-control" type="datetime-local" id="endsAt" name="endsAt"
-                               th:field="*{endsAt}" step="1" placeholder="Дата на приключване"  required title="Полето е задължително"/>
+                               th:field="*{endsAt}" step="60" placeholder="Дата на приключване"  required title="Полето е задължително"/>
                         <p style="color:red">*</p>
                         <div th:if="${endsAtError != null}" >
                             <p th:text="${endsAtError}" style="color: red;"></p>
