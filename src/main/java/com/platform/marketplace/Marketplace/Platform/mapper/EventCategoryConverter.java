@@ -16,7 +16,7 @@ public class EventCategoryConverter {
     private EventCategoryService eventCategoryService;
 
     public  Set<EventCategory> convertToEventCategories(String eventCategoriesString) {
-        Set<String> categoryNames = new HashSet<>(Arrays.asList(eventCategoriesString.split("\\s*,\\s*")));
+        Set<String> categoryNames = new HashSet<>(Arrays.asList(eventCategoriesString.split("\\s*,\\s*|\\s+")));
         Set<EventCategory> categories = new HashSet<>();
         for (String categoryName : categoryNames) {
             if (!categoryName.isEmpty() && eventCategoryService.findCategoryByValue(categoryName)==null) {

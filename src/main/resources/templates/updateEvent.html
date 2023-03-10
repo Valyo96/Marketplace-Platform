@@ -35,13 +35,15 @@
                     </div>
 
                     <div class="input-group mb-3">
-                        <input type="text" th:field="*{description}" class="form-control"
-                               placeholder="Подробно описание на събитието"  required title="Полето е задължително">
+                        <label for="description"></label>
+                        <textarea id="description" th:field="*{description}" class="form-control" rows="5" placeholder="Подробно описание на събитието:
+"  required title="Полето е задължително"></textarea>
                         <p style="color:red">*</p>
+                    </div>
                         <div th:if="${descriptionError != null}" class="alert alert-danger">
                             <p th:text="${descriptionError}" style="color: red;"></p>
                         </div>
-                    </div>
+
 
                     <div class="input-group mb-3">
                         <input type="url" th:field="*{linkToApplicationForm}" class="form-control"
