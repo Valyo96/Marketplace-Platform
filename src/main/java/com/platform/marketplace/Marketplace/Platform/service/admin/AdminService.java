@@ -2,10 +2,8 @@ package com.platform.marketplace.Marketplace.Platform.service.admin;
 
 import com.platform.marketplace.Marketplace.Platform.model.Organisation;
 import com.platform.marketplace.Marketplace.Platform.service.event.EventService;
-import com.platform.marketplace.Marketplace.Platform.service.user.UserService;
 import com.platform.marketplace.Marketplace.Platform.service.organisation.OrganisationService;
 import com.platform.marketplace.Marketplace.Platform.utility.Utility;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,8 +15,6 @@ import java.util.List;
 public class AdminService {
 
     private final OrganisationService organisationService;
-
-    private final UserService userService;
 
     private final Utility utility;
 
