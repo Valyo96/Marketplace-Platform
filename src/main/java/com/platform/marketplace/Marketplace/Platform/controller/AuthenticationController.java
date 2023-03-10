@@ -31,7 +31,7 @@ public class AuthenticationController {
     @GetMapping("/login")
     public String orgLogin() {
 
-        return "login";
+        return "loginForm";
     }
 
 

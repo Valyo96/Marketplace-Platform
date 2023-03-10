@@ -27,8 +27,10 @@ import static com.platform.marketplace.Marketplace.Platform.utility.consts.Regex
 public class EventDTO {
     private Long eventId;
 
+    private String organisationName;
+
     @NotBlank(message = FIELD_MUST_NOT_BE_BLANK)
-    @Pattern(regexp = CYRILLIC_AND_COMA_PATTERN, message = ONLY_CYRILLIC_ALLOWED)
+    @Pattern(regexp = CYRILLIC_AND_COMA_PATTERN, message = CYRILLIC_AND_COMA_ALLOWED_MESSAGE)
     private String eventCategories;
     @NotBlank(message = NOT_BLANK)
     @Length(min = 3, message = LENGTH_TOO_SMALL)
@@ -66,8 +68,9 @@ public class EventDTO {
     private boolean isEnabled;
     private String counter;
 
-    public EventDTO(Long eventId, String eventCategories, String name, EntranceType entranceType, String description, String linkToApplicationForm, List<String> locations, String address,LocalDateTime startsAt, LocalDateTime endsAt, String keywords, boolean isEnabled,String imageUrl ,Long orgId) {
+    public EventDTO(Long eventId,String organisationName ,String eventCategories, String name, EntranceType entranceType, String description, String linkToApplicationForm, List<String> locations, String address,LocalDateTime startsAt, LocalDateTime endsAt, String keywords, boolean isEnabled,String imageUrl ,Long orgId) {
         this.eventId = eventId;
+        this.organisationName = organisationName;
         this.eventCategories = eventCategories;
         this.name = name;
         this.entranceType = entranceType;
@@ -109,12 +112,15 @@ public class EventDTO {
     }
 
     public String setDuration(){
-        Duration duration = Duration.between(startsAt , endsAt);
-        return String.format("%02d:%02d:%02d:%02d",
-        duration.toDaysPart(),
-                duration.toHoursPart(),
-                duration.toMinutesPart(),
-                duration.toSecondsPart());
+        Duration duration = Duration.between(startsAt, endsAt);
+        if (duration.toDays() > 0) {
+            return String.format("%d дни",
+                    duration.toDays());
+        } else {
+            return String.format("%02d часа и %02d минути",
+                    duration.toHours(),
+                    duration.toMinutesPart());
+        }
     }
 
     @Override

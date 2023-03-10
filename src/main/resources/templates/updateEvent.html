@@ -17,7 +17,7 @@
 </head>
 <body>
 
-<form th:action="@{/organisation/update-event}" th:object="${event}" method="POST">
+<form th:action="@{/organisation/update-event/{id}(id=${event.eventId})}" th:object="${event}" method="POST">
     <div class="container-fluid vh-100" style="margin-top:100px">
         <div class="rounded d-flex justify-content-center">
             <div class="col-md-4 col-sm-12 shadow-lg p-5 bg-light">
@@ -35,13 +35,15 @@
                     </div>
 
                     <div class="input-group mb-3">
-                        <input type="text" th:field="*{description}" class="form-control"
-                               placeholder="Подробно описание на събитието"  required title="Полето е задължително">
+                        <label for="description"></label>
+                        <textarea id="description" th:field="*{description}" class="form-control" rows="5" placeholder="Подробно описание на събитието:
+"  required title="Полето е задължително"></textarea>
                         <p style="color:red">*</p>
+                    </div>
                         <div th:if="${descriptionError != null}" class="alert alert-danger">
                             <p th:text="${descriptionError}" style="color: red;"></p>
                         </div>
-                    </div>
+
 
                     <div class="input-group mb-3">
                         <input type="url" th:field="*{linkToApplicationForm}" class="form-control"
@@ -52,8 +54,8 @@
                         </div>
                     </div>
                     <div>
-                        <label for="locations">Локации:(не е задължително да посочвате)</label>
-                        <select class="form-control" id="locations" name="locations" multiple>
+                        <label for="locations">Град:</label>
+                        <select class="form-control" id="locations" name="locations" >
                             <option th:each="location : ${locations}" th:value="${location}"
                                     th:text="${location}"></option>
                         </select>
@@ -69,7 +71,7 @@
                     <div class="input-group mb-3">
                         <label for="startsAt"></label>
                         <input class="form-control" type="datetime-local" id="startsAt" name="startsAt"
-                               th:field="*{startsAt}" step="1" placeholder="Дата на започване"  required title="Полето е задължително"/>
+                               th:field="*{startsAt}"  step="60" placeholder="Дата на започване" required title="Полето е задължително"/>
                         <p style="color:red">*</p>
                         <div th:if="${startsAtError != null}" class="alert alert-danger">
                             <p th:text="${startsAtError}" style="color: red;"></p>
@@ -78,7 +80,7 @@
                     <div class="input-group mb-3">
                         <label for="endsAt"></label>
                         <input class="form-control" type="datetime-local" id="endsAt" name="endsAt"
-                               th:field="*{endsAt}" step="1" placeholder="Дата на приключване"  required title="Полето е задължително"/>
+                               th:field="*{endsAt}"  step="60" placeholder="Дата на приключване" required title="Полето е задължително"/>
                         <p style="color:red">*</p>
                         <div th:if="${endsAtError != null}" class="alert alert-danger">
                             <p th:text="${endsAtError}" style="color: red;"></p>
@@ -144,6 +146,13 @@
         </div>
     </div>
 </form>
+<script>
+  var startsAtInput = document.getElementById("startsAt");
+  var endsAtInput = document.getElementById("endsAt");
+
+  startsAtInput.value = startsAtInput.getAttribute("value");
+  endsAtInput.value = endsAtInput.getAttribute("value");
+</script>
 
 </body>
 </html>

@@ -28,7 +28,7 @@
                         <input type="text" th:field="*{name}" class="form-control" placeholder="Име на организация"
                                required>
                         <p style="color:red">*</p>
-                        <div th:if="${name != null}" class="alert alert-danger">
+                        <div th:if="${name != null}" class="alert alert-danger" id="nameError">
                             <p th:text="${name}" style="color: red;"></p>
                         </div>
                     </div>
@@ -36,7 +36,7 @@
                     <div class="input-group mb-3">
                         <input type="email" th:field="*{email}" class="form-control" placeholder="Електронна поща" required>
                         <p style="color:red">*</p>
-                        <div th:if="${email != null}" class="alert alert-danger">
+                        <div th:if="${email != null}" class="alert alert-danger"  id="emailError">
                             <p th:text="${email}" style="color: red;"></p>
                         </div>
                     </div>
@@ -51,7 +51,7 @@
                         <input type="password" th:field="*{password}" class="form-control" placeholder="Парола"
                                required>
                         <p style="color:red">*</p>
-                        <div th:if="${password != null}" class="alert alert-danger">
+                        <div th:if="${password != null}" class="alert alert-danger" id="passwordError">
                             <p th:text="${password}" style="color: red;"></p>
                         </div>
                     </div>
@@ -116,3 +116,47 @@ body  {
 
 
 </style>
+<script th:inline="javascript">
+    setTimeout(function() {
+        var errorMessage = document.getElementById('errorMessage');
+        if (errorMessage) {
+            errorMessage.style.display = 'none';
+        }
+    }, 10000);
+
+
+                            </script>
+<script th:inline="javascript">
+    setTimeout(function() {
+        var errorMessage = document.getElementById('passwordError');
+        if (errorMessage) {
+            errorMessage.style.display = 'none';
+        }
+    }, 10000);
+
+
+                            </script>
+
+</script>
+<script th:inline="javascript">
+    setTimeout(function() {
+        var errorMessage = document.getElementById('emailError');
+        if (errorMessage) {
+            errorMessage.style.display = 'none';
+        }
+    }, 10000);
+
+
+                            </script>
+</script>
+<script th:inline="javascript">
+    setTimeout(function() {
+        var errorMessage = document.getElementById('nameError');
+        if (errorMessage) {
+            errorMessage.style.display = 'none';
+        }
+    }, 10000);
+
+
+                            </script>
+

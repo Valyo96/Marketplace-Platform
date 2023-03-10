@@ -22,6 +22,7 @@ public class EventToEventDtoMapper implements Function<Event, EventDTO> {
 
 
         return new EventDTO(event.getId(),
+                event.getOrganisation().getOrganisationName(),
                 categoryConverter.convertToString(event.getEventCategories()),
                 event.getName(),
                 event.getEntranceType(),

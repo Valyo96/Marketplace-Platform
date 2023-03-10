@@ -2,14 +2,19 @@ package com.platform.marketplace.Marketplace.Platform.utility.consts;
 
 public class ConstantMessages {
 
-    public static final String DATE_TIME_FORMAT = "dd-MM-yyyy hh:mm";
+    public static final String DATE_TIME_FORMAT = "dd-MM-yyyy HH:mm";
+
+    public static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
+
+    public static final String INVALID_DATE_TIME_FORMAT ="Невалидна дата. Моля въведете във формат ден/месец/година";
 
     public static final String EMAIL_ALREADY_TAKEN = "Имейлът е вече зает , моля опитайте с друг.";
 
-    public static final String EVENT_BY_NAME_NOT_FOUND = "Търсеното от вас събитие не отговаря или не съществува от подаденият текст";
+    public static final String EVENT_NOT_FOUND = "Няма намерени събития с посочените от вас изисквания";
 
     public static final String EMAIL_VALIDATION_MESSAGES = "Грешно въведена електронна поща. Трябва да е във формат \"<потребител>@<домейн>.<tld>\"";
-    public static final String ORGANISATION_NAME_VALIDATION_MESSAGES = "Невалидно потребителско име: трябва да е дълго поне 3 и максимум 50 знака, да започва с буква, да съдържа само букви, цифри, долна черта, тире и точка";
+    public static final String ORGANISATION_NAME_VALIDATION_MESSAGES = "Невалидно потребителско име: трябва да е дълго поне 3 и максимум 50 знака, да започва с буква, да съдържа само букви на кирилица, цифри, долна черта, тире и точка";
+    public static final String ADVANCED_SEARCH_NAME_INPUT_ERROR_MESSAGE ="Моля използвайте кирилица. Позволени са букви ,цифри , долна черта ,тире и точка.";
     public static final String PASSWORD_VALIDATION_MESSAGE = "Невалидна парола: трябва да е дълга поне 6 знака, да съдържа поне една цифра, един специален символ, една малка буква и една главна буква";
     public static final String NOT_AUTHORIZE_EXCEPTION_MESSAGE = "Нямате права за достъп!";
 
@@ -34,6 +39,7 @@ public class ConstantMessages {
     public static final String FIELD_MUST_NOT_BE_BLANK = "Полето е задължително";
 
     public static final String ONLY_CYRILLIC_ALLOWED = "Моля използвайте само кирилица.";
+
 
     public static final String LOCATION_SIZE_NOT_NULL = "Изберете локация за събитието";
 

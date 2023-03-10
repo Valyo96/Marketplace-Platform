@@ -180,8 +180,8 @@ public class OrganisationController {
         return "updateEvent";
     }
 
-    @PostMapping("update-event")
-    public ModelAndView updateEvent(@Valid EventDTO event,BindingResult bindingResult) {
+    @PostMapping("update-event/{id}")
+    public ModelAndView updateEvent(@PathVariable Long id,@Valid EventDTO event,BindingResult bindingResult) {
         String categoryError ="";
         String nameError = "";
         String descriptionError = "";
@@ -236,7 +236,7 @@ public class OrganisationController {
                     .addObject("addressError" , addressError)
                     .addObject("locations" , locationService.getAllLocations());
         }
-        loggedOrganisationService.updateEventByOrgIdAndEventId(event.getEventId());
+        loggedOrganisationService.updateEventByOrgIdAndEventId(id , event);
         return new ModelAndView("redirect:/organisation/event-management");
     }
 

@@ -28,20 +28,15 @@ public class AdminController {
     private final EventService eventService;
 
     @GetMapping("/organisations")
-    public String getAllOrgs( Model model , String errorMessage, HttpSession session){
+    public String getAllOrgs( Model model ,@ModelAttribute("errorMessage") String errorMessage, HttpSession session){
         List<Organisation> orgsByDate = (List<Organisation>) session.getAttribute("orgs");
         if(orgsByDate == null || orgsByDate.size() == 0){
-            errorMessage= (String) session.getAttribute("errorMessage");
-            session.removeAttribute("errorMessage");
             model.addAttribute("errorMessage" , errorMessage);
             model.addAttribute("orgs" , adminService.getAllOrganisations());
             return "admin";
         }
-       errorMessage= (String) session.getAttribute("errorMessage");
-        session.removeAttribute("errorMessage");
         model.addAttribute("errorMessage" , errorMessage);
             model.addAttribute("orgs" , orgsByDate);
-
         return "admin";
     }
 
@@ -69,20 +64,12 @@ public class AdminController {
     public ModelAndView deleteOrgStatus(@PathVariable("id") Long id , @RequestParam String password ){
         adminService.deleteOrganisationAccountById(id ,password);
         return new ModelAndView("redirect:/admin/organisations");
-    } //TODO: трябва да оправя в хтмл-а полето за въвеждане на парола
+    }
 
 
     @PostMapping("/deleteAllOrganisations")
     public ModelAndView deleteAllOrgs(@RequestParam String password , HttpSession session){
-        try{
             adminService.deleteAllAccounts(password);
-
-        }catch (Exception e) {
-            session.setAttribute("errorMessage" ,e.getMessage());
-            ModelAndView mav = new ModelAndView("redirect:/admin/organisations");
-            mav.addObject("errorMessage" , e.getMessage());
-            return mav;
-        }
         return new ModelAndView("redirect:/admin/organisations");
     }
 

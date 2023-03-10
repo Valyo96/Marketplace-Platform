@@ -4,7 +4,6 @@ import com.platform.marketplace.Marketplace.Platform.dto.EventDTO;
 import com.platform.marketplace.Marketplace.Platform.model.Event;
 import com.platform.marketplace.Marketplace.Platform.model.EventCategory;
 import com.platform.marketplace.Marketplace.Platform.model.Location;
-import com.platform.marketplace.Marketplace.Platform.service.event.EventCategoryService;
 import com.platform.marketplace.Marketplace.Platform.service.location.LocationService;
 import com.platform.marketplace.Marketplace.Platform.service.organisation.OrganisationService;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +23,6 @@ public class EventDtoToEventMapper implements Function<EventDTO, Event> {
 
     private final OrganisationService organisationService;
 
-    private final EventCategoryService eventCategoryService;
 
     private final EventCategoryConverter converter;
 
