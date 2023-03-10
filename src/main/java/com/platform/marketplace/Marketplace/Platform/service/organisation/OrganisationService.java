@@ -7,15 +7,12 @@ import com.platform.marketplace.Marketplace.Platform.service.user.UserService;
 import com.platform.marketplace.Marketplace.Platform.utility.exceptions.AlreadyExistException;
 import com.platform.marketplace.Marketplace.Platform.utility.exceptions.NotFoundException;
 import com.platform.marketplace.Marketplace.Platform.mapper.OrganisationRegDtoToOrganisationMapper;
-import com.platform.marketplace.Marketplace.Platform.model.Location;
 import com.platform.marketplace.Marketplace.Platform.model.Organisation;
 import com.platform.marketplace.Marketplace.Platform.model.User;
 import com.platform.marketplace.Marketplace.Platform.repository.EventRepository;
 import com.platform.marketplace.Marketplace.Platform.repository.OrganisationRepository;
 import com.platform.marketplace.Marketplace.Platform.utility.Utility;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -105,7 +102,7 @@ public class OrganisationService {
         List<Organisation> orgs = organisationRepository.findByIsEnabledFalseAndDisabledPeriodEquals(date);
         organisationRepository.deleteAll(orgs);
         orgs.stream().forEach(org -> {
-            userService.deleteUserByOrganizationId(org.getId());
+            userService.deleteUserById(org.getId());
         });
     }
 
@@ -122,7 +119,7 @@ public class OrganisationService {
         organisationRepository.deleteAll();
 
         orgs.stream().forEach(org -> {
-            userService.deleteUserByOrganizationId(org.getId());
+            userService.deleteUserById(org.getUser().getId());
         });
     }
 
