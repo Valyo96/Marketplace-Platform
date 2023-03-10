@@ -5,11 +5,13 @@ import com.platform.marketplace.Marketplace.Platform.service.event.EventService;
 import com.platform.marketplace.Marketplace.Platform.utility.consts.EntranceType;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
@@ -73,10 +75,9 @@ public class MenuController {
                                   @RequestParam(name = "entrance", required = false)String entrance,
                                   @RequestParam(name = "category", required = false)String category,
                                   @RequestParam(name = "keyword", required = false)String keyword,
-                                  @RequestParam(name = "date" , required = false)String date,
                                   HttpSession session) {
 
-        session.setAttribute("events", eventService.returnSpecificFilteredEvents(name, organisationName,address, location, entrance, category, keyword,date));
+        session.setAttribute("events", eventService.returnSpecificFilteredEvents(name, organisationName,address, location, entrance, category, keyword));
         return new ModelAndView("redirect:/menu");
     }
 

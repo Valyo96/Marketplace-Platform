@@ -49,9 +49,9 @@ public class Event {
     private LocalDateTime createdAt;
     @UpdateTimestamp
     private LocalDateTime updatedAt;
-    @DateTimeFormat(pattern = DATE_TIME_FORMAT)
+    @DateTimeFormat(pattern = DATE_TIME_FORMAT ,iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime startsAt;
-    @DateTimeFormat(pattern = DATE_TIME_FORMAT)
+    @DateTimeFormat(pattern = DATE_TIME_FORMAT , iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime endsAt;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_TIME_FORMAT, locale = "bg_BG")

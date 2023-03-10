@@ -66,13 +66,4 @@ public class Utility {
         return passwordEncoder.encode(password);
     }
 
-    public LocalDateTime parseStringToLocalDate(String date){
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        try{
-            LocalDateTime dateTime = LocalDateTime.parse(date, formatter);
-            return dateTime;
-        } catch (Exception e) {
-            throw new InvalidDateTimeFormatException(INVALID_DATE_TIME_FORMAT);
-        }
-    }
 }

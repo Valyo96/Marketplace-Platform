@@ -11,17 +11,19 @@ import com.platform.marketplace.Marketplace.Platform.utility.exceptions.NotFound
 import com.platform.marketplace.Marketplace.Platform.model.Event;
 import com.platform.marketplace.Marketplace.Platform.model.Organisation;
 import com.platform.marketplace.Marketplace.Platform.repository.EventRepository;
+import jakarta.persistence.criteria.Expression;
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.JoinType;
+import jakarta.persistence.criteria.Predicate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.platform.marketplace.Marketplace.Platform.utility.consts.ConstantMessages.*;
@@ -46,7 +48,7 @@ public class EventService {
 
     private final Utility validate;
 
-    public int eventCounter(List<EventDTO>events){
+    public int eventCounter(List<EventDTO> events) {
         return events.size();
     }
 
@@ -75,8 +77,8 @@ public class EventService {
     }
 
     public List<EventDTO> getAllInactiveEvents() {
-        if(eventRepository.findAllInactiveEvents() == null || eventRepository.findAllInactiveEvents().size()==0){
-            return Collections.emptyList();
+        if (eventRepository.findAllInactiveEvents() == null || eventRepository.findAllInactiveEvents().size() == 0) {
+            throw new NotFoundException("Няма намерени събития");
         }
         return convertToDtoList(eventRepository.findAllInactiveEvents());
     }
@@ -218,8 +220,8 @@ public class EventService {
         eventRepository.save(event);
     }
 
-    public List<EventDTO> returnSpecificFilteredEvents(String name, String organisationName, String address, String location, String entrance, String category, String keyword ,String date) {
-        List<EventDTO> events = convertToDtoList(eventRepository.findAll(filterEvents(name, organisationName, address, location, entrance, category, keyword ,date)));
+    public List<EventDTO> returnSpecificFilteredEvents(String name, String organisationName, String address, String location, String entrance, String category, String keyword) {
+        List<EventDTO> events = convertToDtoList(eventRepository.findAll(filterEvents(name, organisationName, address, location, entrance, category, keyword)));
         if (events.isEmpty() || events.size() == 0 || events == null) {
             throw new NotFoundException(EVENT_NOT_FOUND);
         } else {
@@ -228,15 +230,20 @@ public class EventService {
 
     }
 
-    public Specification<Event> filterEvents(String name, String organisationName, String address, String location, String entrance, String category, String keyword , String date) {
+    public Specification<Event> filterEvents(String name,
+                                             String organisationName,
+                                             String address,
+                                             String location,
+                                             String entrance,
+                                             String category,
+                                             String keyword) {
         return Specification.where(withName(name))
                 .and(withOrganisationName(organisationName))
                 .and(withAddress(address))
                 .and(withLocation(location))
                 .and(withEntrance(entrance))
                 .and(withCategory(category))
-                .and(withKeyword(keyword))
-                .and(withDate(date));
+                .and(withKeyword(keyword));
     }
 
     private Specification<Event> withName(String name) {
@@ -244,7 +251,9 @@ public class EventService {
             if (name == null) {
                 return null;
             }
-            return builder.like(root.get("name"), "%" + name + "%");
+            return builder.and(
+                    builder.like(root.get("name"), "%" + name + "%"),
+                    builder.isTrue(root.get("isEnabled")));
         };
     }
 
@@ -254,7 +263,9 @@ public class EventService {
                 return null;
             }
             Join<Event, Organisation> join = root.join("organisation", JoinType.INNER);
-            return builder.like(join.get("organisationName"), "%" + organisationName + "%");
+            return builder.and(
+                    builder.like(join.get("organisationName"), "%" + organisationName + "%"),
+                    builder.isTrue(root.get("isEnabled")));
         };
     }
 
@@ -263,7 +274,9 @@ public class EventService {
             if (address == null) {
                 return null;
             }
-            return builder.like(root.get("address"), "%" + address + "%");
+            return builder.and(
+                    builder.like(root.get("address"), "%" + address + "%"),
+                    builder.isTrue(root.get("isEnabled")));
         };
     }
 
@@ -273,7 +286,9 @@ public class EventService {
                 return null;
             }
             Join<Event, Location> join = root.join("locations", JoinType.INNER);
-            return builder.like(join.get("city"), "%" + location + "%");
+            return builder.and(
+                    builder.like(join.get("city"), "%" + location + "%"),
+                    builder.isTrue(root.get("isEnabled")));
         };
     }
 
@@ -282,7 +297,9 @@ public class EventService {
             if (entrance == null) {
                 return null;
             }
-            return builder.equal(root.get("entranceType"), EntranceType.valueOf(entrance));
+            return builder.and(
+                    builder.equal(root.get("entranceType"), EntranceType.valueOf(entrance)),
+                    builder.isTrue(root.get("isEnabled")));
         };
     }
 
@@ -292,7 +309,9 @@ public class EventService {
                 return null;
             }
             Join<Event, EventCategory> join = root.join("eventCategories", JoinType.INNER);
-            return builder.like(join.get("type"), "%" + category + "%");
+            return builder.and(
+                    builder.like(join.get("type"), "%" + category + "%"),
+                    builder.isTrue(root.get("isEnabled")));
         };
 
     }
@@ -302,17 +321,22 @@ public class EventService {
             if (keyword == null) {
                 return null;
             }
-            return builder.like(root.get("keyWords"), "%" + keyword + "%");
+            return builder.and(
+                    builder.like(root.get("keyWords"), "%" + keyword + "%"),
+                    builder.isTrue(root.get("isEnabled")));
         };
     }
 
-    private Specification<Event> withDate(String date) {
-        return (root, query, builder) -> {
-            if (date == null || date.equals("")) {
-                return null;
-            }
-            LocalDateTime parsedDate = validate.parseStringToLocalDate(date);
-            return builder.like(root.get("startsAt"), "%" + parsedDate + "%");
-        };
-    }
+//    private Specification<Event> withDateRange(String startDateTime, String endDateTime) {
+//        return (root, query, builder) -> {
+//            if (startDateTime == null || endDateTime == null) {
+//                return null;
+//            }
+//            Expression<Date> startsAtDate = builder.function("DATE", Date.class, root.get("startsAt"));
+//            Expression<Date> endsAtDate = builder.function("DATE", Date.class, root.get("endsAt"));
+//            Predicate startDatePredicate = builder.greaterThanOrEqualTo(startsAtDate, Date.valueOf(startDateTime.toLocalDate()));
+//            Predicate endDatePredicate = builder.lessThanOrEqualTo(endsAtDate, Date.valueOf(endDateTime.toLocalDate()));
+//            return builder.and(startDatePredicate, endDatePredicate);
+//        };
+//    }
 }

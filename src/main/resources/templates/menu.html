@@ -82,137 +82,148 @@
 
 
 
+
+
+
     </style>
 
 </head>
 <body>
-<p></p>
 <p>Брой намерени събития от търсеният от вас избор: <span th:text="${eventCounterFromSearchResults}"></span></p>
-    <h1>Търсачка</h1>
-    <button type="button" class="btn btn-primary mb-3" data-toggle="collapse" data-target="#data-search"
-            aria-expanded="false" aria-controls="data-search">Сортирай по дата</button>
+<h1>Търсачка</h1>
+<button type="button" class="btn btn-primary mb-3" data-toggle="collapse" data-target="#data-search"
+        aria-expanded="false" aria-controls="data-search">Сортирай по дата
+</button>
 
-    <div class="collapse" id="data-search">
-        <form method="post" th:action="@{filterByCreatedDate}">
-            <div class="form-group">
-                <label for="sortingOrderByCreatedDate">Сотрирай по дата на създаване:</label>
-                <select class="form-control" id="sortingOrderByCreatedDate" name="filter">
-                    <option value="asc">Най-нови</option>
-                    <option value="desc">Най-стари</option>
-                </select>
-            </div>
-            <button type="submit" class="btn btn-primary">Потвърди</button>
-        </form>
-        <form method="post" th:action="@{filterByStartDate}">
-            <div class="form-group">
-                <label for="sortingOrderByStartDate">Сортирай по начална дата на събитие:</label>
-                <select class="form-control" id="sortingOrderByStartDate" name="filter">
-                    <option value="asc">Възходящ ред</option>
-                    <option value="desc">Низходящ ред</option>
-                </select>
-            </div>
-            <button type="submit" class="btn btn-primary">Потвърди</button>
-        </form>
-        <form method="post" th:action="@{filterByEndDate}">
-            <div class="form-group">
-                <label for="sortingOrderByEndDate">Сортирай по крайна дата на събитие:</label>
-                <select class="form-control" id="sortingOrderByEndDate" name="filter">
-                    <option value="asc">Възходящ ред</option>
-                    <option value="desc">Низходящ ред</option>
-                </select>
-            </div>
-            <button type="submit" class="btn btn-primary">Потвърди</button>
-        </form>
-
-    </div>
-    <form method="post" th:action="@{/inactive}">
-        <!-- Button element -->
-        <button type="submit" class="btn btn-primary">Отминали събития</button>
+<div class="collapse" id="data-search">
+    <form method="post" th:action="@{filterByCreatedDate}">
+        <div class="form-group">
+            <label for="sortingOrderByCreatedDate">Сотрирай по дата на създаване:</label>
+            <select class="form-control" id="sortingOrderByCreatedDate" name="filter">
+                <option value="asc">Най-нови</option>
+                <option value="desc">Най-стари</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Потвърди</button>
     </form>
-    <button type="button" class="btn btn-primary mb-3" data-toggle="collapse" data-target="#advanced-search"
-            aria-expanded="false" aria-controls="advanced-search">
-        Разширено търсене
-    </button>
-    <div class="collapse" id="advanced-search">
-        <form method="post" th:action="@{/uniqueFilter}">
-            <div class="form-row">
-                <div class="form-group col-md-4">
-                    <label for="name">Име на събитието:</label>
-                    <input type="text" class="form-control form-control-sm" id="name" name="name" th:value="${name}">
-                </div>
-                <div class="form-group col-md-4">
-                    <label for="organisationName">Име на организатор:</label>
-                    <input type="text" class="form-control form-control-sm" id="organisationName"
-                           name="organisationName"
-                           th:value="${organisationName}">
-                </div>
-                <div class="form-group col-md-4">
-                    <label for="address">Адрес:</label>
-                    <input type="text" class="form-control form-control-sm" id="address" name="address"
-                           th:value="${address}">
-                </div>
-                <div class="form-group col-md-4">
-                    <label for="location">Град:</label>
-                    <input type="text" class="form-control form-control-sm" id="location" name="location"
-                           th:value="${location}">
-                </div>
+    <form method="post" th:action="@{filterByStartDate}">
+        <div class="form-group">
+            <label for="sortingOrderByStartDate">Сортирай по начална дата на събитие:</label>
+            <select class="form-control" id="sortingOrderByStartDate" name="filter">
+                <option value="asc">Възходящ ред</option>
+                <option value="desc">Низходящ ред</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Потвърди</button>
+    </form>
+    <form method="post" th:action="@{filterByEndDate}">
+        <div class="form-group">
+            <label for="sortingOrderByEndDate">Сортирай по крайна дата на събитие:</label>
+            <select class="form-control" id="sortingOrderByEndDate" name="filter">
+                <option value="asc">Възходящ ред</option>
+                <option value="desc">Низходящ ред</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Потвърди</button>
+    </form>
+
+</div>
+<form method="post" th:action="@{/inactive}">
+    <!-- Button element -->
+    <button type="submit" class="btn btn-primary">Отминали събития</button>
+</form>
+<button type="button" class="btn btn-primary mb-3" data-toggle="collapse" data-target="#advanced-search"
+        aria-expanded="false" aria-controls="advanced-search">
+    Разширено търсене
+</button>
+<div class="collapse" id="advanced-search">
+    <form method="post" th:action="@{/uniqueFilter}">
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <label for="name">Име на събитието:</label>
+                <input type="text" class="form-control form-control-sm" id="name" name="name" th:value="${name}">
             </div>
-            <div class="form-row">
-                <div class="form-group col-md-4">
-                    <label>Цена:</label>
-                    <div>
-                        <div class="form-check form-check-inline">
-                            <input type="checkbox" class="form-check-input" id="entrance-free" name="entrance"
-                                   value="FREE"
-                                   th:checked="${entrance == 'FREE'}">
-                            <label class="form-check-label" for="entrance-free">Безплатно</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input type="checkbox" class="form-check-input" id="entrance-paid" name="entrance"
-                                   value="PAID"
-                                   th:checked="${entrance == 'PAID'}">
-                            <label class="form-check-label" for="entrance-paid">Платено</label>
-                        </div>
+            <div class="form-group col-md-4">
+                <label for="organisationName">Име на организатор:</label>
+                <input type="text" class="form-control form-control-sm" id="organisationName"
+                       name="organisationName"
+                       th:value="${organisationName}">
+            </div>
+            <div class="form-group col-md-4">
+                <label for="address">Адрес:</label>
+                <input type="text" class="form-control form-control-sm" id="address" name="address"
+                       th:value="${address}">
+            </div>
+            <div class="form-group col-md-4">
+                <label for="location">Град:</label>
+                <input type="text" class="form-control form-control-sm" id="location" name="location"
+                       th:value="${location}">
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <label>Цена:</label>
+                <div>
+                    <div class="form-check form-check-inline">
+                        <input type="checkbox" class="form-check-input" id="entrance-free" name="entrance"
+                               value="FREE"
+                               th:checked="${entrance == 'FREE'}">
+                        <label class="form-check-label" for="entrance-free">Безплатно</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input type="checkbox" class="form-check-input" id="entrance-paid" name="entrance"
+                               value="PAID"
+                               th:checked="${entrance == 'PAID'}">
+                        <label class="form-check-label" for="entrance-paid">Платено</label>
                     </div>
                 </div>
-                <div class="form-group col-md-4">
-                    <label for="category">Категория на събитието:</label>
-                    <input type="text" class="form-control form-control-sm" id="category" name="category"
-                           th:value="${category}">
-                </div>
-                <div class="form-group col-md-4">
-                    <label for="keyword">Ключови думи:</label>
-                    <input type="text" class="form-control form-control-sm" id="keyword" name="keyword"
-                           th:value="${keyword}">
-                </div>
-                <div class="form-group col-md-4">
-                    <label for="date">По дата на започване:</label>
-                    <input type="text" class="form-control form-control-sm" id="date" name="date"
-                           th:value="${date}">
-                </div>
-                    <button type="submit" class="btn btn-primary">Търси</button>
-                    <button type="reset" class="btn btn-secondary">Изчисти</button>
-                </div>
             </div>
-        </form>
+            <div class="form-group col-md-4">
+                <label for="category">Категория на събитието:</label>
+                <input type="text" class="form-control form-control-sm" id="category" name="category"
+                       th:value="${category}">
+            </div>
+            <div class="form-group col-md-4">
+                <label for="keyword">Ключови думи:</label>
+                <input type="text" class="form-control form-control-sm" id="keyword" name="keyword"
+                       th:value="${keyword}">
+            </div>
+            <!--                <div class="form-group col-md-4">-->
+            <!--                    <label for="startDate">Начална дата:</label>-->
+            <!--                    <input type="date" class="form-control form-control-sm" id="startDate" name="startDate"-->
+            <!--                           value="${startDate}" placeholder="Select start date">-->
+            <!--                </div>-->
+            <!--                <div class="form-group col-md-4">-->
+            <!--                    <label for="endDate">Крайна дата:</label>-->
+            <!--                    <input type="date" class="form-control form-control-sm" id="endDate" name="endDate"-->
+            <!--                           value="${endDate}" placeholder="Select end date">-->
+            <!--                </div>-->
+            <button type="submit" class="btn btn-primary">Търси</button>
+            <button type="reset" class="btn btn-secondary">Изчисти</button>
+        </div>
+
+    </form>
+</div>
+
+
+<a th:href="@{/all-active-events}">View all active events</a>
+<div class="form-group">
+    <div th:if="${errorMessage}" id="errorMessage">
+        <p th:text="${errorMessage}" style="color: red;"></p>
     </div>
 </div>
 
-<div class="form-group">
-    <div th:if="${errorMessage}"   id="errorMessage">
-        <p th:text="${errorMessage}" style="color: red;"></p>
-    </div>
-
-    <script th:inline="javascript">
+<script th:inline="javascript">
     setTimeout(function() {
         var errorMessage = document.getElementById('errorMessage');
         if (errorMessage) {
             errorMessage.style.display = 'none';
         }
     }, 5000);
-</script>
 
-    <a th:href="@{/all-active-events}">View all active events</a>
+
+
+</script>
 
 <!-- iterate through each event -->
 <div class="event-wrapper">
@@ -223,28 +234,37 @@
                     <td th:text="${'Име: ' + event.name}" style="color: black;"></td>
                 </tr>
                 <tr>
-                    <td style="color: black;">Начална дата: <span th:text="${#temporals.format(event.startsAt, 'dd MMMM')}"></span> от <span th:text="${#temporals.format(event.startsAt, 'HH:mm')}"></span> часа.</td>
+                    <td style="color: black;">Начална дата: <span
+                            th:text="${#temporals.format(event.startsAt, 'dd MMMM')}"></span> от <span
+                            th:text="${#temporals.format(event.startsAt, 'HH:mm')}"></span> часа.
+                    </td>
                 </tr>
                 <tr th:if="${#temporals.format(event.startsAt, 'yyyyMMdd') != #temporals.format(event.endsAt, 'yyyyMMdd')}">
-                    <td style="color: black;">Крайна дата: <span th:text="${#temporals.format(event.endsAt, 'dd MMMM')}"></span> до <span th:text="${#temporals.format(event.endsAt, 'HH:mm')}"></span> часа.</td>
+                    <td style="color: black;">Крайна дата: <span
+                            th:text="${#temporals.format(event.endsAt, 'dd MMMM')}"></span> до <span
+                            th:text="${#temporals.format(event.endsAt, 'HH:mm')}"></span> часа.
+                    </td>
                 </tr>
                 <tr th:if="${#temporals.format(event.startsAt, 'yyyyMMdd') == #temporals.format(event.endsAt, 'yyyyMMdd')}">
-                    <td style="color: black;">Крайна дата: <span th:text="${#temporals.format(event.endsAt, 'dd MMMM')}"></span> до <span th:text="${#temporals.format(event.endsAt, 'HH:mm')}"></span> часа.</td>
+                    <td style="color: black;">Крайна дата: <span
+                            th:text="${#temporals.format(event.endsAt, 'dd MMMM')}"></span> до <span
+                            th:text="${#temporals.format(event.endsAt, 'HH:mm')}"></span> часа.
+                    </td>
                 </tr>
 
                 <tr>
-                      <td  style="display:inline-block" th:each="location : ${event.locations}"> <span th:text="*{'Град:' +location}" style="color: black;"></span></td></tr>
+                    <td style="display:inline-block" th:each="location : ${event.locations}"><span
+                            th:text="*{'Град:' +location}" style="color: black;"></span></td>
+                </tr>
 
                 <tr>
                     <td th:text="${'Организатор: ' + event.organisationName}" style="color: black;"></td>
                 </tr>
             </table>
-            <img th:src="${event.imageUrl}" alt="Event Image" >
+            <img th:src="${event.imageUrl}" alt="Event Image">
         </div>
     </a>
 </div>
-
-
 </body>
 </html>
 <script>
@@ -253,6 +273,9 @@
             responsive: true
         });
     });
+
+
+
 
 
 
