@@ -2,6 +2,8 @@ package com.platform.marketplace.Marketplace.Platform.service.organisation;
 
 import com.platform.marketplace.Marketplace.Platform.dto.OrganisationDTO;
 import com.platform.marketplace.Marketplace.Platform.dto.OrganisationUpdateDTO;
+import com.platform.marketplace.Marketplace.Platform.model.Event;
+import com.platform.marketplace.Marketplace.Platform.service.event.EventService;
 import com.platform.marketplace.Marketplace.Platform.service.location.LocationService;
 import com.platform.marketplace.Marketplace.Platform.service.user.UserService;
 import com.platform.marketplace.Marketplace.Platform.utility.exceptions.AlreadyExistException;
@@ -29,9 +31,6 @@ public class OrganisationService {
     private final UserService userService;
 
     private final EventRepository eventRepository;
-
-    private final LocationService locationService;
-
 
     private final Utility utility;
 
@@ -66,13 +65,13 @@ public class OrganisationService {
 
 
     public void registration(OrganisationDTO orgDto) {
-            Organisation org = mapper.apply(orgDto);
-            if (!utility.checkIfEmailExists(orgDto.getEmail()) && utility.passwordConfirmation(orgDto.getPassword(), orgDto.getConfirmPassword())) {
-                org.getUser().setPassword(utility.encodePassword(org.getUser().getPassword()));
-                userService.saveUser(org.getUser());
-                organisationRepository.save(org);
-                return;
-            }
+        Organisation org = mapper.apply(orgDto);
+        if (!utility.checkIfEmailExists(orgDto.getEmail()) && utility.passwordConfirmation(orgDto.getPassword(), orgDto.getConfirmPassword())) {
+            org.getUser().setPassword(utility.encodePassword(org.getUser().getPassword()));
+            userService.saveUser(org.getUser());
+            organisationRepository.save(org);
+            return;
+        }
 
         throw new AlreadyExistException(EMAIL_ALREADY_TAKEN);
 
@@ -94,9 +93,19 @@ public class OrganisationService {
 
 
     public void updateOrganisationStatus(Organisation organisation, boolean status) {
-        organisation.getUser().setEnabled(status);
-        userService.saveUser(organisation.getUser());
+        List<Event> events = eventRepository.findEventsByOrganisationId(organisation.getId());
+        if (!status) {
+            events.forEach(e -> e.setEnabled(false));
+        } else {
+            if (!organisation.getUser().isEnabled()) {
+                events.forEach(e -> e.setEnabled(true));
+            }
+        }
+            organisation.getUser().setEnabled(status);
+            eventRepository.saveAll(events);
+            userService.saveUser(organisation.getUser());
     }
+
 
     public void deleteOrganisationAccountsThatAreInactiveMoreThanSixMonths(LocalDateTime date) {
         List<Organisation> orgs = organisationRepository.findByIsEnabledFalseAndDisabledPeriodEquals(date);

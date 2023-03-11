@@ -46,6 +46,7 @@
         <th>Име на събитие</th>
         <th>Дата на започване</th>
         <th>Дата на приключване</th>
+        <th>Статус на одобрение</th>
         <th></th>
     </tr>
     </thead>
@@ -55,6 +56,7 @@
         <td th:text="${event.name}" class="event-name"></td>
         <td th:text="${#temporals.format(event.startsAt, 'dd.MM.yyyy hh:mm')}"></td>
         <td th:text="${#temporals.format(event.endsAt, 'dd.MM.yyyy hh:mm')}"></td>
+        <td th:text="${event.isEnabled} ? 'Разрешено' : 'Забранено'" ></td>
         <td>
             <a th:href="@{/organisation/event-details/{id}(id=${event.eventId})}">
                 <button type="button">

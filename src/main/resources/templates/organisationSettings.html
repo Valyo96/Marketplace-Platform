@@ -17,7 +17,7 @@
             <label class="control-label col-sm-2" for="name">Име на организация:</label>
             <div class="col-sm-10">
                 <input type="name" class="form-control" id="name" placeholder="Име на организация" name="name" th:value="${organisation.organisationName}" required>
-                <div th:if="${nameError != null}" class="alert alert-danger">
+                <div th:if="${nameError != null}" >
                     <p th:text="${nameError}" style="color: red;"></p>
                 </div>
             </div>
@@ -27,7 +27,7 @@
             <label class="control-label col-sm-2" for="pwd">Електронна поща:</label>
             <div class="col-sm-10">
                 <input type="email" class="form-control" id="pwd" placeholder="Електронна поща" name="email" th:value="${organisation.user.username}" required>
-                <div th:if="${emailError != null}" class="alert alert-danger">
+                <div th:if="${emailError != null}" >
                     <p th:text="${emailError}" style="color: red;"></p>
                 </div>
             </div>
@@ -58,7 +58,7 @@
             <label class="control-label col-sm-2" for="pass">Нова парола:</label>
             <div class="col-sm-10">
                 <input type="password" class="form-control" id="pass" placeholder="Нова парола" name="newPassword"  required>
-                <div th:if="${invalidPassword != null}" class="alert alert-danger">
+                <div th:if="${invalidPassword != null}" >
                     <p th:text="${invalidPassword}" style="color: red;"></p>
                 </div>
             </div>
@@ -97,7 +97,7 @@
             </div>
         </div>
     </form>
-    <div th:if="${errorMessage}" class="alert alert-danger">
+    <div th:if="${errorMessage}" >
         <p th:text="${errorMessage}" style="color: red;"></p>
     </div>
 </div>

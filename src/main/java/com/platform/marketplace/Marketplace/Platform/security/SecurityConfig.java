@@ -24,6 +24,7 @@ public class SecurityConfig {
         return http
                 .csrf().disable()
                 .authorizeHttpRequests().requestMatchers("/admin/**").hasAuthority("ADMIN")
+                .and().authorizeHttpRequests().requestMatchers("/organisation/**").hasAuthority("ORGANISATION")
                 .anyRequest().permitAll().and().formLogin().
                 loginPage("/login").defaultSuccessUrl("/menu" , true).permitAll().and().logout().
                 permitAll().and().build();

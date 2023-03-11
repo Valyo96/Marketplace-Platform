@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.URL;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.scheduling.annotation.Scheduled;
 
@@ -42,8 +43,9 @@ public class EventDTO {
     @NotBlank(message = FIELD_MUST_NOT_BE_BLANK)
     @Size(min =10 , max = 250 , message = DESCRIPTION_LENGTH_OUT_OF_BOUNDS)
     private String description;
-    @Pattern(regexp = URL_REGEX_PATTERN, message = INVALID_URL_MESSAGE)
+//    @Pattern(regexp = URL_REGEX_PATTERN, message = INVALID_URL_MESSAGE)
     @Nullable
+    @URL(message = INVALID_URL_MESSAGE)
     private String linkToApplicationForm;
     @Size(min = 1, message = LOCATION_SIZE_NOT_NULL)
     private List<String> locations;
@@ -62,7 +64,7 @@ public class EventDTO {
     @Nullable
     private String keywords;
     private String duration;
-   @Pattern(regexp =  IMAGE_URL_PATTERN , message = INVALID_URL_MESSAGE)
+    @URL(message = INVALID_URL_MESSAGE)
     private String imageUrl;
     private Long organisationId;
     private boolean isEnabled;
