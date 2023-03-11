@@ -1,5 +1,8 @@
 package com.platform.marketplace.Marketplace.Platform.security;
 
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -7,11 +10,14 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
+
+import java.io.IOException;
 
 @EnableWebSecurity
 @Configuration
@@ -26,10 +32,11 @@ public class SecurityConfig {
                 .authorizeHttpRequests().requestMatchers("/admin/**").hasAuthority("ADMIN")
                 .and().authorizeHttpRequests().requestMatchers("/organisation/**").hasAuthority("ORGANISATION")
                 .anyRequest().permitAll().and().formLogin().
-                loginPage("/login").defaultSuccessUrl("/menu" , true).permitAll().and().logout().
+                loginPage("/login").defaultSuccessUrl("/menu" , true).permitAll().and().logout().logoutSuccessUrl("/menu").
                 permitAll().and().build();
 
     }
+
 
     @Bean
     public UserDetailsService userDetailsService() {

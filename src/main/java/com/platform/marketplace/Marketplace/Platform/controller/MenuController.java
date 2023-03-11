@@ -28,6 +28,7 @@ public class MenuController {
         session.removeAttribute("events");
         if (events == null || events.size() == 0) {
             model.addAttribute("errorMessage" ,errorMessage);
+            model.addAttribute("events" , eventService.filterEventsByStartDate("desc"));
             return "menu";
         }
         model.addAttribute("events", events);

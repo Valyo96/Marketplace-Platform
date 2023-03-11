@@ -127,7 +127,6 @@
         <button type="submit" class="btn btn-primary">Потвърди</button>
     </form>
 </div>
-</div>
 <form method="post" th:action="@{/inactive}">
     <!-- Button element -->
     <button type="submit" class="btn btn-primary">Отминали събития</button>
@@ -206,7 +205,7 @@
 </div>
 
 
-<a th:href="@{/all-active-events}">View all active events</a>
+<a th:href="@{/all-active-events}">Вижте всички събития</a>
 <div class="form-group">
     <div th:if="${errorMessage}" id="errorMessage">
         <p th:text="${errorMessage}" style="color: red;"></p>

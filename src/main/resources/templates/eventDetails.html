@@ -33,7 +33,9 @@
             <a th:href="${event.linkToApplicationForm}" class="btn btn-primary">Линк към събитието</a>
             <li sec:authorize="hasAuthority('ORGANISATION')">
             <a th:href="@{/organisation/event-management}">
-                Назад</a></li>
+                Към управление на събития</a>
+                <a href="javascript:history.back()">Назад</a></li>
+
             <li sec:authorize="hasAuthority('ADMIN')">
                 <a href="javascript:history.back()">Назад</a>
             </li>

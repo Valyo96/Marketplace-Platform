@@ -1,7 +1,6 @@
 package com.platform.marketplace.Marketplace.Platform.controller;
 
 import com.platform.marketplace.Marketplace.Platform.dto.OrganisationDTO;
-import com.platform.marketplace.Marketplace.Platform.model.Organisation;
 import com.platform.marketplace.Marketplace.Platform.service.location.LocationService;
 import com.platform.marketplace.Marketplace.Platform.service.organisation.OrganisationService;
 import jakarta.validation.Valid;
@@ -11,12 +10,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.security.Principal;
 
 
 @Controller
@@ -29,14 +28,20 @@ public class AuthenticationController {
     private final LocationService locationService;
 
     @GetMapping("/login")
-    public String orgLogin() {
-
+    public String login(Principal principal) {
+        if(principal != null){
+            return "menu";
+        }
         return "loginForm";
     }
 
 
     @GetMapping("/register")
-    public String register(Model model ,@ModelAttribute("errorMessage") String errorMessage){
+    public String register(Model model ,@ModelAttribute("errorMessage") String errorMessage ,Principal principal){
+
+        if(principal!=null){
+            return "menu";
+        }
         model.addAttribute("org" , new OrganisationDTO());
         model.addAttribute("errorMessage" , errorMessage);
         model.addAttribute("locations" , locationService.getAllLocationsToString());
