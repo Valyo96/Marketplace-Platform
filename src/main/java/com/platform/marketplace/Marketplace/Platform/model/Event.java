@@ -3,13 +3,11 @@ package com.platform.marketplace.Marketplace.Platform.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.platform.marketplace.Marketplace.Platform.utility.consts.EntranceType;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.Duration;
@@ -63,7 +61,8 @@ public class Event {
 
     private String keyWords;
 
-    private String imageUrl;
+    @Lob
+    private byte[] image;
 
     private boolean isEnabled;
     private boolean isExpired;
@@ -76,7 +75,7 @@ public class Event {
     @JoinColumn(name = "organisation_id")
     private Organisation organisation;
 
-    public Event(Set<EventCategory> eventCategories , String name, EntranceType entranceType , String description, String linkToApplicationForm, List<Location> locations, String address, LocalDateTime startsAt, LocalDateTime endsAt, String keyWords,String imageUrl ,Organisation organisation) {
+    public Event(Set<EventCategory> eventCategories , String name, EntranceType entranceType , String description, String linkToApplicationForm, List<Location> locations, String address, LocalDateTime startsAt, LocalDateTime endsAt, String keyWords, byte[] image, Organisation organisation) {
         this.eventCategories = eventCategories;
         this.name = name;
         this.entranceType = entranceType;
@@ -90,7 +89,7 @@ public class Event {
         this.keyWords = keyWords;
         this.isEnabled = true;
         this.isExpired = false;
-        this.imageUrl = imageUrl;
+        this.image = image;
         this.organisation = organisation;
     }
 

@@ -146,8 +146,8 @@ public class OrganisationController {
             if(bindingResult.hasFieldErrors("keywords")){
                 keywordsError = bindingResult.getFieldError("keywords").getDefaultMessage();
             }
-            if(bindingResult.hasFieldErrors("imageUrl")){
-                imageError = bindingResult.getFieldError("imageUrl").getDefaultMessage();
+            if(bindingResult.hasFieldErrors("imagePath")){
+                imageError = bindingResult.getFieldError("imagePath").getDefaultMessage();
             }
             if(bindingResult.hasFieldErrors("address")){
                 addressError = bindingResult.getFieldError("address").getDefaultMessage();

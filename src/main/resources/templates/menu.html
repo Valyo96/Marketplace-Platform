@@ -261,7 +261,9 @@
                     <td th:text="${'Организатор: ' + event.organisationName}" style="color: black;"></td>
                 </tr>
             </table>
-            <img th:src="${event.imageUrl}" alt="Event Image">
+
+            <img th:src="@{${'data:image/*;base64,' + event.imageDataUrl}}">
+
         </div>
     </a>
 </div>
@@ -273,12 +275,6 @@
             responsive: true
         });
     });
-
-
-
-
-
-
 </script>
 
 

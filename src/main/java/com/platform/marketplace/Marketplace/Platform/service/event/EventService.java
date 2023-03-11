@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -47,6 +48,11 @@ public class EventService {
     private final EventCategoryConverter converter;
 
     private final SpecificationEventFilter specificationEventFilter;
+
+    public String displayImageOfEvent(Long id){
+        Event event = getEventById(id);
+        return "data:image/jpeg;base64," + Base64.getEncoder().encodeToString(event.getImage());
+    }
 
 
     public int eventCounter(List<EventDTO> events) {

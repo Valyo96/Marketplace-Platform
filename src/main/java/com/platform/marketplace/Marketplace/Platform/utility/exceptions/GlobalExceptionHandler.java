@@ -9,7 +9,13 @@ import org.springframework.web.servlet.ModelAndView;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-        @ExceptionHandler({AlreadyExistException.class , NotAuthorizeException.class , NotFoundException.class,WrongPasswordException.class , BadCredentialsException.class , InvalidDateTimeFormatException.class})
+        @ExceptionHandler({AlreadyExistException.class ,
+                NotAuthorizeException.class ,
+                NotFoundException.class,
+                WrongPasswordException.class ,
+                BadCredentialsException.class ,
+                InvalidDateTimeFormatException.class ,
+                InvalidDateTimeFormatException.class})
         public ModelAndView handleException(Exception ex , HttpServletRequest request) {
             ModelAndView mav = new ModelAndView();
             mav.setViewName("redirect:" + request.getHeader("Referer"));

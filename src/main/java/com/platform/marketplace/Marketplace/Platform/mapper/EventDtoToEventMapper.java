@@ -4,6 +4,7 @@ import com.platform.marketplace.Marketplace.Platform.dto.EventDTO;
 import com.platform.marketplace.Marketplace.Platform.model.Event;
 import com.platform.marketplace.Marketplace.Platform.model.EventCategory;
 import com.platform.marketplace.Marketplace.Platform.model.Location;
+import com.platform.marketplace.Marketplace.Platform.service.image.ImageConvertor;
 import com.platform.marketplace.Marketplace.Platform.service.location.LocationService;
 import com.platform.marketplace.Marketplace.Platform.service.organisation.OrganisationService;
 import lombok.RequiredArgsConstructor;
@@ -26,12 +27,14 @@ public class EventDtoToEventMapper implements Function<EventDTO, Event> {
 
     private final EventCategoryConverter converter;
 
+    private final ImageConvertor imageConvertor;
+
     @Override
     public Event apply(EventDTO eventDTO) {
         List<Location> cities = locationService.findLocationsByValues(eventDTO.getLocations());
         Set<EventCategory> categories = converter.convertToEventCategories(eventDTO.getEventCategories());
-
-        return new Event( categories,
+        byte[] imageBytes = imageConvertor.convertMultipartToByteArray(eventDTO);
+        return new Event(categories,
                 eventDTO.getName(),
                 eventDTO.getEntranceType(),
                 eventDTO.getDescription(),
@@ -41,7 +44,7 @@ public class EventDtoToEventMapper implements Function<EventDTO, Event> {
                 eventDTO.getStartsAt(),
                 eventDTO.getEndsAt(),
                 eventDTO.getKeywords(),
-                eventDTO.getImageUrl(),
+                imageBytes,
                 organisationService.findOrganisationById(eventDTO.getOrganisationId()));
     }
 }
