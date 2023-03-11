@@ -63,7 +63,7 @@ public class Event {
 
     @Lob
     private byte[] image;
-    @Column(columnDefinition = "TEXT")
+    @Column(columnDefinition = "TEXT" , length = 1000000000)
     private String imageDataUrl;
     private boolean isEnabled;
     private boolean isExpired;
