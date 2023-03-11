@@ -1,8 +1,10 @@
 package com.platform.marketplace.Marketplace.Platform.dto;
 
 import com.platform.marketplace.Marketplace.Platform.utility.annotations.FutureDateTime;
+import com.platform.marketplace.Marketplace.Platform.utility.annotations.NotEmptyFile;
 import com.platform.marketplace.Marketplace.Platform.utility.consts.EntranceType;
 import jakarta.annotation.Nullable;
+import jakarta.persistence.Transient;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -14,6 +16,7 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.URL;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -64,13 +67,15 @@ public class EventDTO {
     @Nullable
     private String keywords;
     private String duration;
-    @URL(message = INVALID_URL_MESSAGE)
-    private String imageUrl;
+    @Transient
+    @NotEmptyFile
+    private MultipartFile imagePath;
+    private String imageDataUrl;
     private Long organisationId;
     private boolean isEnabled;
     private String counter;
 
-    public EventDTO(Long eventId,String organisationName ,String eventCategories, String name, EntranceType entranceType, String description, String linkToApplicationForm, List<String> locations, String address,LocalDateTime startsAt, LocalDateTime endsAt, String keywords, boolean isEnabled,String imageUrl ,Long orgId) {
+    public EventDTO(Long eventId, String organisationName , String eventCategories, String name, EntranceType entranceType, String description, String linkToApplicationForm, List<String> locations, String address, LocalDateTime startsAt, LocalDateTime endsAt, String keywords,String imageDataUrl ,boolean isEnabled, Long orgId) {
         this.eventId = eventId;
         this.organisationName = organisationName;
         this.eventCategories = eventCategories;
@@ -84,8 +89,8 @@ public class EventDTO {
         this.endsAt = endsAt;
         this.keywords = keywords;
         this.duration = setDuration();
-        this.imageUrl = imageUrl;
         this.counter = setCounter();
+        this.imageDataUrl = imageDataUrl;
         this.isEnabled = isEnabled;
         this.organisationId = orgId;
     }
@@ -125,19 +130,5 @@ public class EventDTO {
         }
     }
 
-    @Override
-    public String toString() {
-        return
-                "Име на събитието:" + name + '\'' +
-                "Вход: " + entranceType +
-                "Описание: " + description + '\'' +
-                "Линк към сайт: " + linkToApplicationForm + '\'' +
-                "Локации:" + locations +
-                "Ще се състои на:" + startsAt +
-                "Ще свърши на:" + endsAt +
-                "Ключови думи: " + keywords + '\'' +
-                "Времетраене: " + duration + '\'' +
-                "Организирано от: " + organisationId +
-                "Брояч до започване: " + counter;
-    }
+
 }

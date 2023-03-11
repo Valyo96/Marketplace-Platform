@@ -20,6 +20,11 @@ public class MenuController {
 
     private final EventService eventService;
 
+    @GetMapping("/login1")
+    public String hm(){
+        return "login";
+    }
+
 
 
     @GetMapping("/menu")

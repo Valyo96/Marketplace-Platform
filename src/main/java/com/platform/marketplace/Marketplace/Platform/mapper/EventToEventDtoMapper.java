@@ -2,6 +2,7 @@ package com.platform.marketplace.Marketplace.Platform.mapper;
 
 import com.platform.marketplace.Marketplace.Platform.dto.EventDTO;
 import com.platform.marketplace.Marketplace.Platform.model.Event;
+import com.platform.marketplace.Marketplace.Platform.service.image.ImageConvertor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -17,10 +18,10 @@ public class EventToEventDtoMapper implements Function<Event, EventDTO> {
 
 
 
+
+
     @Override
     public EventDTO apply(Event event) {
-
-
         return new EventDTO(event.getId(),
                 event.getOrganisation().getOrganisationName(),
                 categoryConverter.convertToString(event.getEventCategories()),
@@ -33,8 +34,8 @@ public class EventToEventDtoMapper implements Function<Event, EventDTO> {
                 event.getStartsAt(),
                 event.getEndsAt(),
                 event.getKeyWords(),
+                event.getImageDataUrl(),
                 event.isEnabled(),
-                event.getImageUrl(),
                 event.getOrganisation().getId());
     }
 }

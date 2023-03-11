@@ -52,4 +52,8 @@ public class ConstantMessages {
     public static final String EVENT_BY_ID_NOT_FOUND = "Търсеното от вас събитие не съществува";
 
     public static final String DESCRIPTION_LENGTH_OUT_OF_BOUNDS = "Описанието трябва да съдържа от 10 до 250 символа";
+
+    public static final String IMAGE_CONVERTER_FAILED_EXCEPTION_MESSAGE = "Възникна проблем при обработването на качването на снимката. Моля опитайте отново";
+
+    public static final String FILE_EMPTY_EXCEPTION_MESSAGE = "Моля прикачете снимков файл";
 }
