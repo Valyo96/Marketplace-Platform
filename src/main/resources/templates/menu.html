@@ -262,7 +262,7 @@
                 </tr>
             </table>
 
-            <img th:src="@{${'data:image/*;base64,' + event.imageDataUrl}}">
+            <img th:src="@{'data:image/JPG;base64,'+${event.imageDataUrl}}">
 
         </div>
     </a>

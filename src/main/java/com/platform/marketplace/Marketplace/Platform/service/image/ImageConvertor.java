@@ -23,8 +23,7 @@ public class ImageConvertor {
         }
     }
 
-    public String convertByteToString(Event event){
-        byte[] imageBytes = event.getImage();
+    public String convertByteToString(byte[] imageBytes){
         return Base64.getEncoder().encodeToString(imageBytes);
     }
 

@@ -63,7 +63,8 @@ public class Event {
 
     @Lob
     private byte[] image;
-
+    @Column(columnDefinition = "TEXT")
+    private String imageDataUrl;
     private boolean isEnabled;
     private boolean isExpired;
 
@@ -75,7 +76,7 @@ public class Event {
     @JoinColumn(name = "organisation_id")
     private Organisation organisation;
 
-    public Event(Set<EventCategory> eventCategories , String name, EntranceType entranceType , String description, String linkToApplicationForm, List<Location> locations, String address, LocalDateTime startsAt, LocalDateTime endsAt, String keyWords, byte[] image, Organisation organisation) {
+    public Event(Set<EventCategory> eventCategories , String name, EntranceType entranceType , String description, String linkToApplicationForm, List<Location> locations, String address, LocalDateTime startsAt, LocalDateTime endsAt, String keyWords, byte[] image,String imageDataUrl ,Organisation organisation) {
         this.eventCategories = eventCategories;
         this.name = name;
         this.entranceType = entranceType;
@@ -90,6 +91,7 @@ public class Event {
         this.isEnabled = true;
         this.isExpired = false;
         this.image = image;
+        this.imageDataUrl = imageDataUrl;
         this.organisation = organisation;
     }
 

@@ -34,6 +34,8 @@ public class EventDtoToEventMapper implements Function<EventDTO, Event> {
         List<Location> cities = locationService.findLocationsByValues(eventDTO.getLocations());
         Set<EventCategory> categories = converter.convertToEventCategories(eventDTO.getEventCategories());
         byte[] imageBytes = imageConvertor.convertMultipartToByteArray(eventDTO);
+        String imageDataUrl = imageConvertor.convertByteToString(imageBytes);
+
         return new Event(categories,
                 eventDTO.getName(),
                 eventDTO.getEntranceType(),
@@ -45,6 +47,7 @@ public class EventDtoToEventMapper implements Function<EventDTO, Event> {
                 eventDTO.getEndsAt(),
                 eventDTO.getKeywords(),
                 imageBytes,
+                imageDataUrl,
                 organisationService.findOrganisationById(eventDTO.getOrganisationId()));
     }
 }

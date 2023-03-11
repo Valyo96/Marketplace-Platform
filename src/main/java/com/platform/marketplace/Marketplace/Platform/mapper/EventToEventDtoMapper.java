@@ -16,13 +16,12 @@ public class EventToEventDtoMapper implements Function<Event, EventDTO> {
 
     private final EventCategoryConverter categoryConverter;
 
-    private final ImageConvertor imageConverter;
+
 
 
 
     @Override
     public EventDTO apply(Event event) {
-        String imageData = imageConverter.convertByteToString(event);
         return new EventDTO(event.getId(),
                 event.getOrganisation().getOrganisationName(),
                 categoryConverter.convertToString(event.getEventCategories()),
@@ -35,7 +34,7 @@ public class EventToEventDtoMapper implements Function<Event, EventDTO> {
                 event.getStartsAt(),
                 event.getEndsAt(),
                 event.getKeyWords(),
-                imageData,
+                event.getImageDataUrl(),
                 event.isEnabled(),
                 event.getOrganisation().getId());
     }
