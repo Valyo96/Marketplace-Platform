@@ -82,13 +82,13 @@ public class AdminController {
     }
 
     @PostMapping("/delete-organisation-event/{id}")
-    public ModelAndView deleteEvent(@PathVariable Long id , @RequestParam String previousUrl){
+    public ModelAndView deleteEvent(@PathVariable Long id , @RequestParam(required = false) String previousUrl){
         adminService.deleteEventByOrgId(id);
         return new ModelAndView("redirect:/"+previousUrl);
     }
 
     @PostMapping("/update-event-status/{id}")
-    public ModelAndView updateEventStatus(@PathVariable Long id , @RequestParam boolean status , @RequestParam String previousUrl){
+    public ModelAndView updateEventStatus(@PathVariable Long id , @RequestParam boolean status , @RequestParam(required = false) String previousUrl){
         eventService.setIsEnabledEventField(id, status);
         return new ModelAndView("redirect:/"+previousUrl);
     }

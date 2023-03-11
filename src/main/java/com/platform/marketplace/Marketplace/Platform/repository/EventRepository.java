@@ -81,5 +81,6 @@ public interface EventRepository extends JpaRepository<Event , Long> , JpaSpecif
 
 
     //заявки за админ
-
+    @Query("SELECT e FROM Event e WHERE e.isEnabled = false")
+    List<Event> getDisabledEvents();
 }

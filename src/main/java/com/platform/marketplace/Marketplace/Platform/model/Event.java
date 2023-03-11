@@ -3,11 +3,13 @@ package com.platform.marketplace.Marketplace.Platform.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.platform.marketplace.Marketplace.Platform.utility.consts.EntranceType;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.Duration;
@@ -38,6 +40,7 @@ public class Event {
     @ManyToMany
     @JoinTable(name = "eventId_eventCategoryId")
     private Set<EventCategory> eventCategories;
+    @Column(columnDefinition = "TEXT")
     private String linkToApplicationForm;
     @ManyToMany
     @JoinColumn(name = "organisations_location")

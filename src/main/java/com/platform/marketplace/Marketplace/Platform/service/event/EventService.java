@@ -100,6 +100,7 @@ public class EventService {
         return convertToDtoList(eventRepository.findEventsByOrganisationId(id));
     }
 
+
     public List<EventDTO> findEventsByAddress(String address) {
         return convertToDtoList(eventRepository.findEventsByAddress(address));
     }

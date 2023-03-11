@@ -30,7 +30,7 @@ public class ConstantMessages {
 
     public static final String LENGTH_TOO_SMALL = "Името трябва да съдържа поне 3 символа";
 
-    public static final String INVALID_URL_MESSAGE = "Невалиден линк.";
+    public static final String INVALID_URL_MESSAGE = "Моля попълнете полето с валиден уеб адрес.";
 
     public static final String PASSWORDS_NOT_MATCHING_MESSAGE = "Паролите не съвпадат.";
 

@@ -61,12 +61,12 @@
             </form>
             <form  th:action="@{/admin/update-event-status/{id}(id=${event.eventId})}" method="post">
                 <input type="hidden" name="previousUrl" th:value="${previousUrl}" />
-                <label for="status">Смени статуса на:</label>
+                <label for="status">Статус:</label>
                 <select name="status" id="status">
-                    <option value="true" th:selected="${event.isEnabled}">Активен</option>
-                    <option value="false" th:selected="${!event.isEnabled}">Неактивен</option>
+                    <option value="true" th:selected="${event.isEnabled}">Одобрен</option>
+                    <option value="false" th:selected="${!event.isEnabled}">Забранен</option>
                 </select>
-                <button class="btn btn-link nav-link" type="submit">ОБНОВИ</button>
+                <button class="btn btn-link nav-link" type="submit">ЗАПИШИ</button>
             </form>
         </td>
     </tr>
