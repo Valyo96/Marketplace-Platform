@@ -4,6 +4,7 @@ import com.platform.marketplace.Marketplace.Platform.dto.EventDTO;
 import com.platform.marketplace.Marketplace.Platform.mapper.*;
 import com.platform.marketplace.Marketplace.Platform.model.EventCategory;
 import com.platform.marketplace.Marketplace.Platform.model.Location;
+import com.platform.marketplace.Marketplace.Platform.service.image.ImageConvertor;
 import com.platform.marketplace.Marketplace.Platform.service.location.LocationService;
 import com.platform.marketplace.Marketplace.Platform.utility.Utility;
 import com.platform.marketplace.Marketplace.Platform.utility.consts.EntranceType;
@@ -49,10 +50,7 @@ public class EventService {
 
     private final SpecificationEventFilter specificationEventFilter;
 
-    public String displayImageOfEvent(Long id){
-        Event event = getEventById(id);
-        return "data:image/jpeg;base64," + Base64.getEncoder().encodeToString(event.getImage());
-    }
+    private final ImageConvertor imageConvertor;
 
 
     public int eventCounter(List<EventDTO> events) {
@@ -224,6 +222,8 @@ public class EventService {
         event.setLocations(locations);
         event.setStartsAt(eventDTO.getStartsAt());
         event.setEndsAt(eventDTO.getEndsAt());
+        event.setImage(imageConvertor.convertMultipartToByteArray(eventDTO));
+        event.setImageDataUrl(imageConvertor.convertByteToString(event.getImage()));
         event.setKeyWords(eventDTO.getKeywords());
         eventRepository.save(event);
     }

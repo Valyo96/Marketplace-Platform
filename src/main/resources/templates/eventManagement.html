@@ -51,63 +51,47 @@
     </tr>
     </thead>
     <tbody id="events" name="events">
-    <tr  th:each="event : ${events}">
-        <td th:text="${event.eventId}" ></td>
+    <tr th:each="event : ${events}">
+        <td th:text="${event.eventId}"></td>
         <td th:text="${event.name}" class="event-name"></td>
         <td th:text="${#temporals.format(event.startsAt, 'dd.MM.yyyy hh:mm')}"></td>
         <td th:text="${#temporals.format(event.endsAt, 'dd.MM.yyyy hh:mm')}"></td>
-        <td th:text="${event.isEnabled} ? 'Разрешено' : 'Забранено'" ></td>
+        <td th:text="${event.isEnabled} ? 'Разрешено' : 'Забранено'"></td>
         <td>
-            <a th:href="@{/organisation/event-details/{id}(id=${event.eventId})}">
-                <button type="button">
-                    Подробности
-                </button>
-            </a>
-            <a th:href="@{/organisation/update-event/{id}(id=${event.eventId})}">
-                <button type="button">
-                   Редактирай
-                </button>
-            </a>
-<!--            <form th:action="@{/organisation/event/{id}/edit(id=${event.eventId})}" methods="post">Редактирай</form>-->
-            <form th:action="@{/organisation/delete-event/{id}(id=${event.eventId})}" method="POST">
+            <a th:href="@{/organisation/event-details/{id}(id=${event.eventId})}"><button type="button">Подробности</button></a> <a th:href="@{/organisation/update-event/{id}(id=${event.eventId})}"><button type="button">Редактирай</button></a> <!--            <form th:action="@{/organisation/event/{id}/edit(id=${event.eventId})}" methods="post">Редактирай</form>-->
+            <form th:action="@{/organisation/delete-event/{id}(id=${event.eventId})}" method="post">
                 <!-- Delete button with Bootstrap modal confirmation -->
-                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
-                <div th:if="${errorMessage}" >
+                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">Изтрий</button>
+                <div th:if="${errorMessage}">
                     <p th:text="${errorMessage}"></p>
                 </div>
                 <script th:inline="javascript">
-    setTimeout(function() {
-        var errorMessage = document.getElementById('errorMessage');
-        if (errorMessage) {
+          setTimeout(function() {
+          var errorMessage = document.getElementById('errorMessage');
+          if (errorMessage) {
             errorMessage.style.display = 'none';
-        }
-    }, 5000);
-</script>
-
-                <!-- Bootstrap modal confirmation dialog -->
+          }
+          }, 5000);
+          </script> <!-- Bootstrap modal confirmation dialog -->
                 <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="deleteModalLabel">Потвърждение за изтриване</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <p>Сигурни ли сте , че искате да изтриете събитието?</p>
                                 <div class="mb-3">
-                                    <label for="password" class="form-label">Въведете парола за сигурност:</label>
-                                    <input type="password" class="form-control" id="password" name="password" required>
+                                    <label for="password" class="form-label">Въведете парола за сигурност:</label> <input type="password" class="form-control" id="password" name="password" required="">
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Откажи</button>
-                                <button type="submit" class="btn btn-danger">Изтрий</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Откажи</button> <button type="submit" class="btn btn-danger">Изтрий</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </form>
-
         </td>
     </tr>
     </tbody>

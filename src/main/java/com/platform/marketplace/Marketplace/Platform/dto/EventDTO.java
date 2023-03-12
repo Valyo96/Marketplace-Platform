@@ -53,6 +53,7 @@ public class EventDTO {
     @Size(min = 1, message = LOCATION_SIZE_NOT_NULL)
     private List<String> locations;
     @Nullable
+    @Size(min = 0)
     @Pattern(regexp = CYRILLIC_AND_SYMBOLS_ADDRESS_DESCRIPTION_PATTERN, message =ONLY_CYRILLIC_ALLOWED)
     private String address;
     @DateTimeFormat(pattern = DATE_TIME_FORMAT)

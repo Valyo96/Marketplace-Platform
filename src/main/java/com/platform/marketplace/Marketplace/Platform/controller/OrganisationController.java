@@ -181,7 +181,7 @@ public class OrganisationController {
     }
 
     @PostMapping("update-event/{id}")
-    public ModelAndView updateEvent(@PathVariable Long id,@Valid EventDTO event,BindingResult bindingResult) {
+    public ModelAndView updateEvent(@PathVariable Long id,@Valid EventDTO event,BindingResult bindingResult ) {
         String categoryError ="";
         String nameError = "";
         String descriptionError = "";
@@ -192,6 +192,7 @@ public class OrganisationController {
         String keywordsError="";
         String imageError = "";
         String addressError ="";
+        event.setEventId(id);
         if(bindingResult.hasErrors()){
             if(bindingResult.hasFieldErrors("eventCategories")){
                 categoryError = bindingResult.getFieldError("eventCategories").getDefaultMessage();
@@ -217,8 +218,8 @@ public class OrganisationController {
             if(bindingResult.hasFieldErrors("keywords")){
                 keywordsError = bindingResult.getFieldError("keywords").getDefaultMessage();
             }
-            if(bindingResult.hasFieldErrors("imageUrl")){
-                imageError = bindingResult.getFieldError("imageUrl").getDefaultMessage();
+            if(bindingResult.hasFieldErrors("imagePath")){
+                imageError = bindingResult.getFieldError("imagePath").getDefaultMessage();
             }
             if(bindingResult.hasFieldErrors("address")){
                 addressError = bindingResult.getFieldError("address").getDefaultMessage();
@@ -241,7 +242,7 @@ public class OrganisationController {
     }
 
     @PostMapping("delete-event/{id}")
-    public ModelAndView deleteEvent(@PathVariable Long id ,@RequestParam String password ){
+    public ModelAndView deleteEvent(@PathVariable(name = "id") Long id ,@RequestParam String password ){
         loggedOrganisationService.deleteEventPermanent(id , password);
         return new ModelAndView("redirect:/organisation/event-management");
     }

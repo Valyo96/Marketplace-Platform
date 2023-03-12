@@ -10,7 +10,7 @@
 <div class="container mt-5">
     <div class="row">
         <div class="col-md-6">
-            <img th:src="${event.imagePath}" class="img-fluid" alt="Event Image">
+            <img th:src="@{'data:image/JPG;base64,'+${event.imageDataUrl}}" alt="Event Image" style="height: 550px; width: 540px;">
         </div>
         <div class="col-md-6">
             <h2 th:text="${event.name}"></h2>
@@ -32,8 +32,8 @@
             </ul>
             <a th:href="${event.linkToApplicationForm}" class="btn btn-primary">Линк към събитието</a>
             <li sec:authorize="hasAuthority('ORGANISATION')">
-            <a th:href="@{/organisation/event-management}">
-                Към управление на събития</a>
+                <a th:href="@{/organisation/event-management}">
+                    Към управление на събития</a>
                 <a href="javascript:history.back()">Назад</a></li>
 
             <li sec:authorize="hasAuthority('ADMIN')">
@@ -45,6 +45,7 @@
         </div>
     </div>
 </div>
+
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"></script>
