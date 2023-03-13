@@ -14,7 +14,7 @@ public class EventCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @Column
     private String type;
 
     public EventCategory(String type) {

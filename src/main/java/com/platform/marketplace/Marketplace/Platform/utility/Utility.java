@@ -24,6 +24,13 @@ public class Utility {
     private final UserService userService;
     private final BCryptPasswordEncoder passwordEncoder;
 
+    private UserService getUserService() {
+        return userService;
+    }
+
+    private BCryptPasswordEncoder getPasswordEncoder() {
+        return passwordEncoder;
+    }
 
     public boolean checkIfEmailExists(String email) {
         if (userService.getUserByEmail(email) != null) {
