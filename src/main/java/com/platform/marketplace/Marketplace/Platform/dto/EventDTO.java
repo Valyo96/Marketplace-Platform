@@ -1,6 +1,7 @@
 package com.platform.marketplace.Marketplace.Platform.dto;
 
-import com.platform.marketplace.Marketplace.Platform.utility.annotations.FutureDateTime;
+import com.platform.marketplace.Marketplace.Platform.utility.annotations.FutureEndDateTime;
+import com.platform.marketplace.Marketplace.Platform.utility.annotations.FutureStartDateTime;
 import com.platform.marketplace.Marketplace.Platform.utility.annotations.NotEmptyFile;
 import com.platform.marketplace.Marketplace.Platform.utility.consts.EntranceType;
 import jakarta.annotation.Nullable;
@@ -28,6 +29,7 @@ import static com.platform.marketplace.Marketplace.Platform.utility.consts.Regex
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@FutureEndDateTime
 public class EventDTO {
     private Long eventId;
 
@@ -58,11 +60,11 @@ public class EventDTO {
     private String address;
     @DateTimeFormat(pattern = DATE_TIME_FORMAT)
     @NotNull(message = DATE_NOT_NULL)
-    @FutureDateTime
+    @FutureStartDateTime
     private LocalDateTime startsAt;
     @DateTimeFormat(pattern = DATE_TIME_FORMAT)
     @NotNull(message = DATE_NOT_NULL)
-    @FutureDateTime
+    @FutureStartDateTime
     private LocalDateTime endsAt;
     @Pattern(regexp = CYRILLIC_AND_COMA_PATTERN, message = CYRILLIC_AND_COMA_ALLOWED_MESSAGE)
     @Nullable

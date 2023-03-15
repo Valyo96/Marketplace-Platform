@@ -15,29 +15,29 @@ import org.hibernate.validator.internal.engine.path.PathImpl;
 import org.hibernate.validator.messageinterpolation.ExpressionLanguageFeatureLevel;
 import org.junit.jupiter.api.Test;
 
-class FutureDateTimeValidatorTest {
+class FutureStartDateTimeValidatorTest {
     /**
-     * Method under test: {@link FutureDateTimeValidator#isValid(LocalDateTime, ConstraintValidatorContext)}
+     * Method under test: {@link FutureStartDateTimeValidator#isValid(LocalDateTime, ConstraintValidatorContext)}
      */
     @Test
     void testIsValid() {
-        FutureDateTimeValidator futureDateTimeValidator = new FutureDateTimeValidator();
+        FutureStartDateTimeValidator futureStartDateTimeValidator = new FutureStartDateTimeValidator();
         LocalDateTime localDateTime = LocalDateTime.of(1, 1, 1, 1, 1);
         ClockProvider clockProvider = mock(ClockProvider.class);
-        assertFalse(futureDateTimeValidator.isValid(localDateTime,
+        assertFalse(futureStartDateTimeValidator.isValid(localDateTime,
                 new ConstraintValidatorContextImpl(clockProvider, PathImpl.createRootPath(),
                         (ConstraintDescriptor<?>) mock(ConstraintDescriptor.class), "Constraint Validator Payload",
                         ExpressionLanguageFeatureLevel.DEFAULT, ExpressionLanguageFeatureLevel.DEFAULT)));
     }
 
     /**
-     * Method under test: {@link FutureDateTimeValidator#isValid(LocalDateTime, ConstraintValidatorContext)}
+     * Method under test: {@link FutureStartDateTimeValidator#isValid(LocalDateTime, ConstraintValidatorContext)}
      */
     @Test
     void testIsValid2() {
-        FutureDateTimeValidator futureDateTimeValidator = new FutureDateTimeValidator();
+        FutureStartDateTimeValidator futureStartDateTimeValidator = new FutureStartDateTimeValidator();
         ClockProvider clockProvider = mock(ClockProvider.class);
-        assertTrue(futureDateTimeValidator.isValid(null,
+        assertTrue(futureStartDateTimeValidator.isValid(null,
                 new ConstraintValidatorContextImpl(clockProvider, PathImpl.createRootPath(),
                         (ConstraintDescriptor<?>) mock(ConstraintDescriptor.class), "Constraint Validator Payload",
                         ExpressionLanguageFeatureLevel.DEFAULT, ExpressionLanguageFeatureLevel.DEFAULT)));
