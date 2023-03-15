@@ -66,15 +66,13 @@ public class OrganisationService {
 
     public void registration(OrganisationDTO orgDto) {
         Organisation org = mapper.apply(orgDto);
-        if (!utility.checkIfEmailExists(orgDto.getEmail()) && utility.passwordConfirmation(orgDto.getPassword(), orgDto.getConfirmPassword())) {
-            org.getUser().setPassword(utility.encodePassword(org.getUser().getPassword()));
-            userService.saveUser(org.getUser());
-            organisationRepository.save(org);
-            return;
+
+        if (utility.checkIfEmailExists(orgDto.getEmail()) && !utility.passwordConfirmation(orgDto.getPassword(), orgDto.getConfirmPassword())) {
+            throw new AlreadyExistException(EMAIL_ALREADY_TAKEN);
         }
-
-        throw new AlreadyExistException(EMAIL_ALREADY_TAKEN);
-
+        org.getUser().setPassword(utility.encodePassword(org.getUser().getPassword()));
+        userService.saveUser(org.getUser());
+        organisationRepository.save(org);
     }
 
     public void updateOrganisationAccount(OrganisationUpdateDTO updatedOrganisation, User user) {
@@ -101,9 +99,9 @@ public class OrganisationService {
                 events.forEach(e -> e.setEnabled(true));
             }
         }
-            organisation.getUser().setEnabled(status);
-            eventRepository.saveAll(events);
-            userService.saveUser(organisation.getUser());
+        organisation.getUser().setEnabled(status);
+        eventRepository.saveAll(events);
+        userService.saveUser(organisation.getUser());
     }
 
 
