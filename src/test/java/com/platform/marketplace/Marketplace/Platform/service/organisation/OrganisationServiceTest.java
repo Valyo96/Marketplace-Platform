@@ -55,7 +55,7 @@ class OrganisationServiceTest {
     private OrganisationRegDtoUserMapper organisationRegDtoUserMapper;
 
     /**
-     * Method under test: {@link OrganisationService#registration(OrganisationDTO)}
+     * Method under test: {@link OrganisationService#register(OrganisationDTO)}
      */
     @Test
     void testRegistration() {
@@ -64,12 +64,12 @@ class OrganisationServiceTest {
         Organisation organisation = new Organisation(organisationDTO.getName(), user, null);
         when(organisationRegDtoToOrganisationMapper.apply((OrganisationDTO) any())).thenReturn(organisation);
 //        when(organisationRegDtoUserMapper.apply(organisationDTO)).thenReturn(user);
-        organisationService.registration(organisationDTO);
+        organisationService.register(organisationDTO);
 
     }
 
     /**
-     * Method under test: {@link OrganisationService#registration(OrganisationDTO)}
+     * Method under test: {@link OrganisationService#register(OrganisationDTO)}
      */
     @Test
     void testRegistration2() {
@@ -82,7 +82,7 @@ class OrganisationServiceTest {
         Organisation organisation = new Organisation();
         organisation.setUser(new User("janedoe", "iloveyou", Role.ADMIN, true));
         when(organisationRegDtoToOrganisationMapper.apply((OrganisationDTO) any())).thenReturn(organisation);
-        organisationService.registration(new OrganisationDTO());
+        organisationService.register(new OrganisationDTO());
         verify(organisationRepository).save((Organisation) any());
         verify(userService).saveUser((User) any());
         verify(utility).checkIfEmailExists((String) any());
@@ -92,7 +92,7 @@ class OrganisationServiceTest {
     }
 
     /**
-     * Method under test: {@link OrganisationService#registration(OrganisationDTO)}
+     * Method under test: {@link OrganisationService#register(OrganisationDTO)}
      */
     @Test
     void testRegistration4() {
@@ -105,14 +105,14 @@ class OrganisationServiceTest {
         Organisation organisation = new Organisation();
         organisation.setUser(new User("janedoe", "iloveyou", Role.ORGANISATION, true));
         when(organisationRegDtoToOrganisationMapper.apply((OrganisationDTO) any())).thenReturn(organisation);
-        assertThrows(AlreadyExistException.class, () -> organisationService.registration(new OrganisationDTO()));
+        assertThrows(AlreadyExistException.class, () -> organisationService.register(new OrganisationDTO()));
 
         verify(utility).checkIfEmailExists((String) any());
 
     }
 
     /**
-     * Method under test: {@link OrganisationService#registration(OrganisationDTO)}
+     * Method under test: {@link OrganisationService#register(OrganisationDTO)}
      */
     @Test
     void testRegistration5() {
@@ -125,7 +125,7 @@ class OrganisationServiceTest {
         Organisation organisation = new Organisation();
         organisation.setUser(new User("janedoe", "iloveyou", Role.ADMIN, true));
         when(organisationRegDtoToOrganisationMapper.apply((OrganisationDTO) any())).thenReturn(organisation);
-        organisationService.registration(new OrganisationDTO());
+        organisationService.register(new OrganisationDTO());
         verify(organisationRepository).save((Organisation) any());
         verify(userService).saveUser((User) any());
         verify(utility).checkIfEmailExists((String) any());

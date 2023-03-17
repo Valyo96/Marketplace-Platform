@@ -1,6 +1,7 @@
 package com.platform.marketplace.Marketplace.Platform.controller;
 
 import com.platform.marketplace.Marketplace.Platform.dto.OrganisationDTO;
+import com.platform.marketplace.Marketplace.Platform.security.UserDetailsServiceImpl;
 import com.platform.marketplace.Marketplace.Platform.service.location.LocationService;
 import com.platform.marketplace.Marketplace.Platform.service.organisation.OrganisationService;
 import jakarta.validation.Valid;
@@ -11,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.security.Principal;
@@ -24,6 +26,8 @@ public class AuthenticationController {
     private final OrganisationService organisationService;
 
     private final LocationService locationService;
+
+    private final UserDetailsServiceImpl userDetailsServiceImpl;
 
     @GetMapping("/login")
     public String login() {
@@ -72,8 +76,13 @@ public class AuthenticationController {
 
             return mav;
         }
-        organisationService.registration(org);
+       userDetailsServiceImpl.signUpUser(org);
         return new ModelAndView("menu");
+    }
+
+    @GetMapping("confirm")
+    public String confirm(@RequestParam("token") String token ,Model model){
+        model.addAttribute("token" , userDetailsServiceImpl.confirmToken(token));
     }
 
     @PostMapping("/logout")

@@ -2,9 +2,9 @@ package com.platform.marketplace.Marketplace.Platform.service.organisation;
 
 import com.platform.marketplace.Marketplace.Platform.dto.OrganisationDTO;
 import com.platform.marketplace.Marketplace.Platform.dto.OrganisationUpdateDTO;
+import com.platform.marketplace.Marketplace.Platform.model.ConfirmationToken;
 import com.platform.marketplace.Marketplace.Platform.model.Event;
-import com.platform.marketplace.Marketplace.Platform.service.event.EventService;
-import com.platform.marketplace.Marketplace.Platform.service.location.LocationService;
+import com.platform.marketplace.Marketplace.Platform.service.email.ConfirmationTokenService;
 import com.platform.marketplace.Marketplace.Platform.service.user.UserService;
 import com.platform.marketplace.Marketplace.Platform.utility.exceptions.AlreadyExistException;
 import com.platform.marketplace.Marketplace.Platform.utility.exceptions.NotFoundException;
@@ -14,11 +14,13 @@ import com.platform.marketplace.Marketplace.Platform.model.User;
 import com.platform.marketplace.Marketplace.Platform.repository.EventRepository;
 import com.platform.marketplace.Marketplace.Platform.repository.OrganisationRepository;
 import com.platform.marketplace.Marketplace.Platform.utility.Utility;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 import static com.platform.marketplace.Marketplace.Platform.utility.consts.ConstantMessages.*;
 
@@ -33,6 +35,8 @@ public class OrganisationService {
     private final EventRepository eventRepository;
 
     private final Utility utility;
+
+    private final ConfirmationTokenService confirmationTokenService;
 
 
     private final OrganisationRegDtoToOrganisationMapper mapper;
@@ -64,7 +68,7 @@ public class OrganisationService {
     }
 
 
-    public void registration(OrganisationDTO orgDto) {
+    public String register(OrganisationDTO orgDto) {
         Organisation org = mapper.apply(orgDto);
 
         if (utility.checkIfEmailExists(orgDto.getEmail()) && !utility.passwordConfirmation(orgDto.getPassword(), orgDto.getConfirmPassword())) {
@@ -73,6 +77,16 @@ public class OrganisationService {
         org.getUser().setPassword(utility.encodePassword(org.getUser().getPassword()));
         userService.saveUser(org.getUser());
         organisationRepository.save(org);
+
+        String token = UUID.randomUUID().toString();
+
+        ConfirmationToken confirmationToken = new ConfirmationToken(token,
+                LocalDateTime.now(),
+                LocalDateTime.now().plusMinutes(15),
+                org.getUser());
+
+        confirmationTokenService.saveConfirmationToken(confirmationToken);
+        return token;
     }
 
     public void updateOrganisationAccount(OrganisationUpdateDTO updatedOrganisation, User user) {
